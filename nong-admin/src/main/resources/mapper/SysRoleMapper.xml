@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ifsaid.admin.mapper.SysRoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.ifsaid.admin.entity.SysRole">
+        <id column="rid" jdbcType="INTEGER" property="rid"/>
+        <result column="describe" jdbcType="VARCHAR" property="describe"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="up_time" jdbcType="TIMESTAMP" property="upTime"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <collection property="permissions" ofType="SysPermission">
+            <id column="pid" jdbcType="INTEGER" property="pid" />
+            <result column="father" jdbcType="INTEGER" property="father" />
+            <result column="resources" jdbcType="VARCHAR" property="resources" />
+            <result column="title" jdbcType="VARCHAR" property="title" />
+            <result column="icon" jdbcType="VARCHAR" property="icon" />
+            <result column="type" jdbcType="VARCHAR" property="type" />
+            <result column="pdescribe" jdbcType="VARCHAR" property="describe" />
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    `rid`, `describe`, `name`, `state`, `up_time`, `add_time`
+  </sql>
+
+    <!--  Set<SysRole> selectByUserName(String username);-->
+    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT tsr.rid,tsr.describe,tsr.name,tsr.state,
+        tsp.pid,tsp.resources,tsp.title, tsp.father, tsp.icon, tsp.type, tsp.describe AS pdescribe
+        FROM t_sys_user AS tsu
+        LEFT JOIN t_sys_user_role AS tsur ON tsur.user_uid = tsu.uid
+        LEFT JOIN t_sys_role AS tsr ON tsr.rid = tsur.role_rid
+        LEFT JOIN t_sys_role_permission AS tsrp ON tsrp.role_id = tsr.rid
+        LEFT JOIN t_sys_permission AS tsp ON tsp.pid = tsrp.permission_id
+        WHERE tsu.username =#{username}
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_sys_role
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sys_role
+        where rid = #{rid,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_role
+    where rid = #{rid,jdbcType=INTEGER}
+  </delete>
+
+    <insert id="insert" parameterType="com.ifsaid.admin.entity.SysRole">
+        <selectKey keyProperty="rid" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_role (describe, name, state,
+        up_time, add_time)
+        values (#{describe,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER},
+        #{upTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.ifsaid.admin.entity.SysRole">
+        <selectKey keyProperty="rid" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_sys_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="describe != null">
+                describe,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="upTime != null">
+                up_time,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="describe != null">
+                #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="upTime != null">
+                #{upTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.ifsaid.admin.entity.SysRole">
+        update t_sys_role
+        <set>
+            <if test="describe != null">
+                describe = #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="upTime != null">
+                up_time = #{upTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where rid = #{rid,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.ifsaid.admin.entity.SysRole">
+    update t_sys_role
+    set describe = #{describe,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      add_time = #{addTime,jdbcType=TIMESTAMP}
+    where rid = #{rid,jdbcType=INTEGER}
+  </update>
+
+</mapper>
