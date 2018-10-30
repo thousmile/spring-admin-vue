@@ -14,19 +14,22 @@ GitHub   ：  https://github.com/thousmile
 
 QQ:    932560435
 
+![](img/QQ截图20181030201718.png)
+
+![](img/QQ截图20181030201808.png)
 
 
 ## 先从数据库开始
 
 大部分的权限管理系统都是5张表结构（同样我们这里也采用这种方式）
 
-![](D:\workspace\vue\spring-admin-vue\img\sql1030192411.png)
+![](img/sql1030192411.png)
 
 ### **t_sys_user -----> t_sys_user_role  -----> t_sys_role -----> t_sys_role_permission ----> t_sys_permission**
 
 这里我们主要看权限表（t_sys_permission ）
 
-![](D:\workspace\vue\spring-admin-vue\img\QQ截图20181030192809.png)
+![](img/QQ截图20181030192809.png)
 
 最重要的就是resources和type字段，这两个字段在后面和vue.js整合的时候会用到，
 
@@ -836,13 +839,13 @@ public class AuthController {
 
 ```
 
-![](D:\workspace\vue\spring-admin-vue\img\QQ截图20181030200933.png)
+![](img/QQ截图20181030200933.png)
 
 **到这里我们已经获取到 token。**
 
 ### **然后根据token获取获取用户信息**
 
-![](D:\workspace\vue\spring-admin-vue\img\QQ截图20181030201140.png)
+![](img/QQ截图20181030201140.png)
 
 ### **json格式**
 
@@ -1084,13 +1087,14 @@ public class AuthController {
 
 先看一下成果。
 
-![](D:\workspace\vue\spring-admin-vue\img\QQ截图20181030201718.png)
+![](img/QQ截图20181030201718.png)
 
-
-
-![](D:\workspace\vue\spring-admin-vue\img\QQ截图20181030201808.png)
+![](img/QQ截图20181030201808.png)
 
 从GitHub上面拉去[**vue-element-admin**](https://github.com/PanJiaChen/vue-element-admin/blob/master/README.zh-CN.md)
+
+![](img/QQ截图20181030202432.png)
+
 
 ```npm
 # 克隆项目
