@@ -5,13 +5,18 @@
 如果大家觉得写的不错，就请点亮我[GitHub](https://github.com/thousmile/spring-admin-vue)的心心。非常感谢！
 
 这个教程是教整合的思路
-**已经整合好的模板地址：https://github.com/thousmile/spring-security-jwt-vue-admin**
+
+### [整合完成的模板](https://github.com/thousmile/spring-security-jwt-vue-admin)
 
 如果大家在搭建过程中遇到问题，欢迎找我
 
 GitHub   ：  https://github.com/thousmile
 
 码云：  https://gitee.com/thousmile
+
+
+
+简单的问题不要打扰我，如果有问题直接说什么问题，不要问在不在！！！    
 
 QQ:    932560435
 
@@ -1737,18 +1742,6 @@ Vue.prototype.$_has = function(value) {
 ```
 
 **到了这里已经完成了  spring boot ，security ，jwt，vue-admin-template的整合 一个完整的前后端分类，动态权限，控制到按钮的 后台管理系统就完成了**
-
-如果大家觉得写的不错，就请点亮我[GitHub](https://github.com/thousmile/spring-admin-vue)的心心。非常感谢！
-
-如果大家在搭建过程中遇到问题，欢迎找我
-
-GitHub   ：  https://github.com/thousmile
-
-码云：  https://gitee.com/thousmile
-
-QQ:    932560435
-
-
 
 
 
