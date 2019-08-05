@@ -1,0 +1,37 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.ifsaid.baodao.common.jwt.JwtTokenUtil",
+      "sourceType": "com.ifsaid.baodao.common.jwt.JwtTokenUtil"
+    },
+    {
+      "name": "spring.cache.redis",
+      "type": "com.ifsaid.baodao.common.config.CacheConfiguration",
+      "sourceType": "com.ifsaid.baodao.common.config.CacheConfiguration"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.expiration",
+      "type": "java.lang.Long",
+      "sourceType": "com.ifsaid.baodao.common.jwt.JwtTokenUtil"
+    },
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "sourceType": "com.ifsaid.baodao.common.jwt.JwtTokenUtil"
+    },
+    {
+      "name": "jwt.token-head",
+      "type": "java.lang.String",
+      "sourceType": "com.ifsaid.baodao.common.jwt.JwtTokenUtil"
+    },
+    {
+      "name": "jwt.token-header",
+      "type": "java.lang.String",
+      "sourceType": "com.ifsaid.baodao.common.jwt.JwtTokenUtil"
+    }
+  ],
+  "hints": []
+}

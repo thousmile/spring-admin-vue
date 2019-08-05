@@ -6,11 +6,11 @@ export function login(username, password) {
 }
 
 // 获取用户信息
-export function getInfo(token) {
-  return request({ url: 'user/info', method: 'get' })
+export function getInfo() {
+  return request({ url: '/user/info', method: 'get' })
 }
 
 // 登出
 export function logout() {
-  return request({ url: 'user/logout', method: 'post' })
+  return request({ url: '/user/logout', method: 'post' })
 }

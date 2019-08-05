@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <springProperty scope="context" name="application_name" source="spring.application.name"
+                    defaultValue="spring-restful-api"/>
+    <contextName>${application_name}</contextName>
+    <property name="log_dir" value="/logs/${application_name}"/>
+    <!-- 单个日志文件的最大，尺寸 -->
+    <property name="maxFileSize" value="20MB"/>
+    <!-- 日志保留时长 (天) -->
+    <property name="maxHistory" value="60"/>
+
+
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+
+
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }) %clr(---){faint} %clr([%10t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wex"/>
+    <property name="FILE_LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %m%n%wex"/>
+
+
+    <!--  开发环境和测试环境，日志输出到控制台  -->
+    <springProfile name="dev,test">
+        <!-- 控制台输出 -->
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" charset="UTF-8">
+                <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            </encoder>
+        </appender>
+        <!--控制台和日志文件输出级别-->
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+
+    <!--mybatis sql日志 日志的级别需要是DEBUG-->
+    <!--日志打印的包的范围，及分类日志文件存储 -->
+    <logger name="com.fujica.shelter.mapper" level="DEBUG" />
+
+
+    <!--  生产环境，日志输出到文件  -->
+    <springProfile name="prod">
+        <!-- info日志 appender  -->
+        <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 按天回滚 daily -->
+                <fileNamePattern>${log_dir}/info/%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+                <!-- 日志最大的历史 180天 -->
+                <maxHistory>${maxHistory}</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- maxFileSize:这是活动文件的大小，默认值是10MB，这里设置为50MB -->
+                    <maxFileSize>${maxFileSize}</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" charset="UTF-8">
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+        <!-- 只打印info日志 -->
+        <level>INFO</level>
+        <onMatch>ACCEPT</onMatch>
+        <onMismatch>DENY</onMismatch>
+    </filter>
+    </appender>
+
+        <!-- error 日志 appender  -->
+        <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- 按天回滚 daily -->
+                <fileNamePattern>${log_dir}/error/%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+                <!-- 日志最大的历史 180天 -->
+                <maxHistory>${maxHistory}</maxHistory>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <!-- maxFileSize:这是活动文件的大小，默认值是10MB，这里设置为50MB -->
+                    <maxFileSize>${maxFileSize}</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder" charset="UTF-8">
+                <pattern>${FILE_LOG_PATTERN}</pattern>
+            </encoder>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <!-- 只打印错误日志 -->
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="INFO"/>
+            <appender-ref ref="ERROR"/>
+        </root>
+    </springProfile>
+
+</configuration>

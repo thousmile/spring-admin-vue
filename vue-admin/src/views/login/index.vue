@@ -1,7 +1,8 @@
 <template>
   <div class="login-container">
+    <div v-title>登录</div>
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-      <h3 class="title">vue-admin-template</h3>
+      <h3 class="title">{{ website.title }}</h3>
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -24,51 +25,57 @@
         </span>
       </el-form-item>
       <el-form-item>
-        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">
-          Sign in
+        <el-button :loading="loading" type="primary" style="width:100%;" @click.native.prevent="handleLogin">          登录
         </el-button>
       </el-form-item>
       <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
+        <span style="margin-right:20px;">username:  {{ loginForm.username }}</span><br>
+        <span> password:  {{ loginForm.password }}</span>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { isvalidUsername } from '@/utils/validate'
+
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
-      } else {
-        callback()
-      }
-    }
-    const validatePass = (rule, value, callback) => {
-      if (value.length < 4) {
-        callback(new Error('密码不能小于5位'))
-      } else {
-        callback()
-      }
-    }
     return {
       loginForm: {
-        username: 'admin',
-        password: 'admin'
+        username: 'root_admin',
+        password: 'root_admin'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        username: [{ required: true, message: '登录账号不能为空', trigger: 'blur' },
+          { validator: function(rule, value, callback) {
+            const regex = /^[a-zA-Z0-9_-]{4,16}$/
+            if (!regex.test(value)) {
+              callback(new Error('账号以字母开头，长度在6~16之间，只能包含字符、数字和下划线'))
+            } else {
+              callback()
+            }
+          }, trigger: 'blur' }],
+        password: [{ required: true, message: '登录账号不能为空', trigger: 'blur' },
+          { validator: function(rule, value, callback) {
+            if (value.length < 3) {
+              callback(new Error('密码不能小于5位'))
+            } else {
+              callback()
+            }
+          }, trigger: 'blur' }]
       },
       loading: false,
       pwdType: 'password',
       redirect: undefined
     }
+  },
+  computed: {
+    ...mapGetters([
+      'website'
+    ])
   },
   watch: {
     $route: {
@@ -125,7 +132,6 @@ $light_gray:#eee;
       color: $light_gray;
       height: 47px;
       &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: #fff !important;
       }
     }
@@ -159,7 +165,7 @@ $light_gray:#eee;
     margin: 120px auto;
   }
   .tips {
-    font-size: 14px;
+    font-size: 18px;
     color: #fff;
     margin-bottom: 10px;
     span {

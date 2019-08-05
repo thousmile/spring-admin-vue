@@ -1,15 +1,22 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
-    <breadcrumb />
+    <hamburger
+      :toggle-click="toggleSideBar"
+      :is-active="sidebar.opened"
+      class="hamburger-container"
+    />
+    <breadcrumb/>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+        <img :src="avatar" class="user-avatar">
         <i class="el-icon-caret-bottom"/>
       </div>
       <el-dropdown-menu slot="dropdown" class="user-dropdown">
         <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>主页</el-dropdown-item>
+          <el-dropdown-item>仪表盘</el-dropdown-item>
+        </router-link>
+        <router-link class="inlineBlock" to="/userinfo">
+          <el-dropdown-item>用户信息</el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
           <span style="display:block;" @click="logout">退出系统</span>
@@ -65,6 +72,7 @@ export default {
     top: 16px;
     color: red;
   }
+
   .avatar-container {
     height: 50px;
     display: inline-block;
@@ -87,6 +95,10 @@ export default {
       }
     }
   }
+}
+
+.inlineBlock {
+  text-align: center;
 }
 </style>
 

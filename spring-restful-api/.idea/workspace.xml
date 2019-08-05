@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="37423f28-1dc5-41ef-93d6-e79e9105dc89" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/docker/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/BaodaoApiApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/config/CacheConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/config/SpringMvcConfigurer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/config/Swagger2Config.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/config/WebSecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/constant/PermissionType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/controller/BaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/controller/GlobalExceptionController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/entity/BaseEntity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/entrypoint/JwtAuthenticationEntryPoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/exception/JpaCrudException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/exception/ParameterException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/exception/UserExistsException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/jwt/JwtAuthenticationTokenFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/jwt/JwtTokenUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/jwt/JwtUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/service/IBaseService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/service/impl/BaseServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/common/service/impl/JwtUserDetailsServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/ArticleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/CategoryController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/DeptController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/PermissionController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/RoleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/UploadController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/entity/Article.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/entity/Category.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/entity/Client.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/entity/Dept.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/entity/Permission.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/entity/Role.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/entity/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/repository/ArticleRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/repository/CategoryRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/repository/DeptRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/repository/PermissionRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/repository/RoleRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/IArticleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/ICategoryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/IDeptService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/IPermissionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/IRedisService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/IRoleService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/IUserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/impl/ArticleServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/impl/CategoryServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/impl/DeptServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/impl/PermissionServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/impl/RedisServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/impl/RoleServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/service/impl/UserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/utils/AliyunOssUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/vo/ButtonVo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/vo/LoginUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/vo/MenuVo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/vo/MyPage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/vo/Relation.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/vo/Result.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/java/com/ifsaid/baodao/vo/UserVo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/resources/aliyunoss.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/resources/application-dev.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/resources/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/main/resources/images/watermark.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/test/java/com/ifsaid/baodao/BaodaoApiApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/src/test/java/com/ifsaid/baodao/PasswordEncoderTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/META-INF/spring-configuration-metadata.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/aliyunoss.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/application-dev.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/application.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/BaodaoApiApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/config/CacheConfiguration.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/config/SpringMvcConfigurer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/config/Swagger2Config.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/config/WebSecurityConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/constant/PermissionType.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/controller/BaseController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/controller/GlobalExceptionController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/entity/BaseEntity.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/entrypoint/JwtAuthenticationEntryPoint.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/exception/JpaCrudException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/exception/ParameterException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/exception/UserExistsException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/jwt/JwtAuthenticationTokenFilter.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/jwt/JwtTokenUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/jwt/JwtUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/service/IBaseService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/service/impl/BaseServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/common/service/impl/JwtUserDetailsServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/ArticleController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/AuthController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/CategoryController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/DeptController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/PermissionController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/RoleController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/UploadController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/entity/Article.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/entity/Category.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/entity/Client.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/entity/Dept.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/entity/Permission.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/entity/Role.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/entity/User.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/repository/ArticleRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/repository/CategoryRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/repository/DeptRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/repository/PermissionRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/repository/RoleRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/IArticleService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/ICategoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/IDeptService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/IPermissionService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/IRedisService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/IRoleService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/IUserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/impl/ArticleServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/impl/CategoryServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/impl/DeptServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/impl/PermissionServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/impl/RedisServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/impl/RoleServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/service/impl/UserServiceImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/utils/AliyunOssConfig.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/utils/AliyunOssUtil.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/vo/ButtonVo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/vo/LoginUser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/vo/MenuVo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/vo/MyPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/vo/Relation.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/vo/Result.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/com/ifsaid/baodao/vo/UserVo.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/classes/images/watermark.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/test-classes/com/ifsaid/baodao/BaodaoApiApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../baodao-api/target/test-classes/com/ifsaid/baodao/PasswordEncoderTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../images/admin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../images/root.png" beforeDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeInsightWorkspaceSettings">
+    <option name="optimizeImportsOnTheFly" value="true" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/docker/Dockerfile" />
+        <option value="$PROJECT_DIR$/src/main/resources/logback-spring.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/config/SpringMvcConfigurer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/config/Swagger2Config.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/constant/PermissionType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/controller/BaseController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/controller/GlobalExceptionController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/entrypoint/JwtAuthenticationEntryPoint.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/exception/UserExistsException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/exception/ParameterException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/exception/JpaCrudException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/jwt/JwtTokenUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/jwt/JwtAuthenticationTokenFilter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/service/IBaseService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/service/impl/JwtUserDetailsServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/service/IServerStorageToken.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/service/impl/ServerStorageTokenImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application-dev.yml" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.yml" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="C:\Users\wang\.m2\repository" />
+        <option name="mavenHome" value="C:/software/apache/apache-maven-3.6.0" />
+        <option name="userSettingsFile" value="C:\software\apache\apache-maven-3.6.0\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="579" />
+    <option name="y" value="2" />
+    <option name="width" value="1349" />
+    <option name="height" value="950" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="spring-restful-api" type="b2602c69:ProjectViewProjectNode" />
+              <item name="spring-restful-api" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1559030764285" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.path.for.package.stylelint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.stylelint" value="" />
+    <property name="node.js.selected.package.tslint" value="" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="sshConsole" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\wang\Documents\projects\IdeaProjects\spring-security-jwt-vue-admin\spring-restful-api\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="BaodaoApiApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="spring-restful-api" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ifsaid.baodao.BaodaoApiApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+    <option name="myConnectionType" value="NONE" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\wang\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="37423f28-1dc5-41ef-93d6-e79e9105dc89" name="Default Changelist" comment="" />
+      <created>1559028140569</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1559028140569</updated>
+      <workItem from="1559028142383" duration="2759000" />
+      <workItem from="1559031554232" duration="236000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2995000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18401287" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Web" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.59444445" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Spring" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Docker" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.12777779" />
+      <window_info anchor="bottom" id="Problems" order="12" />
+      <window_info anchor="bottom" id="Java Enterprise" order="13" />
+      <window_info anchor="bottom" id="Database Changes" order="14" />
+      <window_info anchor="bottom" id="Version Control" order="15" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Bean Validation" order="9" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Designer" order="0" />
+      <window_info id="Image Layers" order="1" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="UI Designer" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info id="Web" order="5" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="6" visible="true" weight="0.22800429" />
+      <window_info id="Structure" order="7" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Spring" order="0" />
+      <window_info anchor="bottom" id="Terminal" order="1" />
+      <window_info anchor="bottom" id="Docker" order="2" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Problems" order="4" />
+      <window_info anchor="bottom" id="Java Enterprise" order="5" />
+      <window_info anchor="bottom" id="Database Changes" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Message" order="8" />
+      <window_info anchor="bottom" id="Find" order="9" />
+      <window_info anchor="bottom" id="Run" order="10" />
+      <window_info anchor="bottom" id="Debug" order="11" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="12" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="13" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="14" />
+      <window_info anchor="right" id="Maven" order="0" />
+      <window_info anchor="right" id="Palette" order="1" />
+      <window_info anchor="right" id="Capture Analysis" order="2" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Bean Validation" order="6" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="7" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="8" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="9" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/docker/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="4" column="38" lean-forward="true" selection-start-line="4" selection-start-column="38" selection-end-line="4" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/config/CacheConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-560">
+          <caret line="30" column="13" selection-start-line="30" selection-start-column="13" selection-end-line="30" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/config/SpringMvcConfigurer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="26" lean-forward="true" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/config/Swagger2Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="12" selection-start-line="12" selection-end-line="18" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/constant/PermissionType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="6" column="3" selection-start-line="6" selection-start-column="3" selection-end-line="6" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/controller/BaseController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2">
+          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="method#findById#0;class#BaseController#0" />
+            <element signature="method#findAll#1;class#BaseController#0" />
+            <element signature="method#save#0;class#BaseController#0" />
+            <element signature="method#update#0;class#BaseController#0" />
+            <element signature="method#delete#0;class#BaseController#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/controller/GlobalExceptionController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="538">
+          <caret line="70" column="72" lean-forward="true" selection-start-line="70" selection-start-column="72" selection-end-line="70" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/entity/BaseEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="22" column="9" lean-forward="true" selection-start-line="22" selection-start-column="9" selection-end-line="22" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/5.1.5.RELEASE/spring-security-core-5.1.5.RELEASE.jar!/org/springframework/security/authentication/BadCredentialsException.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-web/5.1.5.RELEASE/spring-security-web-5.1.5.RELEASE.jar!/org/springframework/security/web/AuthenticationEntryPoint.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/entrypoint/JwtAuthenticationEntryPoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="31" column="24" selection-start-line="31" selection-start-column="16" selection-end-line="31" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/exception/UserExistsException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="10" column="45" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/exception/ParameterException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="13" column="5" lean-forward="true" selection-start-line="13" selection-start-column="5" selection-end-line="13" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/exception/JpaCrudException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="5" column="24" selection-start-line="5" selection-start-column="24" selection-end-line="5" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/service/IBaseService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/service/IRedisService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="107" column="22" lean-forward="true" selection-start-line="107" selection-start-column="22" selection-end-line="107" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/5.1.5.RELEASE/spring-security-core-5.1.5.RELEASE.jar!/org/springframework/security/core/userdetails/UserDetailsService.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/service/impl/JwtUserDetailsServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="35" column="5" lean-forward="true" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/jwt/JwtTokenUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="689">
+          <caret line="139" column="19" selection-start-line="139" selection-start-column="19" selection-end-line="139" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/jwt/JwtAuthenticationTokenFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="54" column="72" selection-start-line="54" selection-start-column="61" selection-end-line="54" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/common/jwt/JwtUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/service/impl/ServerStorageTokenImpl.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/service/IServerStorageToken.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/controller/ArticleController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/aliyunoss.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="3" column="12" lean-forward="true" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/utils/AliyunOssUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5940">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application-dev.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/ifsaid/baodao/BaodaoApiApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+          <folding>
+            <element signature="e#311#312#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="370">
+          <caret line="43" column="16" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/logback-spring.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="8" column="47" lean-forward="true" selection-start-line="8" selection-start-column="47" selection-end-line="8" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4710">
+          <caret line="157" column="31" selection-start-line="157" selection-start-column="31" selection-end-line="157" selection-end-column="31" />
+          <folding>
+            <element signature="n#resources#0;n#build#0;n#project#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="MavenHelperPluginDependencyAnalyzer" />
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArquillianSettingsConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>jdk-11.0.2</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>jdk1.8.0_201</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

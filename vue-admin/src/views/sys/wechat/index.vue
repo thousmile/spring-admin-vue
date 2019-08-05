@@ -1,6 +1,8 @@
 <!--  -->
 <template>
   <div>
+
+    <div v-title>微信设置</div>
     微信设置
   </div>
 </template>

@@ -1,6 +1,7 @@
 <!--  -->
 <template>
   <div>
+    <div v-title>后台设置</div>
     后台设置
   </div>
 </template>
