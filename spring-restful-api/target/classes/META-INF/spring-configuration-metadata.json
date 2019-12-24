@@ -1,0 +1,34 @@
+{
+  "groups": [
+    {
+      "name": "jwt",
+      "type": "com.ifsaid.shark.common.jwt.JwtTokenUtils",
+      "sourceType": "com.ifsaid.shark.common.jwt.JwtTokenUtils"
+    }
+  ],
+  "properties": [
+    {
+      "name": "jwt.expiration",
+      "type": "java.lang.Long",
+      "description": "@description: 过期时间 @date: 2019\/12\/11 21:53",
+      "sourceType": "com.ifsaid.shark.common.jwt.JwtTokenUtils"
+    },
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "description": "@description: 秘钥 @date: 2019\/12\/11 21:53",
+      "sourceType": "com.ifsaid.shark.common.jwt.JwtTokenUtils"
+    },
+    {
+      "name": "jwt.token-head",
+      "type": "java.lang.String",
+      "sourceType": "com.ifsaid.shark.common.jwt.JwtTokenUtils"
+    },
+    {
+      "name": "jwt.token-header",
+      "type": "java.lang.String",
+      "sourceType": "com.ifsaid.shark.common.jwt.JwtTokenUtils"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ifsaid.shark.mapper.SysRoleMapper">
+
+    <!--  根据 用户 ID 查询拥有的角色列表 Set<SysRole> findAllByUserId(String uid);  -->
+    <select id="findAllByUserId" parameterType="java.lang.Integer" resultType="SysRole">
+        SELECT
+            r.rid,
+            r.role_name AS roleName,
+            r.description
+        FROM
+            tb_sys_role AS r
+        LEFT JOIN tb_sys_user_role AS ur ON ur.role_id = r.rid
+        WHERE
+            ur.user_id = #{uid}
+    </select>
+
+    <select id="selectByKeywords" parameterType="java.lang.String" resultType="SysRole">
+        SELECT
+        rid,
+        role_name AS roleName,
+        description,
+        create_time AS createTime,
+        last_update_time AS lastUpdateTime
+        FROM
+        tb_sys_role
+        <if test="keywords != null">
+            WHERE CONCAT(role_name,description) LIKE CONCAT('%',#{keywords},'%')
+        </if>
+    </select>
+
+    <!--  角色关联，多个权限 int insertByPermissions(List<Relation> record); -->
+    <insert id="insertByPermissions">
+        insert into tb_sys_role_permission (role_id, permission_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.targetId},#{item.sourceId})
+        </foreach>
+    </insert>
+
+
+    <!-- 判断是否某个角色，是否还被其他用户引用 Integer userReference(Integer rid);-->
+    <select id="userReference" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tb_sys_user_role WHERE role_id = #{rid}
+    </select>
+
+    <!--  删除某角色拥有的所有权限 int deleteRoleHavePermissions(Integer rid); -->
+    <delete id="deleteHavePermissions" parameterType="java.lang.Integer">
+      delete from tb_sys_role_permission where role_id = #{rid}
+    </delete>
+
+</mapper>

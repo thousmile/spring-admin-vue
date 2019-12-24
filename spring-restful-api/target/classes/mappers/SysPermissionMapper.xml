@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ifsaid.shark.mapper.SysPermissionMapper">
+
+    <!--    根据 用户ID 获取拥有的权限 List<SysPermission> findAllByUserId(Integer uid);  -->
+    <select id="findAllByUserId" parameterType="java.lang.Integer" resultType="SysPermission">
+        SELECT
+            p.pid,
+            p.parent_id AS parentId,
+            p.resources,
+            p.title,
+            p.icon,
+            p.type
+        FROM
+            tb_sys_permission AS p
+        LEFT JOIN tb_sys_role_permission AS rp ON rp.permission_id = p.pid
+        LEFT JOIN tb_sys_role AS r ON rp.role_id = r.rid
+        LEFT JOIN tb_sys_user_role AS ur ON r.rid = ur.role_id
+        WHERE
+            ur.user_id = #{uid}
+    </select>
+
+
+    <!--    根据 角色ID 获取拥有的权限 Set<SysPermission> findAllByRoleId(Integer rid); -->
+    <select id="findAllByRoleId" parameterType="java.lang.Integer" resultType="SysPermission">
+        SELECT
+            p.pid,
+            p.parent_id as parentId,
+            p.resources,
+            p.title,
+            p.icon,
+            p.type
+        FROM
+            tb_sys_permission AS p
+        LEFT JOIN tb_sys_role_permission AS rp ON rp.permission_id = p.pid
+        WHERE
+            rp.role_id = #{rid}
+    </select>
+
+
+    <!--    判断是否某个权限下，是否还有拥有子权限 Integer haveChildren(Integer pid);-->
+    <select id="haveChildren" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tb_sys_permission WHERE parent_id = #{pid}
+    </select>
+
+
+    <!--    判断是否某个权限，是否还被其他角色引用 Integer roleReference(Integer pid);-->
+    <select id="roleReference" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tb_sys_role_permission WHERE permission_id = #{pid}
+    </select>
+
+</mapper>
