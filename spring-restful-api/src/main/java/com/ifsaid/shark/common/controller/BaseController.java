@@ -50,26 +50,43 @@ public class BaseController<T extends BaseEntity, ID, S extends BaseService<T, I
     @GetMapping("/page")
     public JsonResult<Page<T>> findAll(QueryParameter parameter) {
         PageInfo<T> page = baseService.findAllPage(parameter);
-        return JsonResult.success(page.getTotal(), parameter.getPageNum(), page.getList());
+        return JsonResult.success(page.getTotal(), page.getList());
     }
 
     @ApiOperation(value = "新增", notes = "不需要添加id")
     @PostMapping()
     public JsonResult<T> create(@RequestBody T entity) {
-        return JsonResult.success(baseService.create(entity));
+        log.info("create:  {}", entity);
+        try {
+            int result = baseService.create(entity);
+            return JsonResult.success(result);
+        } catch (Exception e) {
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "修改", notes = "修改必须要id")
     @PutMapping()
     public JsonResult<T> update(@RequestBody T entity) {
         log.info("update:  {}", entity);
-        return JsonResult.success(baseService.update(entity));
+        try {
+            int result = baseService.update(entity);
+            return JsonResult.success(result);
+        } catch (Exception e) {
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "删除", notes = "只需要id即可")
     @DeleteMapping("/{id}")
     public JsonResult<String> delete(@PathVariable("id") ID id) {
-        return JsonResult.success(baseService.deleteById(id));
+        log.info("delete:  {}", id);
+        try {
+            int result = baseService.deleteById(id);
+            return JsonResult.success(result);
+        } catch (Exception e) {
+            return JsonResult.fail(e.getMessage());
+        }
     }
 
 }

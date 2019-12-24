@@ -1,9 +1,9 @@
 package com.ifsaid.shark.common.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -64,12 +64,13 @@ public class TreeNode implements java.io.Serializable {
 
     /**
      * 获取 所有子节点
+     *
      * @JsonInclude(JsonInclude.Include.NON_NULL)
      * @return int
      * @author Wang Chen Chen<932560435@qq.com>
      * @date 2019/12/12 21:32
      */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Set<TreeNode> children;
+    private List<TreeNode> children;
 
 }

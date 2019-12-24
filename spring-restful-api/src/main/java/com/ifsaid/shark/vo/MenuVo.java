@@ -2,6 +2,7 @@ package com.ifsaid.shark.vo;
 
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,6 +35,6 @@ public class MenuVo implements java.io.Serializable {
 
     private String title;
 
-    private Set<MenuVo> children;
+    private List<MenuVo> children;
 
 }

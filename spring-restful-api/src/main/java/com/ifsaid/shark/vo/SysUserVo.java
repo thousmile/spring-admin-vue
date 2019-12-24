@@ -1,11 +1,9 @@
 package com.ifsaid.shark.vo;
 
 import com.ifsaid.shark.entity.SysUser;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +39,21 @@ public class SysUserVo extends SysUser implements java.io.Serializable {
      *
      * @date: 2019/12/11 22:15
      */
-    private Set<Map<String, Object>> roles;
+    private List<RoleVo> roles;
+
+    @Getter
+    @Setter
+    @ToString
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class RoleVo {
+
+        private Integer rid;
+
+        private String roleName;
+
+        private String description;
+
+    }
 
 }

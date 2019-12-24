@@ -51,11 +51,13 @@ public class VerifyCodeUtils {
     }
 
     private static class VerifyCode {
-        private int w = 120;
+        private final static int WIDTH = 120;
 
-        private int h = 50;
+        private final static int HEIGHT = 50;
 
-        private Random r = new Random();
+        private final static int CODE_LENGTH = 4;
+
+        private final static Random RANDOM = new Random();
 
         /**
          * 验证码的字体
@@ -111,9 +113,9 @@ public class VerifyCodeUtils {
          * @date 2019/12/14 14:48
          */
         private Color randomColor() {
-            int red = r.nextInt(150);
-            int green = r.nextInt(150);
-            int blue = r.nextInt(150);
+            int red = RANDOM.nextInt(150);
+            int green = RANDOM.nextInt(150);
+            int blue = RANDOM.nextInt(150);
             return new Color(red, green, blue);
         }
 
@@ -125,13 +127,13 @@ public class VerifyCodeUtils {
          * @date 2019/12/14 14:47
          */
         private Font randomFont() {
-            int index = r.nextInt(FONT_NAMES.length);
+            int index = RANDOM.nextInt(FONT_NAMES.length);
             //生成随机的字体名称
             String fontName = FONT_NAMES[index];
             //生成随机的样式, 0(无样式), 1(粗体), 2(斜体), 3(粗体+斜体)
-            int style = r.nextInt(4);
+            int style = RANDOM.nextInt(4);
             //生成随机字号, 26 ~ 30
-            int size = r.nextInt(5) + 26;
+            int size = RANDOM.nextInt(5) + 26;
             return new Font(fontName, style, size);
         }
 
@@ -148,10 +150,10 @@ public class VerifyCodeUtils {
             Graphics2D g2 = (Graphics2D) image.getGraphics();
             //生成两个点的坐标，即4个值
             for (int i = 0; i < num; i++) {
-                int x1 = r.nextInt(w);
-                int y1 = r.nextInt(h);
-                int x2 = r.nextInt(w);
-                int y2 = r.nextInt(h);
+                int x1 = RANDOM.nextInt(WIDTH);
+                int y1 = RANDOM.nextInt(HEIGHT);
+                int x2 = RANDOM.nextInt(WIDTH);
+                int y2 = RANDOM.nextInt(HEIGHT);
                 g2.setStroke(new BasicStroke(1.5F));
                 //干扰线是蓝色
                 g2.setColor(Color.BLUE);
@@ -168,7 +170,7 @@ public class VerifyCodeUtils {
          * @date 2019/12/14 14:47
          */
         private char randomChar() {
-            int index = r.nextInt(CODES.length());
+            int index = RANDOM.nextInt(CODES.length());
             return CODES.charAt(index);
         }
 
@@ -181,10 +183,10 @@ public class VerifyCodeUtils {
          * @date 2019/12/14 14:46
          */
         private BufferedImage createImage() {
-            BufferedImage image = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+            BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
             Graphics2D g2 = (Graphics2D) image.getGraphics();
             g2.setColor(this.bgColor);
-            g2.fillRect(0, 0, w, h);
+            g2.fillRect(0, 0, WIDTH, HEIGHT);
             return image;
         }
 
@@ -205,19 +207,19 @@ public class VerifyCodeUtils {
             StringBuilder sb = new StringBuilder();
             // 向图片中画4个字符
             //循环四次，每次生成一个字符
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < CODE_LENGTH; i++) {
                 //随机生成一个字母
                 String s = randomChar() + "";
                 //把字母添加到sb中
                 sb.append(s);
                 //设置当前字符的x轴坐标
-                float x = i * 1.0F * w / 4;
+                float x = i * 1.0F * WIDTH / 4;
                 //设置随机字体
                 g2.setFont(randomFont());
                 //设置随机颜色
                 g2.setColor(randomColor());
                 //画图
-                g2.drawString(s, x, h - 5);
+                g2.drawString(s, x, HEIGHT - 5);
             }
             //把生成的字符串赋给了this.text
             this.text = sb.toString();

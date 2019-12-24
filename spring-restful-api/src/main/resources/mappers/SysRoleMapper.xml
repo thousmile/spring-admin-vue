@@ -39,6 +39,12 @@
         </foreach>
     </insert>
 
+
+    <!-- 判断是否某个角色，是否还被其他用户引用 Integer userReference(Integer rid);-->
+    <select id="userReference" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tb_sys_user_role WHERE role_id = #{rid}
+    </select>
+
     <!--  删除某角色拥有的所有权限 int deleteRoleHavePermissions(Integer rid); -->
     <delete id="deleteHavePermissions" parameterType="java.lang.Integer">
       delete from tb_sys_role_permission where role_id = #{rid}

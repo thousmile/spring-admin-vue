@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,7 +49,7 @@ public class SysPermissionController extends BaseController<SysPermission, Integ
                 .distinct()
                 // 如果 filter 是 true，那么就是要过滤掉，按钮。如果是 false。就是菜单和按钮全要
                 .filter(res -> filter ? PermissionType.MENU.equals(res.getType().toLowerCase()) : true)
-                .map(res -> new TreeNode(res.getPid(), res.getTitle(), res.getParentId(), res, new HashSet<>()))
+                .map(res -> new TreeNode(res.getPid(), res.getTitle(), res.getParentId(), res, new ArrayList<>()))
                 .collect(Collectors.toList());
         return JsonResult.success(TreeNodeUtils.findRoots(collect));
     }

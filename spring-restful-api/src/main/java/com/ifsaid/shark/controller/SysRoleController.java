@@ -62,7 +62,7 @@ public class SysRoleController extends BaseController<SysRole, Integer, SysRoleS
                 .distinct()
                 .map(res -> new TreeNode(res.getPid(), res.getTitle(), res.getParentId(), null, null))
                 .collect(Collectors.toList());
-        Set<TreeNode> all = TreeNodeUtils.findRoots(collect);
+        List<TreeNode> all = TreeNodeUtils.findRoots(collect);
         map.put("all", all);
         return JsonResult.success(map);
     }

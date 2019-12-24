@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * @copyright 2019 http://www.ifsaid.com/ Inc. All rights reserved.
  */
 @Slf4j
-@Api(tags = "文件上传")
+@Api(tags = "[ 七牛云 ]文件上传")
 @RestController
 @RequestMapping("/upload")
 public class UploadController {

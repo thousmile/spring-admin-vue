@@ -46,7 +46,7 @@ public class SysDepartmentController extends BaseController<SysDepartment, Integ
                 .distinct()
                 .map(res -> new TreeNode(res.getId(), res.getName(), res.getParentId(), res, null))
                 .collect(Collectors.toList());
-        Set<TreeNode> roots = TreeNodeUtils.findRoots(collect);
+        List<TreeNode> roots = TreeNodeUtils.findRoots(collect);
         return JsonResult.success(roots);
     }
 

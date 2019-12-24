@@ -2,6 +2,7 @@ package com.ifsaid.shark.util;
 
 import com.ifsaid.shark.common.domain.TreeNode;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,9 +29,9 @@ public class TreeNodeUtils {
      * @param allNodes
      * @return Set<TreeNode>
      */
-    public static Set<TreeNode> findRoots(List<TreeNode> allNodes) {
+    public static List<TreeNode> findRoots(List<TreeNode> allNodes) {
         // 根节点
-        Set<TreeNode> root = new HashSet<>();
+        List<TreeNode> root = new ArrayList<>();
         allNodes.forEach(node -> {
             if (node.getParentId() == ROOT) {
                 root.add(node);
@@ -53,7 +54,7 @@ public class TreeNodeUtils {
         for (TreeNode it : treeNodes) {
             if (treeNode.getId() == it.getParentId()) {
                 if (treeNode.getChildren() == null) {
-                    treeNode.setChildren(new HashSet<>());
+                    treeNode.setChildren(new ArrayList<>());
                 }
                 treeNode.getChildren().add(findChildren(it, treeNodes));
             }

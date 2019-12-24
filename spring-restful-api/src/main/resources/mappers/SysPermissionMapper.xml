@@ -38,4 +38,16 @@
             rp.role_id = #{rid}
     </select>
 
+
+    <!--    判断是否某个权限下，是否还有拥有子权限 Integer haveChildren(Integer pid);-->
+    <select id="haveChildren" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tb_sys_permission WHERE parent_id = #{pid}
+    </select>
+
+
+    <!--    判断是否某个权限，是否还被其他角色引用 Integer roleReference(Integer pid);-->
+    <select id="roleReference" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM tb_sys_role_permission WHERE permission_id = #{pid}
+    </select>
+
 </mapper>

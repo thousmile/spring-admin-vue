@@ -46,6 +46,10 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
      */
     String login(String username, String password) throws AuthenticationException;
 
+    /**
+     * 用户退出登录
+     */
+    void logout(JwtUser loginUser);
 
     /**
      * 校验登录的用户中，用户名，是否正确
@@ -67,6 +71,7 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
 
     /**
      * 分页擦好像 获取用户详细信息
+     *
      * @param parameter
      * @return PageInfo<SysUserVo>
      */

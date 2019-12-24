@@ -6,6 +6,7 @@ import com.ifsaid.shark.mapper.SysPermissionMapper;
 import com.ifsaid.shark.service.SysPermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
@@ -33,6 +34,18 @@ public class SysPermissionServiceImpl extends BaseServiceImpl<SysPermission, Int
     @Override
     public Set<SysPermission> findPermissionByRoleId(Integer rid) {
         return baseMapper.findAllByRoleId(rid);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int deleteById(Integer id) {
+        if (baseMapper.haveChildren(id) > 0) {
+            throw new RuntimeException("当前权限下，还有子权限，无法删除！");
+        }
+        if (baseMapper.roleReference(id) > 0) {
+            throw new RuntimeException("当前权限，还有其他角色在引用，无法删除！");
+        }
+        return baseMapper.deleteByPrimaryKey(id);
     }
 
 }

@@ -53,6 +53,16 @@ public interface SysRoleMapper extends BaseMapper<SysRole, Integer> {
     int deleteHavePermissions(Integer rid);
 
     /**
+     * 判断是否某个角色，是否还被其他用户引用
+     *
+     * @param rid
+     * @return Integer
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/12/22 19:50
+     */
+    Integer userReference(Integer rid);
+
+    /**
      * 根据 角色名称，和描述，模糊匹配
      *
      * @param keywords

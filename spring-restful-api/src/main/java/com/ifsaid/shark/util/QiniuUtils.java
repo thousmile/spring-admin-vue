@@ -1,11 +1,11 @@
 package com.ifsaid.shark.util;
 
 import com.qiniu.common.QiniuException;
-import com.qiniu.common.Zone;
 import com.qiniu.http.Client;
 import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
@@ -85,8 +85,7 @@ public class QiniuUtils {
 
     public Configuration getConfiguration() {
         if (c == null) {
-            Zone z = Zone.autoZone();
-            c = new Configuration(z);
+            c = new Configuration(Region.autoRegion());
         }
         return c;
     }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -84,6 +85,18 @@ public class AuthController {
         } catch (AuthenticationException ex) {
             return JsonResult.fail(ex.getMessage());
         }
+    }
+
+
+    @ApiOperation(value = "用户退出登录", notes = "用户退出登录")
+    @GetMapping("/logout")
+    public JsonResult<TokenValue> logout() {
+        JwtUser loginUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (loginUser != null && !StringUtils.isEmpty(loginUser.getUsername())) {
+            sysUserService.logout(loginUser);
+            return JsonResult.success();
+        }
+        return JsonResult.success();
     }
 
 

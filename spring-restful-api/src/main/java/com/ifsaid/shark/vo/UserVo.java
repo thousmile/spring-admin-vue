@@ -3,6 +3,7 @@ package com.ifsaid.shark.vo;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 
@@ -89,13 +90,13 @@ public class UserVo implements java.io.Serializable {
      * @date 2018/10/29
      * @author Wang Chen Chen
      */
-    private Set<ButtonVo> buttons;
+    private List<ButtonVo> buttons;
 
     /**
      * @describe 菜单
      * @date 2018/10/29
      * @author Wang Chen Chen
      */
-    private Set<MenuVo> menus;
+    private List<MenuVo> menus;
 
 }

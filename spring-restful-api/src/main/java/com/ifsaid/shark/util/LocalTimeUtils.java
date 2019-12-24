@@ -1,9 +1,10 @@
 package com.ifsaid.shark.util;
 
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.Date;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * All rights Reserved, Designed By www.ifsaid.com
@@ -21,42 +22,83 @@ import java.util.Date;
 public class LocalTimeUtils {
 
     /**
-     * @description: 获取当前时间戳(秒)
-     * @author: Wang Chen Chen<932560435@qq.com>
-     * @date: 2019/8/9 16:52
+     * 获取当前时间戳(秒)
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/8/9 16:52
      */
     public static long getCurrentTimeSecond() {
         return LocalDateTime.now().toEpochSecond(OffsetDateTime.now().getOffset());
     }
 
     /**
-     * @description: 获取当前时间戳(毫秒)
-     * @author: Wang Chen Chen<932560435@qq.com>
-     * @date: 2019/8/9 16:52
+     * 获取当前时间戳(毫秒)
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/8/9 16:52
      */
     public static long getCurrentTimeMilli() {
         return LocalDateTime.now().toInstant(OffsetDateTime.now().getOffset()).toEpochMilli();
     }
 
     /**
-     * @description: 时间戳格式化
-     * @author: Wang Chen Chen<932560435@qq.com>
-     * @date: 2019/8/9 16:52
+     * 时间戳 (秒) 格式化 yyyy-MM-dd HH:mm:ss
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/8/9 16:52
      */
     public static String timestampSecondFormat(long timestamp) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.format(new Date(Long.valueOf(timestamp + "000")));
+        return LocalDateTime
+                .ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault()
+                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 
     /**
-     * @description: 时间戳(毫秒) 格式化 yyyy-MM-dd HH:mm:ss
-     * @author: Wang Chen Chen<932560435@qq.com>
-     * @date: 2019/8/9 16:52
+     * 时间戳(毫秒) 格式化 yyyy-MM-dd HH:mm:ss.SSS
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/8/9 16:52
      */
     public static String timestampMilliFormat(long timestamp) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return sdf.format(new Date(timestamp));
+        return LocalDateTime
+                .ofInstant(
+                        Instant.ofEpochMilli(timestamp),
+                        ZoneId.systemDefault()
+                ).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
     }
 
+
+    /**
+     * 2019-12-19 23:20:50.292 转 LocalDateTime
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/8/9 16:52
+     */
+    public static LocalDateTime stringMilliToDateTime(String datetime) {
+        return LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+    }
+
+    /**
+     * 2019-12-19 23:20:50 转 LocalDateTime
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/8/9 16:52
+     */
+    public static LocalDateTime stringSecondToDateTime(String datetime) {
+        return LocalDateTime.parse(datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+
+    public static void main(String[] args) {
+        long second = getCurrentTimeSecond();
+        long milli = getCurrentTimeMilli();
+        String s1 = timestampSecondFormat(second);
+        String s2 = timestampMilliFormat(milli);
+        LocalDateTime t1 = stringSecondToDateTime(s1);
+        LocalDateTime t2 = stringMilliToDateTime(s2);
+        System.out.println(String.valueOf(second) + "  :  " + s1 + "  :  " + t1);
+        System.out.println(String.valueOf(milli) + "  :  " + s2 + " : " + t2);
+
+    }
 
 }

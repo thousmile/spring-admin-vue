@@ -41,7 +41,7 @@ public class SysUserController extends BaseController<SysUser, Integer, SysUserS
     @GetMapping("/info/page")
     public JsonResult<Page<SysUserVo>> findAllInfoPage(QueryParameter parameter) {
         PageInfo<SysUserVo> page = baseService.findAllPageInfo(parameter);
-        return JsonResult.success(page.getTotal(), parameter.getPageNum(), page.getList());
+        return JsonResult.success(page.getTotal(), page.getList());
     }
 
     @ApiOperation(value = "获取用户详细信息", notes = "获取用户详细信息")

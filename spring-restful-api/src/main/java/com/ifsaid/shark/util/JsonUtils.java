@@ -29,10 +29,6 @@ public class JsonUtils {
 
     static {
         MAPPER = new ObjectMapper();
-        /*
-        MAPPER.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
-        MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.UPPER_CAMEL_CASE);
-        */
         MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 

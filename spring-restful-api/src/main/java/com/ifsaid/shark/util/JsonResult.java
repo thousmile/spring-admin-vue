@@ -41,11 +41,6 @@ public class JsonResult<T> implements Serializable {
      */
     private T data;
 
-    /**
-     * 时间搓
-     */
-    private Long timestamp;
-
     private JsonResult() {
     }
 
@@ -64,7 +59,6 @@ public class JsonResult<T> implements Serializable {
         result.status = status;
         result.message = message;
         result.data = data;
-        result.timestamp = System.currentTimeMillis();
         return result;
     }
 
@@ -116,10 +110,9 @@ public class JsonResult<T> implements Serializable {
      * @author Wang Chen Chen<932560435@qq.com>
      * @date 2019/12/12 21:08
      */
-    public static <T> JsonResult success(long total, int currentPage, T list) {
+    public static <T> JsonResult success(long total, T list) {
         Map<String, Object> map = new HashMap<>(3);
         map.put("total", total);
-        map.put("currentPage", total);
         map.put("list", list);
         return success(HttpStatus.OK.value, map);
     }

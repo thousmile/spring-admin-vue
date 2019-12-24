@@ -36,7 +36,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -54,13 +56,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUserMapper> implements SysUserService {
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public int deleteById(Integer uid) {
-        baseMapper.deleteHaveRoles(uid);
-        return baseMapper.deleteByPrimaryKey(uid);
-    }
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -107,6 +102,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
     }
 
     @Override
+    public void logout(JwtUser loginUser) {
+        tokenStorage().delete(loginUser.getUsername());
+    }
+
+    @Override
     public JwtUser validateUsername(String username) {
         return (JwtUser) tokenStorage().get(username);
     }
@@ -121,8 +121,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
         BeanUtils.copyProperties(sysUser, result);
         // 根据用户Id，获取到拥有的 权限列表
         Set<SysPermission> permissions = sysPermissionService.findAllByUserId(sysUser.getUid());
-        Set<ButtonVo> buttonVos = new HashSet<>();
-        Set<MenuVo> menuVos = new HashSet<>();
+        List<ButtonVo> buttonVos = new ArrayList<>();
+        List<MenuVo> menuVos = new ArrayList<>();
         if (permissions != null && permissions.size() > 1) {
             permissions.forEach(permission -> {
                 if (permission.getType().toLowerCase().equals(PermissionType.BUTTON)) {
@@ -166,7 +166,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
 
     @Override
     public PageInfo<SysUserVo> findAllPageInfo(QueryParameter parameter) {
-        log.info("findAll parameter: {}", parameter);
         PageInfo<SysUser> pageInfo = PageHelper
                 .startPage(parameter.getPageNum(), parameter.getPageSize())
                 .doSelectPageInfo(() -> {
@@ -180,13 +179,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
                 .map(res -> {
                     SysUserVo sysUserVo = new SysUserVo();
                     BeanUtils.copyProperties(res, sysUserVo);
-                    Set<Map<String, Object>> roles = sysRoleService.findAllByUserId(res.getUid()).stream().map(role -> {
-                        Map<String, Object> hashMap = new HashMap<>(2);
-                        hashMap.put("rid", role.getRid());
-                        hashMap.put("roleName", role.getRoleName());
-                        hashMap.put("description", role.getDescription());
-                        return hashMap;
-                    }).collect(Collectors.toSet());
+                    List<SysUserVo.RoleVo> roles = sysRoleService.findAllByUserId(res.getUid())
+                            .stream()
+                            .map(role -> {
+                                return new SysUserVo.RoleVo(role.getRid(), role.getRoleName(), role.getDescription());
+                            })
+                            .collect(Collectors.toList());
                     sysUserVo.setRoles(roles);
                     String departmentName = departmentService.findById(res.getDeptId()).getName();
                     sysUserVo.setDepartmentName(departmentName);
@@ -195,8 +193,23 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
         PageInfo<SysUserVo> result = new PageInfo<>();
         result.setList(collect);
         result.setTotal(pageInfo.getTotal());
-        result.setPageNum(pageInfo.getPageNum());
         return result;
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int deleteById(Integer uid) {
+        // 删除用户拥有的角色
+        baseMapper.deleteHaveRoles(uid);
+        return baseMapper.deleteByPrimaryKey(uid);
+    }
+
+    @Override
+    public SysUser findById(Integer uid) {
+        SysUser sysUser = baseMapper.selectByPrimaryKey(uid);
+        sysUser.setPassword(null);
+        return sysUser;
     }
 
     /**
@@ -205,9 +218,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
      * @param allNodes
      * @return Set<MenuVo>
      */
-    private Set<MenuVo> findRoots(Set<MenuVo> allNodes) {
+    private List<MenuVo> findRoots(List<MenuVo> allNodes) {
         // 根节点
-        Set<MenuVo> root = new HashSet<>();
+        List<MenuVo> root = new ArrayList<>();
         allNodes.forEach(node -> {
             if (node.getParentId() == 0) {
                 root.add(node);
@@ -226,11 +239,11 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
      * @param treeNodes
      * @return MenuVo
      */
-    private MenuVo findChildren(MenuVo treeNode, Set<MenuVo> treeNodes) {
+    private MenuVo findChildren(MenuVo treeNode, List<MenuVo> treeNodes) {
         for (MenuVo it : treeNodes) {
             if (treeNode.getPid().equals(it.getParentId())) {
                 if (treeNode.getChildren() == null) {
-                    treeNode.setChildren(new HashSet<>());
+                    treeNode.setChildren(new ArrayList<>());
                 }
                 treeNode.getChildren().add(findChildren(it, treeNodes));
             }
@@ -239,6 +252,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
     }
 
 
+    /**
+     * 修改用户权限
+     *
+     * @param uid
+     * @param roleIds
+     * @return int
+     */
     @Override
     public int updateUserRoles(Integer uid, Set<Integer> roleIds) {
         List<Relation> collect = roleIds.stream()
