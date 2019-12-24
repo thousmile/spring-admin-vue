@@ -1,40 +1,41 @@
 server:
   port: 8090
-  tomcat:
-    protocol-header: x-forwarded-proto
-    use-relative-redirects: true
 
 spring:
-  application:
-    name: fujica-shelter  # 项目名称
   profiles:
-    active: dev         # 开发环境
+    active: dev
+  application:
+    name: spring-restful-api
   jackson:
-    serialization:
-      write-dates-as-timestamps: true   # 序列化date的时候，自动转成时间戳
-    time-zone: UTC
-  servlet:
-    multipart:
-      max-request-size: 10MB
-      max-file-size: 10MB
-  jpa:
-    hibernate:
-      ddl-auto: none
-      naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-    show-sql: true
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+# spring boot mybatis 自动配置
+mybatis:
+  mapper-locations: classpath*:mappers/*.xml
+  type-aliases-package: com.ifsaid.shark.entity
+mapper:
+  identity: MYSQL
+  mappers: com.ifsaid.shark.common.mapper.BaseMapper
+  not-empty: false
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  level:
+    com.ifsaid.shark.mapper: debug
+
 
 # JWT 认证配置
 jwt:
   tokenHeader: Authorization   #请求头
   secret: w-eyJleHAiOjE1NDMyMDUyODUsInN1YiI6ImFkbWluIiwiY3JlYXRlZCI6MTU0MDYxMzI4N  #加密的字符串
-  expiration: 1200000    #毫秒，这里默认20分钟
+  expiration: 12000000    #毫秒，这里默认1小时
   tokenHead: "Bearer "
-  exceptUrl: "/auth/**"
-  route:
-    login: /auth/login
-    refresh: /auth/refresh
-    client: /auth/login
 
 
 info:

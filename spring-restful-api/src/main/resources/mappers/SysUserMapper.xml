@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ifsaid.shark.mapper.SysUserMapper">
+
+    <select id="selectByKeywords" parameterType="java.lang.String" resultType="SysUser">
+        SELECT
+        uid,
+        avatar,
+        username,
+        email,
+        nickname,
+        `password`,
+        gender,
+        birthday,
+        `status`,
+        create_time AS createTime,
+        last_update_time AS lastUpdateTime,
+        dept_id AS deptId
+        FROM
+        tb_sys_user
+        <if test="keywords != null">
+            WHERE CONCAT(`username`,nickname) LIKE CONCAT('%',#{keywords},'%')
+        </if>
+    </select>
+
+    <!--  删除用户拥有的所有角色 int deleteUserHaveRoles(Integer uid); -->
+    <delete id="deleteHaveRoles" parameterType="java.lang.Integer">
+        delete from tb_sys_user_role where user_id = #{uid}
+      </delete>
+
+    <!--  用户关联，多个角色 int insertByRoles(List<Relation> record); -->
+    <insert id="insertByRoles">
+        insert into tb_sys_user_role (user_id, role_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.targetId},#{item.sourceId})
+        </foreach>
+    </insert>
+
+</mapper>
