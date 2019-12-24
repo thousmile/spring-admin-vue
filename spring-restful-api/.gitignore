@@ -1,7 +1,5 @@
 README.md
-**/target/**
-**/.idea/**
-**/node_modules/**
+target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
