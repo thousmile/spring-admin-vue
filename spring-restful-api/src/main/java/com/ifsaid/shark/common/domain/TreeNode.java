@@ -33,7 +33,7 @@ public class TreeNode implements java.io.Serializable {
      * @author Wang Chen Chen<932560435@qq.com>
      * @date 2019/12/12 21:32
      */
-    private int id;
+    private long id;
 
     /**
      * 当前节点标题
@@ -51,7 +51,7 @@ public class TreeNode implements java.io.Serializable {
      * @author Wang Chen Chen<932560435@qq.com>
      * @date 2019/12/12 21:32
      */
-    private int parentId;
+    private long parentId;
 
     /**
      * 源属性

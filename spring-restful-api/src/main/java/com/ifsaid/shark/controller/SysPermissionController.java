@@ -43,7 +43,7 @@ public class SysPermissionController extends BaseController<SysPermission, Integ
 
     @ApiOperation(value = "查询所有[树节点]", notes = "以树节点的形式展示 <br> \n\n 如果 filter 是 true，那么就是要过滤掉，按钮。如果是 false。就是菜单和按钮全要")
     @GetMapping("/tree")
-    public JsonResult<String> tree(@RequestParam(defaultValue = "false") boolean filter) {
+    public JsonResult tree(@RequestParam(defaultValue = "false") boolean filter) {
         List<TreeNode> collect = baseService.findAll(null)
                 .stream()
                 .distinct()

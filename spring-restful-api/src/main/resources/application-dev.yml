@@ -29,5 +29,5 @@ spring:
 qiniu:
   accessKey: gq3oE7w_8N9HMyrl7sTSlnTpGfQG2dWgIRoJJXzA
   secretKey: uW3zixlpgLypYKaWT9I_VX8EGmddVu0S5awwKtwj
-  bucketName: fb2647mk07
-  fileDomain: http://q17pj3u6q.bkt.clouddn.com
+  bucketName: 3b52kpcycc
+  fileDomain: http://q31pcuhjc.bkt.clouddn.com

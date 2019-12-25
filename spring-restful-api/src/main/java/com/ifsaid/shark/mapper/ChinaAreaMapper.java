@@ -1,12 +1,12 @@
 package com.ifsaid.shark.mapper;
 
 import com.ifsaid.shark.common.mapper.BaseMapper;
-import com.ifsaid.shark.entity.SysDepartment;
+import com.ifsaid.shark.entity.ChinaArea;
 
 /**
  * All rights Reserved, Designed By www.ifsaid.com
  * <p>
- *
+ * 中国行政地区 Mapper
  * </p>
  *
  * @author Wang Chen Chen <932560435@qq.com>
@@ -16,7 +16,7 @@ import com.ifsaid.shark.entity.SysDepartment;
  */
 
 
-public interface SysDepartmentMapper extends BaseMapper<SysDepartment, Integer> {
+public interface ChinaAreaMapper extends BaseMapper<ChinaArea, Long> {
 
 
 }

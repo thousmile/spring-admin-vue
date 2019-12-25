@@ -2,6 +2,7 @@ package com.ifsaid.shark.controller;
 
 import com.ifsaid.shark.common.controller.BaseController;
 import com.ifsaid.shark.common.domain.TreeNode;
+import com.ifsaid.shark.entity.SysPermission;
 import com.ifsaid.shark.entity.SysRole;
 import com.ifsaid.shark.service.SysPermissionService;
 import com.ifsaid.shark.service.SysRoleService;
@@ -47,23 +48,26 @@ public class SysRoleController extends BaseController<SysRole, Integer, SysRoleS
 
     @ApiOperation(value = "查询角色详情，包括权限列表", notes = "根据Id查询")
     @GetMapping("/info/{rid}")
-    public JsonResult<String> roleInfo(@PathVariable Integer rid) {
+    public JsonResult roleInfo(@PathVariable Integer rid) {
         Map<String, Object> map = new HashMap<>(2);
         // 获取当前角色，拥有的权限
-        List<Integer> have = sysPermissionService.findPermissionByRoleId(rid)
-                .stream()
-                .distinct()
-                .map(res -> res.getPid())
-                .collect(Collectors.toList());
-        map.put("have", have);
+        Set<SysPermission> havePermissionCollect = sysPermissionService.findPermissionByRoleId(rid);
+
         // 获取全部的权限
-        List<TreeNode> collect = sysPermissionService.findAll(null)
+        List<TreeNode> allPermissionCollect = sysPermissionService.findAll(null)
                 .stream()
                 .distinct()
                 .map(res -> new TreeNode(res.getPid(), res.getTitle(), res.getParentId(), null, null))
                 .collect(Collectors.toList());
-        List<TreeNode> all = TreeNodeUtils.findRoots(collect);
-        map.put("all", all);
+
+        // 将当前角色拥有的权限 pid，挑选出来
+        Set<Integer> hashSet = havePermissionCollect.stream().map(res -> res.getPid()).collect(Collectors.toSet());
+        // 再次遍历，当前角色拥有的权限，然后 移除父节点 只留下子节点。
+        havePermissionCollect.forEach(res -> hashSet.remove(res.getParentId()));
+        // 将全部权限，递归成树节点的形式
+        map.put("all", TreeNodeUtils.findRoots(allPermissionCollect));
+        // 将当前角色拥有的权限Id，以列表的形式返回
+        map.put("have", hashSet);
         return JsonResult.success(map);
     }
 
@@ -76,7 +80,7 @@ public class SysRoleController extends BaseController<SysRole, Integer, SysRoleS
             return JsonResult.fail(message);
         }
         int result = baseService.updateRolePermissions(data.getRid(), data.getPermissions());
-        return JsonResult.success("success", result);
+        return JsonResult.success(result);
     }
 
 
