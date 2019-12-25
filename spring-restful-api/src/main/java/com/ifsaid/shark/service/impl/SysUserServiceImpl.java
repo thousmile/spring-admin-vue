@@ -6,6 +6,7 @@ import com.ifsaid.shark.common.jwt.JwtTokenUtils;
 import com.ifsaid.shark.common.jwt.JwtUser;
 import com.ifsaid.shark.common.service.impl.BaseServiceImpl;
 import com.ifsaid.shark.constant.PermissionType;
+import com.ifsaid.shark.constant.StatusConstant;
 import com.ifsaid.shark.entity.Relation;
 import com.ifsaid.shark.entity.SysPermission;
 import com.ifsaid.shark.entity.SysRole;
@@ -32,10 +33,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -74,6 +77,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
 
     @Autowired
     private SysDepartmentService departmentService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     @Lazy
@@ -210,6 +216,17 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
         SysUser sysUser = baseMapper.selectByPrimaryKey(uid);
         sysUser.setPassword(null);
         return sysUser;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int create(SysUser entity) {
+        String encodePassword = passwordEncoder.encode(entity.getPassword());
+        entity.setPassword(encodePassword);
+        entity.setStatus(StatusConstant.NORMAL);
+        entity.setCreateTime(LocalDateTime.now());
+        entity.setLastUpdateTime(LocalDateTime.now());
+        return baseMapper.insertSelective(entity);
     }
 
     /**

@@ -153,6 +153,15 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'index',
+        component: () => import('@/views/sys/chinaArea/index'),
+        name: 'SysChinaArea',
+        meta: {
+          resources: 'sys_china_area',
+          title: '行政地区'
+        }
+      },
+      {
+        path: 'dictionary',
         component: () => import('@/views/sys/dictionary/index'),
         name: 'SysDictionary',
         meta: {

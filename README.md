@@ -34,6 +34,19 @@ GitHub   ：  https://github.com/thousmile
 
 
 
+### 七牛云要换成自己的配置
+
+```
+# 七牛云文件上传配置
+qiniu:
+  accessKey: 
+  secretKey: 
+  bucketName: 
+  fileDomain: 
+```
+
+
+
 ### 有钱的兄弟捧个钱场，没钱的捧个人场
 
 

@@ -36,14 +36,14 @@
       <!-- 角色权限列表 -->
       <el-dialog :visible.sync="authority.visible" :title="authority.title" width="400px">
         <el-tree
-          ref="tree"
+          ref="treeList"
           :data="authority.list"
           :props="authority.props"
           :default-checked-keys="authority.checkedKeys"
           show-checkbox
           highlight-current
-          node-key="id"
-        />
+          node-key="id"/>
+
         <span slot="footer" class="dialog-footer">
           <el-button @click="authority.visible = false">取 消</el-button>
           <el-button type="primary" @click="updateRolePermissions">确 定</el-button>
@@ -119,9 +119,7 @@ export default {
       entity: {
         rid: 0,
         description: '',
-        roleName: '',
-        createTime: '',
-        lastUpdateTime: ''
+        roleName: ''
       },
       dialog: {
         visible: false,
@@ -132,8 +130,8 @@ export default {
       authority: {
         list: [],
         props: {
-          children: 'children',
-          label: 'title'
+          label: 'title',
+          children: 'children'
         },
         checkedKeys: [],
         rid: 0,
@@ -180,12 +178,11 @@ export default {
       // 获取角色列表
       const _this = this
       _this.loading = true
-      getRolePage(_this.page)
-        .then(result => {
-          _this.tableData = result.list
-          _this.page.total = result.total
-          _this.loading = false
-        })
+      getRolePage(_this.page).then(result => {
+        _this.tableData = result.list
+        _this.page.total = result.total
+        _this.loading = false
+      })
     },
     currentChange(index) {
       // 切换分页
@@ -231,15 +228,14 @@ export default {
             }
           )
           .then(() => {
-            removeRoleById(data.rid)
-              .then(result => {
-                _this.$notify({
-                  title: '成功',
-                  message: '删除成功!',
-                  type: 'success'
-                })
-                _this.getTableData()
+            removeRoleById(data.rid).then(result => {
+              _this.$notify({
+                title: '成功',
+                message: '删除成功!',
+                type: 'success'
               })
+              _this.getTableData()
+            })
           })
       } else {
         _this.$notify.error({
@@ -254,28 +250,26 @@ export default {
         if (valid) {
           if (_this.entity.rid > 0) {
             // 修改角色信息
-            updateRole(_this.entity)
-              .then(result => {
-                _this.$notify({
-                  title: '成功',
-                  message: '修改角色成功!',
-                  type: 'success'
-                })
-                _this.getTableData()
-                _this.dialog.visible = false
+            updateRole(_this.entity).then(result => {
+              _this.$notify({
+                title: '成功',
+                message: '修改角色成功!',
+                type: 'success'
               })
+              _this.getTableData()
+              _this.dialog.visible = false
+            })
           } else {
             // 新增角色
-            saveRole(_this.entity)
-              .then(result => {
-                _this.$notify({
-                  title: '成功',
-                  message: '新增角色成功!',
-                  type: 'success'
-                })
-                _this.getTableData()
-                _this.dialog.visible = false
+            saveRole(_this.entity).then(result => {
+              _this.$notify({
+                title: '成功',
+                message: '新增角色成功!',
+                type: 'success'
               })
+              _this.getTableData()
+              _this.dialog.visible = false
+            })
           }
         }
       })
@@ -284,40 +278,35 @@ export default {
       // 查看当前角色拥有的权限
       const _this = this
       if (data.rid > 0) {
-        getRoleById(data.rid)
-          .then(result => {
-            _this.authority.list = result.all
-            _this.authority.checkedKeys = result.have
-            _this.authority.rid = data.rid
-            _this.authority.title = data.description
-            _this.authority.visible = true
-          })
+        getRoleById(data.rid).then(result => {
+          _this.authority.list = result.all
+          _this.authority.checkedKeys = result.have
+          _this.authority.rid = data.rid
+          _this.authority.title = data.description
+          _this.authority.visible = true
+        })
       }
     },
     updateRolePermissions() {
       // 给角色修改权限
       const _this = this
-      const list = _this.$refs.tree.getCheckedKeys()
-      const father = _this.$refs.tree.getHalfCheckedNodes()
-      if (father != null && father.length > 0) {
-        father.forEach(f => {
-          console.log('f :', f)
-          list.push(f.pid)
-        })
+      let list = _this.$refs.treeList.getCheckedKeys()
+      let father = _this.$refs.treeList.getHalfCheckedNodes()
+      if (father !== undefined && father !== null && father.length > 0) {
+        father.forEach(f => list.push(f.id))
       }
-      console.log('list2 :', list)
-      console.log('rid2:', _this.authority.rid)
-      return
-      updateRolePermission({ rid: _this.authority.rid, permissions: list })
-        .then(result => {
-          _this.$notify({
-            title: '成功',
-            message: '修改角色权限成功!',
-            type: 'success'
-          })
-          _this.getTableData()
-          _this.authority.visible = false
+      updateRolePermission({
+        rid: _this.authority.rid,
+        permissions: list
+      }).then(result => {
+        _this.$notify({
+          title: '成功',
+          message: '修改角色权限成功!',
+          type: 'success'
         })
+        _this.getTableData()
+        _this.authority.visible = false
+      })
     }
   }
 }

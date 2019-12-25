@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -40,7 +38,7 @@ public class SysDepartmentController extends BaseController<SysDepartment, Integ
 
     @ApiOperation(value = "查询所有[树节点]", notes = "以树节点的形式展示")
     @GetMapping("/tree")
-    public JsonResult<List<TreeNode>> tree() {
+    public JsonResult tree() {
         List<TreeNode> collect = baseService.findAll(null)
                 .stream()
                 .distinct()

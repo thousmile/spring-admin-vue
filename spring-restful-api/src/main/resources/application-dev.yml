@@ -27,7 +27,7 @@ spring:
 
 # 七牛云文件上传配置
 qiniu:
-  accessKey: gq3oE7w_8N9HMyrl7sTSlnTpGfQG2dWgIRoJJXzA
-  secretKey: uW3zixlpgLypYKaWT9I_VX8EGmddVu0S5awwKtwj
-  bucketName: fb2647mk07
-  fileDomain: http://q17pj3u6q.bkt.clouddn.com
+  accessKey: 
+  secretKey: 
+  bucketName: 
+  fileDomain: 

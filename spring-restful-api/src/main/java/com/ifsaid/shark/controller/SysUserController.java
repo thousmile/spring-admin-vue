@@ -1,6 +1,5 @@
 package com.ifsaid.shark.controller;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.ifsaid.shark.common.controller.BaseController;
 import com.ifsaid.shark.entity.SysUser;
@@ -39,7 +38,7 @@ public class SysUserController extends BaseController<SysUser, Integer, SysUserS
 
     @ApiOperation(value = "分页,获取用户详情", notes = "分页 查询所有，获取用户详情")
     @GetMapping("/info/page")
-    public JsonResult<Page<SysUserVo>> findAllInfoPage(QueryParameter parameter) {
+    public JsonResult findAllInfoPage(QueryParameter parameter) {
         PageInfo<SysUserVo> page = baseService.findAllPageInfo(parameter);
         return JsonResult.success(page.getTotal(), page.getList());
     }
@@ -47,8 +46,7 @@ public class SysUserController extends BaseController<SysUser, Integer, SysUserS
     @ApiOperation(value = "获取用户详细信息", notes = "获取用户详细信息")
     @GetMapping("/info")
     public JsonResult<UserVo> findUserInfo() {
-        UserVo userInfo = baseService.findUserInfo();
-        return JsonResult.success(userInfo);
+        return JsonResult.success(baseService.findUserInfo());
     }
 
     @ApiOperation(value = "修改用户角色", notes = "修改用户角色,会删除之前的角色信息。")
@@ -59,7 +57,7 @@ public class SysUserController extends BaseController<SysUser, Integer, SysUserS
             return JsonResult.fail(message);
         }
         int result = baseService.updateUserRoles(data.getUid(), data.getRoles());
-        return JsonResult.success("success", result);
+        return JsonResult.success(result);
     }
 
 
