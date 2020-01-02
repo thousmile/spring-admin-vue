@@ -34,6 +34,41 @@ GitHub   ：  https://github.com/thousmile
 
 
 
+### Linux 启动脚本 
+
+```
+将打包完成的 jar 文件和 spring-boot.sh 放置在服务器同一个目录中， 
+修改文件的权限，附加执行权限
+sudo chmod 754 spring-boot.sh
+
+#脚本用法: ./脚本名.sh {start|stop|restart|status} {APP_NAME}
+
+#例子(一)：./spring-boot.sh start example.jar 			    # 默认启动，默认是 prod 环境 8090端口
+
+#例子(二)：./spring-boot.sh start example.jar prod 			# 指定环境  默认是 8090端口
+
+#例子(三)：./spring-boot.sh start example.jar prod 8080		 # 指定环境和端口号
+
+```
+
+
+
+### maven  打包到docker 容器( 确保本地安装docker )
+
+```
+# 打包到本地docker命令
+mvn dockerfile:build
+
+# docker 启动命令
+docker run -d -p 8090:8090 -t ifsaid/spring-restful-api:2.0
+```
+
+
+
+### 查看 swagger2 API 文档 ：  http://localhost:8090/doc.html 
+
+
+
 ### 七牛云要换成自己的配置
 
 ```

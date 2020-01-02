@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-12-25 22:58:42
+Date: 2020-01-02 22:45:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4395,8 +4395,8 @@ CREATE TABLE `tb_sys_user` (
 -- ----------------------------
 -- Records of tb_sys_user
 -- ----------------------------
-INSERT INTO `tb_sys_user` VALUES ('3', 'http://q17pj3u6q.bkt.clouddn.com/a2693e3320314060b096de0ab1e4486a.jpeg', 'root_admin', 'root_admin@163.com', '超级管理员', '$2a$10$F47JY5Yt2DGoPuG8Fra8XuyiA20Q9g3.4J5eKXB0DrmvacVO1Olya', '1', '2019-12-11', '1', '2018-11-18 19:18:50', '2018-11-18 19:18:50', '5');
-INSERT INTO `tb_sys_user` VALUES ('8', 'http://q17pj3u6q.bkt.clouddn.com/e8b6da3da1ff4899b37789da132ee2fe.jpeg', 'xiaoxiannv', 'xiaoxiannv@qq.com', '小仙女', '$2a$10$9uByNfHn0vDteZ4lj0LlUe8lSJKepIsrFiTNoR6thF7xzZGaRzfY2', '0', '2000-01-12', '1', '2019-12-16 23:06:09', '2019-12-16 23:06:09', '8');
+INSERT INTO `tb_sys_user` VALUES ('3', 'http://q31pcuhjc.bkt.clouddn.com/03597717078d9233494e12457149858b.jpg', 'root_admin', 'root_admin@163.com', '超级管理员', '$2a$10$F47JY5Yt2DGoPuG8Fra8XuyiA20Q9g3.4J5eKXB0DrmvacVO1Olya', '1', '2019-12-11', '1', '2018-11-18 19:18:50', '2018-11-18 19:18:50', '5');
+INSERT INTO `tb_sys_user` VALUES ('8', 'http://q31pcuhjc.bkt.clouddn.com/1ab6baa76a38163fe04aee6dae72aa6a.jpeg', 'xiaoxiannv', 'xiaoxiannv@qq.com', '小仙女', '$2a$10$9uByNfHn0vDteZ4lj0LlUe8lSJKepIsrFiTNoR6thF7xzZGaRzfY2', '0', '2000-01-12', '1', '2019-12-16 23:06:09', '2019-12-16 23:06:09', '8');
 INSERT INTO `tb_sys_user` VALUES ('10', 'http://q31pcuhjc.bkt.clouddn.com/a194e3e441c946a7b51fed610c6df7f9.jpg', 'xiannva', 'xiannva@qq.com', '仙女啊', '$2a$10$CWX3FQix1jXvvLLn.3KhJ.KfbEoBnNt23JlV71S4mfi99NreYyYW2', '0', '2000-02-08', '1', '2019-12-25 21:41:27', '2019-12-25 21:41:27', '1');
 
 -- ----------------------------

@@ -34,14 +34,14 @@ logging:
 jwt:
   tokenHeader: Authorization   #请求头
   secret: w-eyJleHAiOjE1NDMyMDUyODUsInN1YiI6ImFkbWluIiwiY3JlYXRlZCI6MTU0MDYxMzI4N  #加密的字符串
-  expiration: 12000000    #毫秒，这里默认1小时
+  expiration: 7200000    #毫秒，这里默认2小时
   tokenHead: "Bearer "
 
 
 info:
   app:
     name: ${spring.application.name}
-    description: spring-boot-restful-api
+    description: spring-restful-api
     version: 1.0
 
 management:

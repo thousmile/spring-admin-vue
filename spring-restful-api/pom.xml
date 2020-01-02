@@ -169,7 +169,7 @@
         </dependency>
 
         <!-- ————————————— api文档 结束————————————————————— -->
-        <!--  查看文档 ：  http://localhost:8080/doc.html      -->
+        <!--  查看文档 ：  http://localhost:8090/doc.html      -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>

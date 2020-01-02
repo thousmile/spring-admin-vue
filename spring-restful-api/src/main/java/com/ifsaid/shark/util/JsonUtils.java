@@ -33,11 +33,12 @@ public class JsonUtils {
     }
 
     /**
-     * @description: 将对象转换成json字符串。
-     * @param: [jsonData, beanType]
-     * @return: java.util.List<T>
-     * @author: Wang Chen Chen <932560435@qq.com>
-     * @date: 2019/4/18 15:26
+     * 将对象转换成json字符串。
+     *
+     * @param data
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
      */
     public static String objectToJson(Object data) {
         try {
@@ -50,11 +51,13 @@ public class JsonUtils {
     }
 
     /**
-     * @description: 将json结果集转化为对象
-     * @param: [jsonData, beanType]
-     * @return: java.util.List<T>
-     * @author: Wang Chen Chen <932560435@qq.com>
-     * @date: 2019/4/18 15:26
+     * 将json结果集转化为对象
+     *
+     * @param jsonData
+     * @param beanType
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
      */
     public static <T> T jsonToPojo(String jsonData, Class<T> beanType) {
         try {
@@ -67,11 +70,13 @@ public class JsonUtils {
 
 
     /**
-     * @description: 将json结果集转化为对象
-     * @param: [jsonData, beanType]
-     * @return: java.util.List<T>
-     * @author: Wang Chen Chen <932560435@qq.com>
-     * @date: 2019/4/18 15:26
+     * 将json结果集转化为对象
+     *
+     * @param src
+     * @param beanType
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
      */
     public static <T> T jsonToPojo(byte[] src, Class<T> beanType) {
         try {
@@ -83,11 +88,13 @@ public class JsonUtils {
     }
 
     /**
-     * @description: 将json数据转换成pojo对象list
-     * @param: [jsonData, beanType]
-     * @return: java.util.List<T>
-     * @author: Wang Chen Chen <932560435@qq.com>
-     * @date: 2019/4/18 15:26
+     * 将json数据转换成pojo对象list
+     *
+     * @param jsonData
+     * @param beanType
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
      */
     public static <T> List<T> jsonToListPojo(String jsonData, Class<T> beanType) {
         try {
@@ -100,11 +107,14 @@ public class JsonUtils {
 
 
     /**
-     * @description: 将json数据转换成 Map
-     * @param: [jsonData, keyType, valueType]
-     * @return: java.util.List<T>
-     * @author: Wang Chen Chen <932560435@qq.com>
-     * @date: 2019/4/18 15:26
+     * 将json数据转换成 Map
+     *
+     * @param jsonData
+     * @param keyType
+     * @param valueType
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
      */
     public static <K, V> Map<K, V> jsonToMap(String jsonData, Class<K> keyType, Class<V> valueType) {
         try {
@@ -117,11 +127,14 @@ public class JsonUtils {
 
 
     /**
-     * @description: 将json数据转换成pojo对象list
-     * @param: [jsonData, beanType]
-     * @return: java.util.List<T>
-     * @author: Wang Chen Chen <932560435@qq.com>
-     * @date: 2019/4/18 15:26
+     * 将json数据转换成pojo对象list
+     *
+     * @param jsonData
+     * @param keyType
+     * @param valueType
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
      */
     public static <K, V> List<Map<K, V>> jsonToListMap(String jsonData, Class<K> keyType, Class<V> valueType) {
         try {
