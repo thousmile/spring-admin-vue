@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地mysql-8
-Source Server Version : 80017
-Source Host           : localhost:3306
+Source Server         : 腾讯云-1H2G
+Source Server Version : 80019
+Source Host           : 111.230.195.146:3306
 Source Database       : spring_admin_vue
 
 Target Server Type    : MYSQL
-Target Server Version : 80017
+Target Server Version : 80019
 File Encoding         : 65001
 
-Date: 2020-01-02 22:45:37
+Date: 2020-01-16 22:00:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -20,9 +20,9 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_cn_area`;
 CREATE TABLE `tb_cn_area` (
-  `area_code` bigint(14) unsigned NOT NULL COMMENT '行政代码 [ 唯一 ]',
-  `level` tinyint(1) unsigned NOT NULL COMMENT '层级',
-  `parent_code` bigint(14) unsigned NOT NULL DEFAULT '0' COMMENT '父级行政代码',
+  `area_code` bigint unsigned NOT NULL COMMENT '行政代码 [ 唯一 ]',
+  `level` tinyint unsigned NOT NULL COMMENT '层级',
+  `parent_code` bigint unsigned NOT NULL DEFAULT '0' COMMENT '父级行政代码',
   `zip_code` mediumint(6) unsigned zerofill NOT NULL DEFAULT '000000' COMMENT '邮政编码',
   `city_code` char(6) NOT NULL DEFAULT '' COMMENT '区号',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '名称',
@@ -4205,10 +4205,10 @@ INSERT INTO `tb_cn_area` VALUES ('7214287996814', '3', '7210805025214', '000652'
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_sys_department`;
 CREATE TABLE `tb_sys_department` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '部门id',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '部门id',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '部门名称',
-  `parent_id` int(11) NOT NULL COMMENT '上级部门',
-  `level` tinyint(4) NOT NULL COMMENT '部门排序',
+  `parent_id` int NOT NULL COMMENT '上级部门',
+  `level` tinyint NOT NULL COMMENT '部门排序',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '部门描述',
   `create_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   `last_update_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最后一次修改时间',
@@ -4234,8 +4234,8 @@ INSERT INTO `tb_sys_department` VALUES ('17', '运维部门', '2', '1', '【阿�
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_sys_permission`;
 CREATE TABLE `tb_sys_permission` (
-  `pid` int(11) NOT NULL AUTO_INCREMENT COMMENT '权限唯一ID',
-  `parent_id` int(11) NOT NULL COMMENT '上级ID',
+  `pid` int NOT NULL AUTO_INCREMENT COMMENT '权限唯一ID',
+  `parent_id` int NOT NULL COMMENT '上级ID',
   `resources` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限资源 ',
   `title` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '资源名称',
   `icon` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '资源图标',
@@ -4283,7 +4283,7 @@ INSERT INTO `tb_sys_permission` VALUES ('42', '2', 'sys_china_area', '行政地�
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_sys_role`;
 CREATE TABLE `tb_sys_role` (
-  `rid` int(11) NOT NULL AUTO_INCREMENT COMMENT '系统角色ID',
+  `rid` int NOT NULL AUTO_INCREMENT COMMENT '系统角色ID',
   `role_name` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '系统角色名称',
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '系统角色描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
@@ -4305,8 +4305,8 @@ INSERT INTO `tb_sys_role` VALUES ('14', 'ROLE_TEST', '测试角色', '2019-12-22
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_sys_role_permission`;
 CREATE TABLE `tb_sys_role_permission` (
-  `permission_id` int(11) NOT NULL COMMENT '权限ID',
-  `role_id` int(11) NOT NULL COMMENT '角色ID'
+  `permission_id` int NOT NULL COMMENT '权限ID',
+  `role_id` int NOT NULL COMMENT '角色ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='[ 权限管理 ] 角色和权限表';
 
 -- ----------------------------
@@ -4375,18 +4375,18 @@ INSERT INTO `tb_sys_role_permission` VALUES ('42', '1');
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_sys_user`;
 CREATE TABLE `tb_sys_user` (
-  `uid` int(200) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `uid` int NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `avatar` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '头像',
   `username` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '账号',
   `email` char(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '邮箱',
   `nickname` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名称',
   `password` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
-  `gender` tinyint(4) NOT NULL COMMENT '性别[ 0.女  1.男  2.未知]',
+  `gender` tinyint NOT NULL COMMENT '性别[ 0.女  1.男  2.未知]',
   `birthday` date NOT NULL COMMENT '生日',
-  `status` tinyint(4) NOT NULL COMMENT '状态 【0.禁用 1.正常 2.被删除】',
+  `status` tinyint NOT NULL COMMENT '状态 【0.禁用 1.正常 2.被删除】',
   `create_time` datetime NOT NULL COMMENT '添加时间',
   `last_update_time` datetime NOT NULL COMMENT '修改时间',
-  `dept_id` int(11) NOT NULL COMMENT '部门id',
+  `dept_id` int NOT NULL COMMENT '部门id',
   PRIMARY KEY (`uid`),
   UNIQUE KEY `UK_6i5ixxulo5s2i7qoksp54tgwl_username` (`username`) USING BTREE,
   UNIQUE KEY `UK_ulo5s2i7qoksp54tgwl_email` (`email`) USING BTREE
@@ -4396,7 +4396,7 @@ CREATE TABLE `tb_sys_user` (
 -- Records of tb_sys_user
 -- ----------------------------
 INSERT INTO `tb_sys_user` VALUES ('3', 'http://q31pcuhjc.bkt.clouddn.com/03597717078d9233494e12457149858b.jpg', 'root_admin', 'root_admin@163.com', '超级管理员', '$2a$10$F47JY5Yt2DGoPuG8Fra8XuyiA20Q9g3.4J5eKXB0DrmvacVO1Olya', '1', '2019-12-11', '1', '2018-11-18 19:18:50', '2018-11-18 19:18:50', '5');
-INSERT INTO `tb_sys_user` VALUES ('8', 'http://q31pcuhjc.bkt.clouddn.com/1ab6baa76a38163fe04aee6dae72aa6a.jpeg', 'xiaoxiannv', 'xiaoxiannv@qq.com', '小仙女', '$2a$10$9uByNfHn0vDteZ4lj0LlUe8lSJKepIsrFiTNoR6thF7xzZGaRzfY2', '0', '2000-01-12', '1', '2019-12-16 23:06:09', '2019-12-16 23:06:09', '8');
+INSERT INTO `tb_sys_user` VALUES ('8', 'http://q31pcuhjc.bkt.clouddn.com/8e518dac3cd24e4abb5ee69083b494d9.jpg', 'xiaoxiannv', 'xiaoxiannv@qq.com', '小仙女', '$2a$10$9uByNfHn0vDteZ4lj0LlUe8lSJKepIsrFiTNoR6thF7xzZGaRzfY2', '0', '2000-01-12', '1', '2019-12-16 23:06:09', '2019-12-16 23:06:09', '8');
 INSERT INTO `tb_sys_user` VALUES ('10', 'http://q31pcuhjc.bkt.clouddn.com/a194e3e441c946a7b51fed610c6df7f9.jpg', 'xiannva', 'xiannva@qq.com', '仙女啊', '$2a$10$CWX3FQix1jXvvLLn.3KhJ.KfbEoBnNt23JlV71S4mfi99NreYyYW2', '0', '2000-02-08', '1', '2019-12-25 21:41:27', '2019-12-25 21:41:27', '1');
 
 -- ----------------------------
@@ -4404,8 +4404,8 @@ INSERT INTO `tb_sys_user` VALUES ('10', 'http://q31pcuhjc.bkt.clouddn.com/a194e3
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_sys_user_role`;
 CREATE TABLE `tb_sys_user_role` (
-  `user_id` int(11) NOT NULL COMMENT '用户ID',
-  `role_id` int(11) NOT NULL COMMENT '角色ID'
+  `user_id` int NOT NULL COMMENT '用户ID',
+  `role_id` int NOT NULL COMMENT '角色ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='[ 权限管理 ] 用户表和角色表';
 
 -- ----------------------------

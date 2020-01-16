@@ -83,7 +83,8 @@ public class AuthController {
             redisTemplate.delete(user.getCodeKey());
             return JsonResult.success("登录成功", tokenValue);
         } catch (AuthenticationException ex) {
-            return JsonResult.fail(ex.getMessage());
+            log.error(ex.getMessage());
+            return JsonResult.fail("用户名或密码错误");
         }
     }
 
