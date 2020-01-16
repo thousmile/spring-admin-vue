@@ -24,6 +24,7 @@ xiannva     :  xiannva
 
 ![](images/20181030201718.png)
 
+
 ![](images/20181030201808.png)
 
 
@@ -60,11 +61,8 @@ sudo chmod 754 spring-boot.sh
 
 
 ### maven  打包到docker 容器( 确保本地安装docker )
-
+![](images/20200116220840.jpg)
 ```
-# 打包到本地docker命令
-mvn dockerfile:build
-
 # docker 启动 激活 prod 环境 并且将 容器的logs目录 挂载到 当前宿主机的logs目录
 sudo docker run -d -p 8090:8090 --name spring-restful-api \
 -v $PWD/logs:/logs \
