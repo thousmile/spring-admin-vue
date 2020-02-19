@@ -12,6 +12,8 @@ GitHub   ：  https://github.com/thousmile
 
 码云：  https://gitee.com/thousmile
 
+[演示地址](https://xaaef.com/)
+
 数据库里的用户，password 和 username 都是相同的
 ```
 root_admin  :  root_admin
