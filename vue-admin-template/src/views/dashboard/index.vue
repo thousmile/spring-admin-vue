@@ -5,10 +5,10 @@
     <div class="dashboard-text">
       roles:
       <span v-for="role in roles" :key="role">
-        <br >
+        <br>
         {{ role }}
       </span>
-      <br >
+      <br>
     </div>
   </div>
 </template>

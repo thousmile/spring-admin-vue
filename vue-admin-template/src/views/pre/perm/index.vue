@@ -1,7 +1,11 @@
 <!--  -->
 <template>
-  <div v-loading="loading" id="pmn">
-    <div v-title>权限管理</div>
+  <div
+    id="pmn"
+    v-loading="loading"
+    element-loading-text="拼命加载中..."
+    element-loading-spinner="el-icon-loading"
+  >
     <el-row :gutter="20">
       <el-col :span="10">
         <el-tree :data="treeData" :props="defaultProps" accordion @node-click="handleNodeClick" />
@@ -41,19 +45,19 @@
             </el-form-item>
 
             <el-form-item label="权限标题" prop="title">
-              <el-input :disabled="isEdit" v-model="pmnForm.title" clearable />
+              <el-input v-model="pmnForm.title" :disabled="isEdit" clearable />
             </el-form-item>
 
             <template v-if="pmnForm.type === 'menu'">
               <el-form-item label="权限图标" prop="icon">
-                <el-input :disabled="isEdit" v-model="pmnForm.icon" clearable />
+                <el-input v-model="pmnForm.icon" :disabled="isEdit" clearable />
               </el-form-item>
             </template>
 
             <el-form-item label="唯一标识" prop="resources">
               <el-input
-                :disabled="isEdit"
                 v-model="pmnForm.resources"
+                :disabled="isEdit"
                 clearable
                 placeholder="强调，必须是唯一的英文字母"
               />
@@ -61,9 +65,9 @@
 
             <el-form-item label="上级权限" prop="parentId">
               <el-cascader
+                v-model="pmnForm.parentId"
                 :disabled="isEdit"
                 :show-all-levels="false"
-                v-model="pmnForm.parentId"
                 :options="menuTreeData"
                 :props="cascaderProps"
                 @change="handleChange"
@@ -87,7 +91,7 @@
             </el-form-item>
 
             <el-form-item label="权限描述" prop="description">
-              <el-input :disabled="isEdit" v-model="pmnForm.description" clearable />
+              <el-input v-model="pmnForm.description" :disabled="isEdit" clearable />
             </el-form-item>
 
             <el-form-item v-if="isEdit === false">
@@ -180,26 +184,24 @@ export default {
       // 获取权限列表以树节点的形式展示
       const _this = this
       _this.loading = true
-      getPermissionTree({ filter: false })
-        .then(result => {
-          _this.treeData = result
-          _this.loading = false
-        })
+      getPermissionTree({ filter: false }).then(result => {
+        _this.treeData = result
+        _this.loading = false
+      })
     },
     getMenusTreeData() {
       // 获取权限列表以树节点的形式展示
       const _this = this
       _this.loading = true
-      getPermissionTree({ filter: true })
-        .then(result => {
-          _this.menuTreeData = result
-          _this.menuTreeData.push({
-            id: 'root',
-            title: '顶级菜单',
-            parentId: 0
-          })
-          _this.loading = false
+      getPermissionTree({ filter: true }).then(result => {
+        _this.menuTreeData = result
+        _this.menuTreeData.push({
+          id: 'root',
+          title: '顶级菜单',
+          parentId: 0
         })
+        _this.loading = false
+      })
     },
     handleChange(data) {
       // 如果是 root 表示，顶级菜单
@@ -240,17 +242,16 @@ export default {
             }
           )
           .then(() => {
-            removePermissionById(_this.pmnForm.pid)
-              .then(result => {
-                _this.$notify({
-                  type: 'success',
-                  title: '成功',
-                  message: '删除权限成功!'
-                })
-                this.getPermissionTreeData()
-                this.getMenusTreeData()
-                _this.isEdit = true
+            removePermissionById(_this.pmnForm.pid).then(result => {
+              _this.$notify({
+                type: 'success',
+                title: '成功',
+                message: '删除权限成功!'
               })
+              this.getPermissionTreeData()
+              this.getMenusTreeData()
+              _this.isEdit = true
+            })
           })
       } else {
         _this.$notify.error({
@@ -265,29 +266,27 @@ export default {
       _this.$refs.pmnForm.validate(valid => {
         if (valid) {
           if (_this.pmnForm.pid > 0) {
-            updatePermission(_this.pmnForm)
-              .then(result => {
-                _this.$notify({
-                  title: '成功',
-                  message: '修改权限成功!',
-                  type: 'success'
-                })
-                this.getPermissionTreeData()
-                this.getMenusTreeData()
-                _this.isEdit = true
+            updatePermission(_this.pmnForm).then(result => {
+              _this.$notify({
+                title: '成功',
+                message: '修改权限成功!',
+                type: 'success'
               })
+              this.getPermissionTreeData()
+              this.getMenusTreeData()
+              _this.isEdit = true
+            })
           } else {
-            savePermission(_this.pmnForm)
-              .then(result => {
-                _this.$notify({
-                  title: '成功',
-                  message: '新增权限成功!',
-                  type: 'success'
-                })
-                this.getPermissionTreeData()
-                this.getMenusTreeData()
-                _this.isEdit = true
+            savePermission(_this.pmnForm).then(result => {
+              _this.$notify({
+                title: '成功',
+                message: '新增权限成功!',
+                type: 'success'
               })
+              this.getPermissionTreeData()
+              this.getMenusTreeData()
+              _this.isEdit = true
+            })
           }
         }
       })
@@ -302,10 +301,12 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 #pmn {
   .el-tree-node__expand-icon {
-    font-size: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
   }
   .el-tree-node__label {
-    font-size: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
   }
   .el-tree-node__content {
     height: 2.5rem;
@@ -317,6 +318,9 @@ export default {
     width: 100%;
   }
   .el-select {
+    width: 100%;
+  }
+  .el-cascader {
     width: 100%;
   }
 }

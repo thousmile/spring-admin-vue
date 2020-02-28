@@ -1,6 +1,10 @@
 <template>
-  <div id="chinaArea">
-    <div v-title>中国行政地区</div>
+  <div
+    id="chinaArea"
+    v-loading="loading"
+    element-loading-text="拼命加载中..."
+    element-loading-spinner="el-icon-loading"
+  >
     <el-row :gutter="20">
       <el-col :span="10">
         <div class="grid-content bg-purple">
@@ -108,10 +112,12 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
 #chinaArea {
   .el-tree-node__expand-icon {
-    font-size: 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
   }
   .el-tree-node__label {
     font-size: 1rem;
+    font-weight: 600;
   }
   .el-tree-node__content {
     height: 1.5rem;
@@ -120,7 +126,7 @@ export default {
     font-size: 1rem;
   }
   .text {
-    font-size: 2rem;
+    font-size: 1rem;
   }
 
   .item {

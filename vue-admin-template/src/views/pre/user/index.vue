@@ -1,10 +1,9 @@
 <template>
   <el-container>
     <el-header>
-      <div v-title>用户管理</div>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input v-model="page.keywords" placeholder="请输入关键字" />
+          <el-input v-model="page.keywords" clearable placeholder="请输入关键字" />
         </el-col>
         <el-col :span="6">
           <el-button type="primary" icon="el-icon-search" @click="getUserTableData">搜索</el-button>
@@ -38,16 +37,17 @@
               <el-form-item label="邮箱" prop="email">
                 <el-input v-model="entity.email" clearable />
               </el-form-item>
-              <el-form-item label="生日" prop="gender">
+              <el-form-item label="生日" prop="birthday">
                 <el-date-picker
                   v-model="entity.birthday"
                   value-format="yyyy-MM-dd"
                   type="date"
+                  :picker-options="pickerOptions"
                   placeholder="选择日期"
                 />
               </el-form-item>
-              <el-form-item label="性别" prop="birthday">
-                <el-select v-model="entity.gender" placeholder="请选择">
+              <el-form-item label="性别" prop="gender">
+                <el-select v-model="entity.gender" clearable filterable placeholder="请选择">
                   <el-option
                     v-for="item in genderOptions"
                     :key="item.value"
@@ -56,8 +56,8 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label="部门" prop="dept">
-                <el-select v-model="entity.deptId" placeholder="请选择">
+              <el-form-item label="部门" prop="deptId">
+                <el-select v-model="entity.deptId" clearable filterable placeholder="请选择">
                   <el-option
                     v-for="item in deptList"
                     :key="item.id"
@@ -66,8 +66,8 @@
                   />
                 </el-select>
               </el-form-item>
-              <el-form-item label="状态">
-                <el-select v-model="entity.status" placeholder="请选择">
+              <el-form-item label="状态" prop="status">
+                <el-select v-model="entity.status" clearable filterable placeholder="请选择">
                   <el-option
                     v-for="item in optionsStatus"
                     :key="item.value"
@@ -88,8 +88,8 @@
             <el-checkbox-group v-model="entity.roles">
               <el-checkbox
                 v-for="(item,index) in roleList"
-                :label="item.rid"
                 :key="index"
+                :label="item.rid"
               >{{ item.description }}</el-checkbox>
             </el-checkbox-group>
             <span slot="footer" class="dialog-footer">
@@ -101,13 +101,20 @@
       </el-row>
     </el-header>
     <el-main>
-      <el-table v-loading="loading" :data="tableData" border style="width: 100%">
+      <el-table
+        v-loading="loading"
+        element-loading-text="拼命加载中..."
+        element-loading-spinner="el-icon-loading"
+        :data="tableData"
+        border
+        style="width: 100%"
+      >
         <el-table-column prop="nickname" label="用户昵称" fixed />
         <el-table-column prop="uid" label="用户ID" width="80" />
         <el-table-column label="头像" width="100">
           <template slot-scope="scope">
             <div class="avatar-wrapper" @click="viewBigAvatar(scope.row.avatar)">
-              <img :src="scope.row.avatar" class="user-avatar" >
+              <img :src="scope.row.avatar" class="user-avatar">
             </div>
           </template>
         </el-table-column>
@@ -193,6 +200,7 @@ import {
 } from '@/api/sysUser'
 import { getDeptAll } from '@/api/sysDept'
 import { getRoleAll } from '@/api/sysRole'
+import { validateEmail, validatePassword, validateUsername, validateNickname } from '@/utils/validate'
 
 import UserAvatar from '@/components/UserAvatar'
 
@@ -244,74 +252,43 @@ export default {
         { value: 1, label: '男' },
         { value: 2, label: '未知' }
       ],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now()
+        }
+      },
       // 校验规则
       rules: {
         avatar: [
-          { required: true, message: '头像不能为空', trigger: 'blur' },
-          {
-            validator: function(rule, value, callback) {
-              const regex = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/
-              if (!regex.test(value)) {
-                callback(new Error('头像地址格式不合格'))
-              } else {
-                callback()
-              }
-            },
-            trigger: 'blur'
-          }
+          { required: true, message: '头像不能为空', trigger: 'blur' }
         ],
         username: [
           { required: true, message: '登录账号不能为空', trigger: 'blur' },
-          {
-            validator: function(rule, value, callback) {
-              const regex = /^[a-zA-Z0-9_-]{6,16}$/
-              if (!regex.test(value)) {
-                callback(
-                  new Error(
-                    '账号以字母开头，长度在6~16之间，只能包含字符、数字和下划线'
-                  )
-                )
-              } else {
-                callback()
-              }
-            },
-            trigger: 'blur'
-          }
+          { required: true, validator: validateUsername, trigger: 'blur' }
         ],
         nickname: [
-          { required: true, message: '昵称不能为空', trigger: 'blur' }
+          { required: true, message: '昵称不能为空', trigger: 'blur' },
+          { required: true, validator: validateNickname, trigger: 'blur' }
         ],
         password: [
           { required: true, message: '密码不能为空', trigger: 'blur' },
-          {
-            validator: function(rule, value, callback) {
-              const regex = /^[a-zA-Z]\w{5,17}$/
-              if (!regex.test(value)) {
-                callback(
-                  new Error(
-                    '密码以字母开头，长度在6~18之间，只能包含字符、数字和下划线'
-                  )
-                )
-              } else {
-                callback()
-              }
-            },
-            trigger: 'blur'
-          }
+          { required: true, validator: validatePassword, trigger: 'blur' }
         ],
         email: [
           { required: true, message: '邮箱不能为空', trigger: 'blur' },
-          {
-            validator: function(rule, value, callback) {
-              const regex = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-              if (!regex.test(value)) {
-                callback(new Error('邮箱地址格式不正确'))
-              } else {
-                callback()
-              }
-            },
-            trigger: 'blur'
-          }
+          { required: true, validator: validateEmail, trigger: 'blur' }
+        ],
+        gender: [
+          { required: true, message: '性别必须选择~', trigger: 'blur' }
+        ],
+        birthday: [
+          { required: true, message: '生日必须选择~', trigger: 'blur' }
+        ],
+        status: [
+          { required: true, message: '状态必须选择~', trigger: 'blur' }
+        ],
+        deptId: [
+          { required: true, message: '部门必须选择~', trigger: 'blur' }
         ]
       }
     }
@@ -324,32 +301,29 @@ export default {
     getUserTableData() {
       const _this = this
       _this.loading = true
-      getUserPage(_this.page)
-        .then(result => {
-          _this.tableData = result.list
-          _this.page.total = result.total
-          _this.loading = false
-        })
+      getUserPage(_this.page).then(result => {
+        _this.tableData = result.list
+        _this.page.total = result.total
+        _this.loading = false
+      })
     },
     getDeptListData() {
       // 获取部门列表
       const _this = this
       _this.loading = true
-      getDeptAll()
-        .then(result => {
-          _this.deptList = result
-          _this.loading = false
-        })
+      getDeptAll().then(result => {
+        _this.deptList = result
+        _this.loading = false
+      })
     },
     getRoleListData() {
       // 获取角色列表
       const _this = this
       _this.loading = true
-      getRoleAll()
-        .then(result => {
-          _this.roleList = result
-          _this.loading = false
-        })
+      getRoleAll().then(result => {
+        _this.roleList = result
+        _this.loading = false
+      })
     },
     currentChange(pageNum) {
       // 切换分页
@@ -392,12 +366,13 @@ export default {
             }
           )
           .then(() => {
-            updateUserRoles({ uid: _this.entity.uid, roles: roles })
-              .then(result => {
+            updateUserRoles({ uid: _this.entity.uid, roles: roles }).then(
+              result => {
                 _this.$message({ type: 'success', message: '修改角色成功!' })
                 _this.userRole.visible = false
                 _this.getUserTableData()
-              })
+              }
+            )
           })
       } else {
         _this.$notify.error({
@@ -421,8 +396,8 @@ export default {
         password: '', // 密码
         gender: '', // 性别
         birthday: '', // 生日
-        status: 1, // 状态
-        deptId: 0, // 部门ID
+        status: '', // 状态
+        deptId: '', // 部门ID
         roles: [] // 角色列表
       }
     },
@@ -471,11 +446,10 @@ export default {
             }
           )
           .then(() => {
-            removeUserById(data.uid)
-              .then(result => {
-                _this.$message({ type: 'success', message: '删除成功!' })
-                _this.getUserTableData()
-              })
+            removeUserById(data.uid).then(result => {
+              _this.$message({ type: 'success', message: '删除成功!' })
+              _this.getUserTableData()
+            })
           })
       } else {
         _this.$notify.error({
@@ -490,27 +464,25 @@ export default {
         if (valid) {
           delete _this.entity.roles
           if (_this.entity.uid !== '') {
-            updateUser(_this.entity)
-              .then(result => {
-                _this.$notify({
-                  title: '成功',
-                  message: '修改用户成功!',
-                  type: 'success'
-                })
-                _this.getUserTableData()
-                _this.dialog.visible = false
+            updateUser(_this.entity).then(result => {
+              _this.$notify({
+                title: '成功',
+                message: '修改用户成功!',
+                type: 'success'
               })
+              _this.getUserTableData()
+              _this.dialog.visible = false
+            })
           } else {
-            saveUser(_this.entity)
-              .then(result => {
-                _this.$notify({
-                  title: '成功',
-                  message: '添加用户成功!',
-                  type: 'success'
-                })
-                _this.getUserTableData()
-                _this.dialog.visible = false
+            saveUser(_this.entity).then(result => {
+              _this.$notify({
+                title: '成功',
+                message: '添加用户成功!',
+                type: 'success'
               })
+              _this.getUserTableData()
+              _this.dialog.visible = false
+            })
           }
         }
       })

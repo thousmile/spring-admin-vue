@@ -1,14 +1,12 @@
 <template>
   <el-container>
     <el-header>
-      <div v-title>角色管理</div>
-
       <el-row :gutter="20">
         <el-col :span="4">
           <el-button v-has="'pre_role:create'" type="primary" @click="addRoleEntity">新增角色</el-button>
         </el-col>
         <el-col :span="20">
-          <el-alert :title="website.role.alert" type="info" />
+          <el-alert title="请勿乱删除角色, 确实需要删除角色的时候, (1).请确定这个角色下面没有用户, (2).请确定这个角色没有分配权限. 只有满足以上两种情况才可以删除角色成功!" type="info" />
         </el-col>
       </el-row>
 
@@ -42,7 +40,8 @@
           :default-checked-keys="authority.checkedKeys"
           show-checkbox
           highlight-current
-          node-key="id"/>
+          node-key="id"
+        />
 
         <span slot="footer" class="dialog-footer">
           <el-button @click="authority.visible = false">取 消</el-button>
@@ -52,7 +51,14 @@
     </el-header>
 
     <el-main>
-      <el-table v-loading="loading" :data="tableData" border style="width: 100%">
+      <el-table
+        v-loading="loading"
+        element-loading-text="拼命加载中..."
+        element-loading-spinner="el-icon-loading"
+        :data="tableData"
+        border
+        style="width: 100%"
+      >
         <el-table-column fixed prop="rid" label="角色ID" width="100" />
         <el-table-column prop="roleName" label="角色名称" />
         <el-table-column prop="description" label="角色描述" />
@@ -166,9 +172,6 @@ export default {
         ]
       }
     }
-  },
-  computed: {
-    ...mapGetters(['website'])
   },
   created() {
     this.getTableData()
@@ -290,8 +293,8 @@ export default {
     updateRolePermissions() {
       // 给角色修改权限
       const _this = this
-      let list = _this.$refs.treeList.getCheckedKeys()
-      let father = _this.$refs.treeList.getHalfCheckedNodes()
+      const list = _this.$refs.treeList.getCheckedKeys()
+      const father = _this.$refs.treeList.getHalfCheckedNodes()
       if (father !== undefined && father !== null && father.length > 0) {
         father.forEach(f => list.push(f.id))
       }

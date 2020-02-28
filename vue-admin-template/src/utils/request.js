@@ -1,19 +1,21 @@
 import axios from 'axios'
 import Qs from 'qs'
-import { Message, MessageBox } from 'element-ui'
-import store from '../store'
-import { getToken, getHeader } from '@/utils/auth'
-// 创建axios实例
+import { MessageBox, Message } from 'element-ui'
+import store from '@/store'
+import { getToken } from '@/utils/auth'
+
 const service = axios.create({
-  baseURL: process.env.BASE_API, // api 的 base_url
-  timeout: 5000 // 请求超时时间
+  baseURL: process.env.VUE_APP_BASE_API,
+  // baseURL: '/api',
+  // withCredentials: true, // send cookies when cross-domain requests
+  timeout: 50000 // request timeout
 })
 
 // request拦截器
 service.interceptors.request.use(
   config => {
     if (getToken() !== '') {
-      config.headers[getHeader()] = getToken()
+      config.headers['Authorization'] = getToken()
     }
     const method = config.method.toLocaleLowerCase()
     if (method === 'get') {
@@ -25,7 +27,6 @@ service.interceptors.request.use(
     return config
   },
   error => {
-    // Do something with request error
     console.log(error) // for debug
     Promise.reject(error)
   }
@@ -50,8 +51,9 @@ service.interceptors.response.use(
             type: 'warning'
           }
         ).then(() => {
+          // 为了重新实例化vue-router对象 避免bug
           store.dispatch('FedLogOut').then(() => {
-            location.reload() // 为了重新实例化vue-router对象 避免bug
+            location.reload()
           })
         })
       }
@@ -68,7 +70,6 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
     Message({
       message: error.message,
       type: 'error',

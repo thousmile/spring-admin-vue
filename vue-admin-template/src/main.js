@@ -1,22 +1,29 @@
 import Vue from 'vue'
 
-import 'normalize.css/normalize.css'
+import Cookies from 'js-cookie'
+
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/zh-CN'
-
-import '@/styles/index.scss'
+import '@/styles/index.scss' // global css
 
 import App from './App'
 import store from './store'
 import router from './router'
-import '@/directive/index'
-import '@/filter/index'
-import '@/icons'
-import '@/permission'
 
-Vue.use(ElementUI, { locale })
+import '@/icons' // icon
+import '@/permission' // permission control
+
+import '@/directive'
+import * as filters from './filters' // global filters
+
+// register global utility filters
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
+
+Vue.use(ElementUI, { size: Cookies.get('size') || 'medium' })
 
 Vue.config.productionTip = false
 

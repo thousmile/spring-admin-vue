@@ -1,6 +1,5 @@
 // store/permission.js
-import { asyncRouterMap, constantRouterMap } from '@/router'
-
+import { asyncRouterMap, constantRoutes } from '@/router'
 /**
  *
  * @param  {Array} userRouter 后台返回的用户权限json
@@ -42,13 +41,13 @@ export function setDefaultRoute(routes) {
 
 const permission = {
   state: {
-    routers: constantRouterMap, // 这是默认权限列表 比如404 500等路由
+    routers: constantRoutes, // 这是默认权限列表 比如404 500等路由
     dynamicRouters: [] // 这是通过后台获取的权利列表
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
       state.dynamicRouters = routers
-      state.routers = constantRouterMap.concat(routers)
+      state.routers = constantRoutes.concat(routers)
     }
   },
   actions: {

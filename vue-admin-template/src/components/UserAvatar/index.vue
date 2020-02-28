@@ -9,8 +9,6 @@
 
 <script>
 
-import { mapGetters } from 'vuex'
-
 import { getToken } from '@/utils/auth'
 
 export default {
@@ -28,12 +26,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'website'
-    ]),
     getAvatarAction() {
       // 设置文件上传URL
-      return process.env.BASE_API + this.website.upload.avatar
+      return process.env.VUE_APP_BASE_API + '/upload/avatar'
+    }
+  },
+  watch: {
+    avatar(newVal) {
+      this.imageUrl = newVal
     }
   },
   created() {

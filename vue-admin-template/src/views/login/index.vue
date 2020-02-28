@@ -8,8 +8,6 @@
       auto-complete="on"
       label-position="left"
     >
-      <h3 class="title">用户登录</h3>
-
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -29,8 +27,8 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
-          :type="pwdType"
           v-model="loginForm.password"
+          :type="pwdType"
           class="form-input"
           name="password"
           auto-complete="on"
@@ -176,7 +174,7 @@ export default {
     },
     changeImageCode() {
       var arr = [
-        process.env.BASE_API,
+        process.env.VUE_APP_BASE_API,
         '/auth/verify/code',
         '/',
         this.loginForm.codeKey,

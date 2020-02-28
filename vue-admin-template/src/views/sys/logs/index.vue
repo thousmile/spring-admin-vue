@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div v-title>系统日志</div>
     <h1>系统日志</h1>
   </div>
 </template>

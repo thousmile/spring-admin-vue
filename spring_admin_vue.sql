@@ -4395,9 +4395,9 @@ CREATE TABLE `tb_sys_user` (
 -- ----------------------------
 -- Records of tb_sys_user
 -- ----------------------------
-INSERT INTO `tb_sys_user` VALUES ('3', 'http://q31pcuhjc.bkt.clouddn.com/03597717078d9233494e12457149858b.jpg', 'root_admin', 'root_admin@163.com', '超级管理员', '$2a$10$F47JY5Yt2DGoPuG8Fra8XuyiA20Q9g3.4J5eKXB0DrmvacVO1Olya', '1', '2019-12-11', '1', '2018-11-18 19:18:50', '2018-11-18 19:18:50', '5');
-INSERT INTO `tb_sys_user` VALUES ('8', 'http://q31pcuhjc.bkt.clouddn.com/8e518dac3cd24e4abb5ee69083b494d9.jpg', 'xiaoxiannv', 'xiaoxiannv@qq.com', '小仙女', '$2a$10$9uByNfHn0vDteZ4lj0LlUe8lSJKepIsrFiTNoR6thF7xzZGaRzfY2', '0', '2000-01-12', '1', '2019-12-16 23:06:09', '2019-12-16 23:06:09', '8');
-INSERT INTO `tb_sys_user` VALUES ('10', 'http://q31pcuhjc.bkt.clouddn.com/a194e3e441c946a7b51fed610c6df7f9.jpg', 'xiannva', 'xiannva@qq.com', '仙女啊', '$2a$10$CWX3FQix1jXvvLLn.3KhJ.KfbEoBnNt23JlV71S4mfi99NreYyYW2', '0', '2000-02-08', '1', '2019-12-25 21:41:27', '2019-12-25 21:41:27', '1');
+INSERT INTO `tb_sys_user` VALUES ('3', 'https://image.xaaef.com/1033c391ea454173aa4cfd0557fb449e.jpg', 'root_admin', 'root_admin@163.com', '超级管理员', '$2a$10$F47JY5Yt2DGoPuG8Fra8XuyiA20Q9g3.4J5eKXB0DrmvacVO1Olya', '1', '2019-12-11', '1', '2018-11-18 19:18:50', '2018-11-18 19:18:50', '5');
+INSERT INTO `tb_sys_user` VALUES ('8', 'https://image.xaaef.com/09083333a95f44c38e0b2ef829718a18.jpg', 'xiaoxiannv', 'xiaoxiannv@qq.com', '小仙女', '$2a$10$9uByNfHn0vDteZ4lj0LlUe8lSJKepIsrFiTNoR6thF7xzZGaRzfY2', '0', '2000-01-12', '1', '2019-12-16 23:06:09', '2019-12-16 23:06:09', '8');
+INSERT INTO `tb_sys_user` VALUES ('10', 'https://image.xaaef.com/34181b8a34e643e18cd6a9344a981de6.jpeg', 'xiannva', 'xiannva@qq.com', '仙女啊', '$2a$10$CWX3FQix1jXvvLLn.3KhJ.KfbEoBnNt23JlV71S4mfi99NreYyYW2', '0', '2000-02-08', '1', '2019-12-25 21:41:27', '2019-12-25 21:41:27', '1');
 
 -- ----------------------------
 -- Table structure for tb_sys_user_role

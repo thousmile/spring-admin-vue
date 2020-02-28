@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div v-title>Swagger2 文档</div>
     <h1>Swagger2 文档</h1>
   </div>
 </template>

@@ -1,6 +1,10 @@
 const getters = {
   sidebar: state => state.app.sidebar,
+  size: state => state.app.size,
   device: state => state.app.device,
+  settings: state => state.settings,
+  errorLogs: state => state.errorLog.logs,
+
   token: state => state.user.token,
   nickname: state => state.user.nickname,
   username: state => state.user.username,
@@ -16,12 +20,9 @@ const getters = {
 
   // permission.js
   // 菜单路由，显示在页面上的
-  menu_routers: state => state.permission.routers,
+  menuRouters: state => state.permission.routers,
   // 当前用户的 动态菜单路由
-  dynamicRouters: state => state.permission.dynamicRouters,
-
-  // 通用信息
-  website: state => state.common.website
+  dynamicRouters: state => state.permission.dynamicRouters
 
 }
 export default getters

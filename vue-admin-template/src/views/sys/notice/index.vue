@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div v-title>通知公告</div>
     <h1>通知公告</h1>
   </div>
 </template>
