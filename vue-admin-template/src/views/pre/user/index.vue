@@ -136,13 +136,13 @@
               effect="dark"
               placement="top-start"
             >
-              <el-tag size="mini">{{ role.roleName }}</el-tag>
+              <el-tag>{{ role.roleName }}</el-tag>
             </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column label="所在部门" width="100">
           <template slot-scope="scope">
-            <el-tag size="mini">{{ scope.row.departmentName }}</el-tag>
+            <el-tag>{{ scope.row.departmentName }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="状态" width="70">
@@ -156,24 +156,9 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="250">
           <template slot-scope="scope">
-            <el-button
-              v-has="'pre_user:update:roles'"
-              type="info"
-              size="small"
-              @click="updateUserRole(scope.row)"
-            >修改角色</el-button>
-            <el-button
-              v-has="'pre_user:update'"
-              type="primary"
-              size="small"
-              @click="updateUserEntity(scope.row)"
-            >编辑</el-button>
-            <el-button
-              v-has="'pre_user:delete'"
-              type="danger"
-              size="small"
-              @click="deleteUserEntity(scope.row)"
-            >删除</el-button>
+            <el-button v-has="'pre_user:update:roles'" type="info" @click="updateUserRole(scope.row)">修改角色</el-button>
+            <el-button v-has="'pre_user:update'" type="primary" @click="updateUserEntity(scope.row)">编辑</el-button>
+            <el-button v-has="'pre_user:delete'" type="danger" @click="deleteUserEntity(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

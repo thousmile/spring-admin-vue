@@ -12,8 +12,9 @@ import App from './App'
 import store from './store'
 import router from './router'
 
-import '@/icons' // icon
-import '@/permission' // permission control
+import './icons' // icon
+import './permission' // 路由权限
+import { elementSize } from './settings'
 
 import '@/directive'
 import * as filters from './filters' // global filters
@@ -23,7 +24,7 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
-Vue.use(ElementUI, { size: Cookies.get('size') || 'medium' })
+Vue.use(ElementUI, { size: Cookies.get('size') || elementSize })
 
 Vue.config.productionTip = false
 

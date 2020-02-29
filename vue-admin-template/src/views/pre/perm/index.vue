@@ -18,21 +18,18 @@
               <el-button
                 v-has="'pre_perm:update'"
                 type="warning"
-                size="mini"
                 icon="el-icon-edit"
                 @click=" isEdit = !isEdit "
               >编辑本权限</el-button>
               <el-button
                 v-has="'pre_perm:create'"
                 type="primary"
-                size="mini"
                 icon="el-icon-share"
                 @click="addEntity"
               >添加子权限</el-button>
               <el-button
                 v-has="'pre_perm:delete'"
                 type="danger"
-                size="mini"
                 icon="el-icon-delete"
                 @click="deleteEntity"
               >删除本权限</el-button>

@@ -1,13 +1,10 @@
-import defaultSettings from '@/settings'
-
-const { showSettings, fixedHeader, sidebarLogo, sidebarLogoPath, title } = defaultSettings
+import { fixedHeader, sidebarLogo, tagsView, title } from '@/settings'
 
 const state = {
-  showSettings: showSettings,
   fixedHeader: fixedHeader,
+  sidebarTitle: title,
   sidebarLogo: sidebarLogo,
-  sidebarLogoPath: sidebarLogoPath,
-  sidebarTitle: title
+  tagsView: tagsView
 }
 
 const mutations = {

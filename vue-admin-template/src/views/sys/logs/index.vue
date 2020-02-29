@@ -12,7 +12,9 @@ export default {
     return {
     }
   },
-  created() {},
+  created() {
+
+  },
   mounted() {},
   methods: {}
 }

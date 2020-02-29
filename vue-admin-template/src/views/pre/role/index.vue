@@ -70,19 +70,9 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="250">
           <template slot-scope="scope">
-            <el-button type="info" size="small" @click="getRolePermissions(scope.row)">修改权限</el-button>
-            <el-button
-              v-has="'pre_role:update'"
-              type="primary"
-              size="small"
-              @click="updateRoleEntity(scope.row)"
-            >编辑</el-button>
-            <el-button
-              v-has="'pre_role:delete'"
-              type="danger"
-              size="small"
-              @click="deleteRoleEntity(scope.row)"
-            >删除</el-button>
+            <el-button type="info" @click="getRolePermissions(scope.row)">修改权限</el-button>
+            <el-button v-has="'pre_role:update'" type="primary" @click="updateRoleEntity(scope.row)">编辑</el-button>
+            <el-button v-has="'pre_role:delete'" type="danger" @click="deleteRoleEntity(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

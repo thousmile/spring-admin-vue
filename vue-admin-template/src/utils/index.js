@@ -17,10 +17,10 @@ export function parseTime(time, cFormat) {
   if (typeof time === 'object') {
     date = time
   } else {
-    if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
+    if (typeof time === 'string' && /^[0-9]+$/.test(time)) {
       time = parseInt(time)
     }
-    if ((typeof time === 'number') && (time.toString().length === 10)) {
+    if (typeof time === 'number' && time.toString().length === 10) {
       time = time * 1000
     }
     date = new Date(time)
@@ -37,7 +37,9 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -104,4 +106,34 @@ export function param2Obj(url) {
         .replace(/\+/g, ' ') +
       '"}'
   )
+}
+
+/**
+ * 截取当前 url 端口号之后的 部分
+ */
+export function getRelativePath() {
+  let host = `${location.protocol}//${location.host}/`
+  let href = location.href.replace(host, '')
+  let result = href
+  if (href.charAt(0) === '#') {
+    result = href.substring(1, href.length)
+  }
+  return result
+}
+
+export function getQueryString(params) {
+  if (params.indexOf('redirect') !== -1) {
+    params = params.substring(params.indexOf('?') + 1, params.length)
+  }
+  let array = params.split('&')
+  // eslint-disable-next-line no-array-constructor
+  let result = new Array()
+  for (let index = 0; index < array.length; index++) {
+    let element = array[index]
+    if (element !== undefined && element !== null && element !== '') {
+      let param = element.split('=')
+      result.push({ key: param[0], value: param[1] })
+    }
+  }
+  return result
 }

@@ -59,7 +59,11 @@
         </el-col>
         <el-col :span="8">
           <el-tooltip content="[ 点击 ] 刷新" placement="right" effect="light">
-            <el-image :src="codeUrl" style="cursor:pointer;" fit="fit" @click="changeImageCode" />
+            <el-image :src="codeUrl" style="cursor:pointer;" fit="fit" @click="changeImageCode">
+              <div slot="error" class="image-slot">
+                <i class="el-icon-picture-outline" />
+              </div>
+            </el-image>
           </el-tooltip>
         </el-col>
       </el-row>
@@ -74,8 +78,8 @@
       </el-form-item>
 
       <div class="tips">
-        <span style="margin-right:20px;">username: {{ loginForm.username }}</span>
-        <span>password: {{ loginForm.password }}</span>
+        <span style="margin-right:20px;">用户名:&nbsp;&nbsp;&nbsp; {{ loginForm.username }}</span><br><br>
+        <span>密码: &nbsp;&nbsp;&nbsp; {{ loginForm.password }}</span>
       </div>
     </el-form>
   </div>
@@ -161,9 +165,9 @@ export default {
             .dispatch('Login', this.loginForm)
             .then(() => {
               _this.loading = false
-              _this.$router.push({ path: this.redirect || '/' })
+              _this.$router.push({ path: this.redirect || '/dashboard' })
             })
-            .catch(() => {
+            .catch((msg) => {
               _this.loading = false
             })
         } else {

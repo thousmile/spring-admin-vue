@@ -65,10 +65,14 @@ export default {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
+    logout() {
+      const _this = this
+      _this.$store.dispatch('LogOut').then(() => {
+        // 为了重新实例化 vue-router 对象，清空之前的路由列表
+        window.location.reload()
       })
+      // 跳转到 首页
+      _this.$router.push({ name: 'Dashboard' })
     }
   }
 }

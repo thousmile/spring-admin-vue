@@ -31,21 +31,18 @@
                 <el-button
                   v-has="'pre_dept:create'"
                   type="primary"
-                  size="mini"
                   icon="el-icon-share"
                   @click="addEntity"
                 >添加部门</el-button>
                 <el-button
                   v-has="'pre_dept:update'"
                   type="warning"
-                  size="mini"
                   icon="el-icon-edit"
                   @click=" isEdit = !isEdit "
                 >修改部门</el-button>
                 <el-button
                   v-has="'pre_dept:delete'"
                   type="danger"
-                  size="mini"
                   icon="el-icon-delete"
                   @click="deleteEntity"
                 >删除部门</el-button>

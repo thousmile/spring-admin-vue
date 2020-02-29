@@ -5,6 +5,7 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import { getRelativePath } from '@/utils/index' // 验权
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -25,6 +26,7 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
+      const relativePath = getRelativePath()
       if (store.getters.menus.length === 0) {
         // 拉取用户信息(请确保在 GetInfo 方法中 已经获取到菜单列表)
         store.dispatch('GetInfo').then(res => {
@@ -33,11 +35,15 @@ router.beforeEach(async(to, from, next) => {
             // 获取已经解析好的路由列表，动态添加到router中
             router.addRoutes(store.getters.dynamicRouters)
             // hack方法 确保addRoutes已完成
-            next({ ...to, replace: true })
+            if (relativePath.indexOf('login') !== -1) {
+              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+            } else {
+              next({ path: relativePath, replace: true })
+            }
           })
         }).catch((err) => {
           store.dispatch('LogOut').then(() => {
-            Message.error(err || 'Verification failed, please login again')
+            Message.error(err || '您的登录已经过期，请重新登录!')
             next({ path: '/' })
           })
         })

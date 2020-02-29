@@ -1,25 +1,30 @@
 module.exports = {
-
   /**
    * 项目名称
-  */
+   */
   title: '小鲨鱼后台管理',
 
   /**
-   * @type {boolean} true | false
-   * @description Whether fix the header
+   * 是否固定头部
    */
   fixedHeader: true,
 
   /**
-   * @type {boolean} true | false
-   * @description Whether show the logo in sidebar
+   * 是否显示logo
    */
   sidebarLogo: true,
 
   /**
-   * 侧边栏 logo 地址，
-  */
-  sidebarLogoPath: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+   * 是否显示 tagsView
+   */
+  tagsView: true,
+
+  /**
+   * 默认: default
+   * 中号: medium
+   * 小号: small
+   * 迷你: mini
+   */
+  elementSize: 'small'
 
 }

@@ -3,12 +3,14 @@ const getters = {
   size: state => state.app.size,
   device: state => state.app.device,
   settings: state => state.settings,
+  visitedViews: state => state.tagsView.visitedViews,
+  cachedViews: state => state.tagsView.cachedViews,
+
   errorLogs: state => state.errorLog.logs,
 
   token: state => state.user.token,
   nickname: state => state.user.nickname,
   username: state => state.user.username,
-
   avatar: state => state.user.avatar,
   userinfo: state => state.user.userinfo,
 
