@@ -7,10 +7,10 @@ export function getChinaAreaTree() {
 
 // 获取列表信息
 export function getChinaAreaAll(params) {
-  return request({ url: '/china/area/all' + params, method: 'get' })
+  return request({ url: '/china/area/all/' + params, method: 'get' })
 }
 
-// 根据ID 查询单个用户信息
+// 根据ID 查询单个区域信息
 export function getChinaAreaById(params) {
   return request({ url: '/china/area/' + params, method: 'get' })
 }

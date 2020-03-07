@@ -1,5 +1,6 @@
 package com.ifsaid.shark.util;
 
+import com.ifsaid.shark.vo.ImageVerifyCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -38,16 +39,6 @@ public class VerifyCodeUtils {
         BufferedImage image = VERIFY_CODE.getImage();
         String codeText = VERIFY_CODE.getText();
         return new ImageVerifyCode(codeText, image);
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class ImageVerifyCode {
-
-        private String codeText;
-
-        private BufferedImage image;
-
     }
 
     private static class VerifyCode {

@@ -39,8 +39,8 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
     /**
      * 用户登录
      *
-     * @param username 用户名
-     * @param password 密码
+     * @param username
+     * @param password
      * @return String token 值
      * @throws AuthenticationException
      */
@@ -48,6 +48,7 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
 
     /**
      * 用户退出登录
+     * @param loginUser
      */
     void logout(JwtUser loginUser);
 

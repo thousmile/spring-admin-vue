@@ -1,12 +1,10 @@
 package com.ifsaid.shark.controller;
 
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageInfo;
 import com.ifsaid.shark.common.domain.TreeNode;
 import com.ifsaid.shark.entity.ChinaArea;
 import com.ifsaid.shark.service.ChinaAreaService;
 import com.ifsaid.shark.util.JsonResult;
-import com.ifsaid.shark.util.QueryParameter;
 import com.ifsaid.shark.util.TreeNodeUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,7 +49,7 @@ public class ChinaAreaController {
     @ApiOperation(value = "查询所有", notes = "查询所有")
     @GetMapping("/all/{parentCode}")
     public JsonResult<List<ChinaArea>> findAll(@PathVariable Long parentCode) {
-        if (parentCode == null) {
+        if (parentCode == null || parentCode < 1) {
             parentCode = 0L;
         }
         return JsonResult.success(baseService.findAll(ChinaArea.builder().parentCode(parentCode).build()));

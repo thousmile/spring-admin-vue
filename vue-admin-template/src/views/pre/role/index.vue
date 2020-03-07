@@ -99,8 +99,6 @@ import {
   updateRolePermission
 } from '@/api/sysRole'
 
-import { mapGetters } from 'vuex'
-
 export default {
   name: 'Role',
   components: {},

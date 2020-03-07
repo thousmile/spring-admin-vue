@@ -9,6 +9,9 @@
       <el-col :span="10">
         <div class="grid-content bg-purple">
           <el-tree
+            ref="tree"
+            node-key="areaCode"
+            highlight-current
             :data="treeData"
             :props="defaultProps"
             @node-click="handleNodeClick"
@@ -61,7 +64,7 @@
 
 <script>
 
-import { getChinaAreaTree } from '@/api/chinaArea'
+import { getChinaAreaAll, getChinaAreaTree } from '@/api/chinaArea'
 
 export default {
   name: 'ChinaArea',
@@ -90,17 +93,51 @@ export default {
     }
   },
   created() {
-    this.getTableDate()
+    this.getTableData()
   },
   methods: {
-    getTableDate() {
+    getTableData() {
       const _this = this
       _this.loading = true
       getChinaAreaTree()
         .then(result => {
-          _this.treeData = result
           _this.loading = false
+          _this.treeData = result
         })
+    },
+    loadNode(node, resolve) {
+      const _this = this
+      _this.loading = true
+
+      if (node.data.areaCode !== undefined && node.data.areaCode !== null) {
+        console.log('node.data :', node.data)
+        _this.chinaArea = {
+          areaCode: node.data.areaCode,
+          level: node.data.level,
+          parentCode: node.data.parentCode,
+          zipCode: node.data.zipCode,
+          cityCode: node.data.cityCode,
+          name: node.data.name,
+          shortName: node.data.shortName,
+          mergerName: node.data.mergerName,
+          pinyin: node.data.pinyin,
+          lng: node.data.lng,
+          lat: node.data.lat
+        }
+      }
+      if (node.level === 0) {
+        return resolve(_this.treeData)
+      } else {
+        getChinaAreaAll(node.key)
+          .then(result => {
+            _this.loading = false
+            if (result === undefined || result === null || result.length < 1) {
+              return resolve([])
+            } else {
+              return resolve(result)
+            }
+          })
+      }
     },
     handleNodeClick(data) {
       this.chinaArea = data.source

@@ -3,16 +3,14 @@ package com.ifsaid.shark.controller;
 import com.ifsaid.shark.common.jwt.JwtTokenUtils;
 import com.ifsaid.shark.common.jwt.JwtUser;
 import com.ifsaid.shark.service.SysUserService;
+import com.ifsaid.shark.service.VerifyCodeService;
 import com.ifsaid.shark.util.JsonResult;
-import com.ifsaid.shark.util.VerifyCodeUtils;
 import com.ifsaid.shark.vo.LoginUser;
 import com.ifsaid.shark.vo.TokenValue;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -52,9 +49,7 @@ public class AuthController {
     private JwtTokenUtils jwtTokenUtils;
 
     @Autowired
-    @Lazy
-    private RedisTemplate<String, String> redisTemplate;
-
+    private VerifyCodeService verifyCodeService;
 
     @ApiOperation(value = "用户登录认证", notes = "用户名，密码登录格式 {\"username\":\"admin\",\"password\":\"admin\"}")
     @PostMapping("/login")
@@ -63,14 +58,10 @@ public class AuthController {
             String message = br.getFieldError().getDefaultMessage();
             return JsonResult.fail(message);
         }
-        // 根据 CodeKey 从 redis 中获取到 codeText
-        String codeText = redisTemplate.opsForValue().get(user.getCodeKey());
-        // 比较 redis 中的 codeText 和 用户输入的 codeText
-        // 将 redis.codeText 和 user.codeText 都转换成小写，然后比较
-        if (StringUtils.isEmpty(codeText) || !codeText.toLowerCase().equals(user.getCodeText().toLowerCase())) {
+        // 根据 CodeKey 从 redis 中获取到 ServerCodeText
+        if (!verifyCodeService.checkVerifyCode(user.getCodeKey(), user.getCodeText())) {
             return JsonResult.fail("验证码错误！");
         }
-        log.info("LoginUser : {}", user);
         try {
             String jwtToken = sysUserService.login(user.getUsername(), user.getPassword());
             TokenValue tokenValue = TokenValue.builder()
@@ -79,8 +70,8 @@ public class AuthController {
                     .prefix(jwtTokenUtils.getTokenHead())
                     .expiration(jwtTokenUtils.getExpiration())
                     .build();
-            // 登录成功后！删除 redis 中的验证码
-            redisTemplate.delete(user.getCodeKey());
+            // 登录成功后，就从 redis 中删除验证码
+            verifyCodeService.deleteImageVerifyCode(user.getCodeKey());
             return JsonResult.success("登录成功", tokenValue);
         } catch (AuthenticationException ex) {
             log.error(ex.getMessage());
@@ -138,14 +129,11 @@ public class AuthController {
         response.setHeader("Cache-Control", "no-cache");
         response.setDateHeader("Expires", 0);
         // 获取 图片 验证码
-        VerifyCodeUtils.ImageVerifyCode image = VerifyCodeUtils.getImage();
-        // 获取 图片 验证码中的文本
-        String codeText = image.getCodeText();
-
-        // 将验证码的 codeKey 和 codeText , 保存在 redis 中，有效时间为 10 分钟
-        redisTemplate.opsForValue().set(codeKey, codeText, 10, TimeUnit.MINUTES);
-
-        ImageIO.write(image.getImage(), "JPEG", response.getOutputStream());
+        ImageIO.write(
+                verifyCodeService.randomImageVerifyCode(codeKey),
+                "JPEG",
+                response.getOutputStream()
+        );
     }
 
 }
