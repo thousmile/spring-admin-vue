@@ -43,6 +43,28 @@ xiannva     :  xiannva
 
 
 
+### 前端，vue.js 打包发布时注意
+
+```
+/**
+* 找到 vue-admin-template/src/utils/request.js 中的 baseURL 属性
+*/
+const service = axios.create({
+  /**
+   * 如果要打包发布，切记，要修改
+   * baseURL: '/api' 只适合开发的时候，解决前后端跨域的问题，
+   * baseURL:process.env.VUE_APP_BASE_API 线上环境，不存在跨域的问题，所以不需要代理
+   *
+  */
+  // baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: '/api',
+  // withCredentials: true, // send cookies when cross-domain requests
+  timeout: 50000 // request timeout
+})
+```
+
+
+
 ### Linux 启动脚本 
 
 ```

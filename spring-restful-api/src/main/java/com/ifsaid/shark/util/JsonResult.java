@@ -1,11 +1,12 @@
 package com.ifsaid.shark.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 /**
  * All rights Reserved, Designed By www.ifsaid.com
@@ -97,25 +98,46 @@ public class JsonResult<T> implements Serializable {
      * @date 2019/12/12 21:08
      */
     public static <T> JsonResult success() {
-        return success(HttpStatus.OK.value, null);
+        return success(HttpStatus.SUCCESS.value, null);
     }
 
     /**
      * 操作成功
      *
+     * @param totalPage
      * @param total
-     * @param currentPage
      * @param list
-     * @return com.ifsaid.shark.util.JsonResult
      * @author Wang Chen Chen<932560435@qq.com>
      * @date 2019/12/12 21:08
      */
-    public static <T> JsonResult success(long total, T list) {
-        Map<String, Object> map = new HashMap<>(3);
-        map.put("total", total);
-        map.put("list", list);
-        return success(HttpStatus.OK.value, map);
+    public static <T> JsonResult success(int totalPage, long total, List<T> list) {
+        return success(new ResultPage<T>(totalPage, total, list));
     }
+
+
+    /**
+     * 操作成功
+     *
+     * @param total
+     * @param list
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/12/12 21:08
+     */
+    public static <T> JsonResult success(long total, List<T> list) {
+        return success(new ResultPage<T>(list.size(), total, list));
+    }
+
+    /**
+     * 操作成功
+     *
+     * @param resultPage
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/12/12 21:08
+     */
+    public static <T> JsonResult success(ResultPage<T> resultPage) {
+        return success(HttpStatus.SUCCESS.value, resultPage);
+    }
+
 
     /**
      * 操作成功
@@ -138,7 +160,7 @@ public class JsonResult<T> implements Serializable {
      * @date 2019/12/12 21:08
      */
     public static <T> JsonResult success(T data) {
-        return success(HttpStatus.OK.value, data);
+        return success(HttpStatus.SUCCESS.value, data);
     }
 
     /**
@@ -151,7 +173,7 @@ public class JsonResult<T> implements Serializable {
      * @date 2019/12/12 21:08
      */
     public static <T> JsonResult success(String message, T data) {
-        return result(HttpStatus.OK.status, message, data);
+        return result(HttpStatus.SUCCESS.status, message, data);
     }
 
 
@@ -216,6 +238,29 @@ public class JsonResult<T> implements Serializable {
     }
 
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ResultPage<T> {
+
+        /**
+         * 当前页，有多少条
+         */
+        private Integer totalPage;
+
+        /**
+         * 总共，有多少条
+         */
+        private Long total;
+
+        /**
+         * 数据
+         */
+        private List<T> list;
+
+    }
+
     /**
      * restful api 返回状态码。不够的时候自己扩展
      *
@@ -232,7 +277,7 @@ public class JsonResult<T> implements Serializable {
          * @author Wang Chen Chen<932560435@qq.com>
          * @date 2019/12/12 21:08
          */
-        OK(200, "Ok"),
+        SUCCESS(200, "操作成功"),
 
         /**
          * 错误 返回代码
@@ -240,7 +285,15 @@ public class JsonResult<T> implements Serializable {
          * @author Wang Chen Chen<932560435@qq.com>
          * @date 2019/12/12 21:08
          */
-        FAIL(0, "Fail"),
+        FAIL(100, "操作失败"),
+
+        /**
+         * 参数检验失败 返回代码
+         *
+         * @author Wang Chen Chen<932560435@qq.com>
+         * @date 2019/12/12 21:08
+         */
+        VALIDATE_FAILED(304, "参数检验失败"),
 
         /**
          * 404 为找到

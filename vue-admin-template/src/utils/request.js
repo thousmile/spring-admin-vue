@@ -2,11 +2,18 @@ import axios from 'axios'
 import Qs from 'qs'
 import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
+import router from '@/router'
 import { getToken } from '@/utils/auth'
 
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
-  // baseURL: '/api',
+  /**
+   * 如果要打包发布，切记，要修改
+   * baseURL: '/api' 只适合开发的时候，解决前后端跨域的问题，
+   * baseURL:process.env.VUE_APP_BASE_API 线上环境，不存在跨域的问题，所以不需要代理
+   *
+  */
+  // baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: '/api',
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 50000 // request timeout
 })
@@ -39,9 +46,17 @@ service.interceptors.response.use(
      * status 为非 200 是抛错 可结合自己业务进行修改
      */
     const result = response.data
+    console.log('response拦截器 :', result)
     if (result.status !== 200) {
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
-      if (result.status === 401) {
+      // 304 表示 参数检验失败
+      if (result.status === 304) {
+        Message({
+          message: result.message,
+          type: 'warning',
+          duration: 5 * 1000
+        })
+      } else if (result.status === 401) {
+        // 401 表示未经过授权
         MessageBox.confirm(
           '你已被登出，可以取消继续留在该页面，或者重新登录',
           '确定登出',
@@ -51,32 +66,29 @@ service.interceptors.response.use(
             type: 'warning'
           }
         ).then(() => {
-          // 为了重新实例化vue-router对象 避免bug
           store.dispatch('FedLogOut').then(() => {
-            location.reload()
+            // 为了重新实例化 vue-router 对象，清空之前的路由列表
+            window.location.reload()
           })
+          // 跳转到 首页
+          router.push({ name: 'Dashboard' })
         })
+      } else {
+        resultErrorMessage(result.message)
       }
-
-      // 系统内部错误
-      Message({
-        message: result.message,
-        type: 'error',
-        duration: 5 * 1000
-      })
       return Promise.reject('error')
     } else {
       return result.data
     }
   },
   error => {
-    Message({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    resultErrorMessage(error.message)
     return Promise.reject(error)
   }
 )
+
+function resultErrorMessage(msg) {
+  Message({ message: msg, type: 'error', duration: 5000 })
+}
 
 export default service

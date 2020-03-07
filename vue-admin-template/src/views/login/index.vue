@@ -58,8 +58,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-tooltip content="[ 点击 ] 刷新" placement="right" effect="light">
-            <el-image :src="codeUrl" style="cursor:pointer;" fit="fit" @click="changeImageCode">
+          <el-tooltip content="[ 点击 ] 刷新验证码" placement="right" effect="light">
+            <el-image :src="codeUrl" style="cursor:pointer;border-radius: 5px;" fit="fit" @click="changeImageCode">
               <div slot="error" class="image-slot">
                 <i class="el-icon-picture-outline" />
               </div>

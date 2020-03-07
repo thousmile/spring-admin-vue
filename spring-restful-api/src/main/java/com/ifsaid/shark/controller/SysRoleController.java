@@ -75,10 +75,6 @@ public class SysRoleController extends BaseController<SysRole, Integer, SysRoleS
     @ApiOperation(value = "修改角色权限", notes = "修改角色权限,会删除之前的权限信息。")
     @PostMapping("/update/permissions")
     public JsonResult updateRolePermissions(@RequestBody @Validated RoleRelatedPermissionVo data, BindingResult br) {
-        if (br.hasErrors()) {
-            String message = br.getFieldError().getDefaultMessage();
-            return JsonResult.fail(message);
-        }
         int result = baseService.updateRolePermissions(data.getRid(), data.getPermissions());
         return JsonResult.success(result);
     }

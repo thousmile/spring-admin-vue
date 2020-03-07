@@ -50,7 +50,7 @@ public class BaseController<T extends BaseEntity, ID, S extends BaseService<T, I
     @GetMapping("/page")
     public JsonResult<Page<T>> findAll(QueryParameter parameter) {
         PageInfo<T> page = baseService.findAllPage(parameter);
-        return JsonResult.success(page.getTotal(), page.getList());
+        return JsonResult.success(page.getSize(), page.getTotal(), page.getList());
     }
 
     @ApiOperation(value = "新增", notes = "不需要添加id")

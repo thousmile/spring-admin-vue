@@ -52,7 +52,8 @@ public class ChinaAreaController {
         if (parentCode == null || parentCode < 1) {
             parentCode = 0L;
         }
-        return JsonResult.success(baseService.findAll(ChinaArea.builder().parentCode(parentCode).build()));
+        List<ChinaArea> all = baseService.findAll(ChinaArea.builder().parentCode(parentCode).build());
+        return JsonResult.success(all);
     }
 
     @ApiOperation(value = "查询所有[树节点]", notes = "以树节点的形式展示")

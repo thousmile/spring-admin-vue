@@ -29,7 +29,6 @@ import org.springframework.web.bind.annotation.*;
  * @copyright 2019 http://www.ifsaid.com/ Inc. All rights reserved.
  */
 
-
 @Slf4j
 @Api(tags = "[ 权限管理 ] 用户管理")
 @RestController
@@ -52,10 +51,6 @@ public class SysUserController extends BaseController<SysUser, Integer, SysUserS
     @ApiOperation(value = "修改用户角色", notes = "修改用户角色,会删除之前的角色信息。")
     @PostMapping("/update/roles")
     public JsonResult updateRolePermissions(@RequestBody @Validated UserRelatedRoleVo data, BindingResult br) {
-        if (br.hasErrors()) {
-            String message = br.getFieldError().getDefaultMessage();
-            return JsonResult.fail(message);
-        }
         int result = baseService.updateUserRoles(data.getUid(), data.getRoles());
         return JsonResult.success(result);
     }

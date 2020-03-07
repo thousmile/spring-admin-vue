@@ -11,6 +11,7 @@ import com.ifsaid.shark.entity.Relation;
 import com.ifsaid.shark.entity.SysPermission;
 import com.ifsaid.shark.entity.SysRole;
 import com.ifsaid.shark.entity.SysUser;
+import com.ifsaid.shark.exception.JwtAuthenticationException;
 import com.ifsaid.shark.mapper.SysUserMapper;
 import com.ifsaid.shark.service.SysDepartmentService;
 import com.ifsaid.shark.service.SysPermissionService;
@@ -102,7 +103,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
         SecurityContextHolder.getContext().setAuthentication(authentication);
         JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(username);
         String token = jwtTokenUtils.generateToken(userDetails);
-        log.info("userDetails: {}", userDetails);
+        log.debug("userDetails: {}", userDetails);
         tokenStorage().put(userDetails.getUsername(), userDetails);
         return token;
     }
@@ -113,8 +114,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
     }
 
     @Override
-    public JwtUser validateUsername(String username) {
-        return (JwtUser) tokenStorage().get(username);
+    public JwtUser validateUsername(String username) throws AuthenticationException {
+        JwtUser jwtUser = (JwtUser) tokenStorage().get(username);
+        if (jwtUser == null || StringUtils.isEmpty(jwtUser.getUsername())) {
+            throw new JwtAuthenticationException("当前登录用户不存在");
+        }
+        return jwtUser;
     }
 
     @Override

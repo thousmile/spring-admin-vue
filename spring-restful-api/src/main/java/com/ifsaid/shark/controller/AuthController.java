@@ -54,10 +54,6 @@ public class AuthController {
     @ApiOperation(value = "用户登录认证", notes = "用户名，密码登录格式 {\"username\":\"admin\",\"password\":\"admin\"}")
     @PostMapping("/login")
     public JsonResult<TokenValue> login(@RequestBody @Validated LoginUser user, BindingResult br) {
-        if (br.hasErrors()) {
-            String message = br.getFieldError().getDefaultMessage();
-            return JsonResult.fail(message);
-        }
         // 根据 CodeKey 从 redis 中获取到 ServerCodeText
         if (!verifyCodeService.checkVerifyCode(user.getCodeKey(), user.getCodeText())) {
             return JsonResult.fail("验证码错误！");

@@ -1,5 +1,7 @@
 FROM openjdk:8-jre
+
 MAINTAINER Wang Chen Chen<932560435@qq.com>
+
 ENV VERSION 1.0
 # 挂载容器目录
 # tmp: 临时文件目录，内嵌tomcat启动时，用到

@@ -67,12 +67,22 @@ export default {
     },
     logout() {
       const _this = this
-      _this.$store.dispatch('LogOut').then(() => {
-        // 为了重新实例化 vue-router 对象，清空之前的路由列表
-        window.location.reload()
+      _this.$confirm('确定要退出系统吗？', '确认信息', {
+        distinguishCancelAndClose: true,
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
       })
-      // 跳转到 首页
-      _this.$router.push({ name: 'Dashboard' })
+        .then(() => {
+          _this.$store.dispatch('LogOut').then(() => {
+            // 为了重新实例化 vue-router 对象，清空之前的路由列表
+            window.location.reload()
+          })
+          // 跳转到 首页
+          _this.$router.push({ name: 'Dashboard' })
+        })
+        .catch(action => {
+          console.log('退出登录....')
+        })
     }
   }
 }

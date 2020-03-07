@@ -59,7 +59,7 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
      * @return 操作结果
      * @throws AuthenticationException
      */
-    JwtUser validateUsername(String username);
+    JwtUser validateUsername(String username) throws AuthenticationException;
 
 
     /**
