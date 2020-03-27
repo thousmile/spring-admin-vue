@@ -10,6 +10,7 @@
 <script>
 
 import { getToken } from '@/utils/auth'
+import { deleteImage } from '@/api/fileUpload'
 
 export default {
   name: 'UserAvatar',
@@ -42,11 +43,17 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       if (res.status === 200) {
+        // 删除老的头像
+        this.deleteOldImage(this.imageUrl)
+        // 将新的头像赋值
         this.imageUrl = res.data.url
         this.$emit('getAvatar', this.imageUrl)
       } else {
         this.$message.error(res.message)
       }
+    },
+    deleteOldImage(url) {
+      deleteImage(url).then(result => console.log('result :', result))
     },
     beforeAvatarUpload(file) {
       const suffix = file.name.substring(file.name.lastIndexOf('.') + 1)

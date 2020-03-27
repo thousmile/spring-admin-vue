@@ -1,4 +1,4 @@
-# spring boot security jwt 整合vue-admin-template 2.0 项目模板
+# spring boot security jwt 整合 vue-admin-template 2.0 项目模板，权限控制到按钮！
 
 首先感谢[PanJiaChen](https://github.com/PanJiaChen) 的 vue-admin-template 模板，我是一名java程序员，所以前端的技术不怎么样。vue.js也只是会用一点，非常感谢[PanJiaChen](https://github.com/PanJiaChen) 的模板支持。
 
@@ -12,6 +12,8 @@ GitHub   ：  https://github.com/thousmile
 
 码云：  https://gitee.com/thousmile
 
+### 某些傻逼，删演示环境的数据
+### 所以演示环境，没有修改和删除等操作的权限
 [演示地址](https://xaaef.com/)
 
 数据库里的用户，password 和 username 都是相同的

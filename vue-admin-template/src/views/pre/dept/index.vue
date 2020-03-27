@@ -38,7 +38,7 @@
                   v-has="'pre_dept:update'"
                   type="warning"
                   icon="el-icon-edit"
-                  @click=" isEdit = !isEdit "
+                  @click="isEdit = !isEdit"
                 >修改部门</el-button>
                 <el-button
                   v-has="'pre_dept:delete'"
@@ -49,12 +49,21 @@
               </el-button-group>
             </div>
 
-            <el-form ref="deptForm" :rules="rules" :model="deptForm" label-width="100px">
+            <el-form
+              ref="deptForm"
+              :rules="rules"
+              :model="deptForm"
+              label-width="100px"
+            >
               <el-form-item label="部门ID">
                 <el-input v-model="deptForm.id" :disabled="true" />
               </el-form-item>
               <el-form-item label="部门名称" prop="name">
-                <el-input v-model="deptForm.name" :disabled="isEdit" clearable />
+                <el-input
+                  v-model="deptForm.name"
+                  :disabled="isEdit"
+                  clearable
+                />
               </el-form-item>
               <el-form-item label="上级部门" prop="parentId">
                 <el-cascader
@@ -78,14 +87,14 @@
                 <el-input
                   v-model="deptForm.description"
                   :disabled="isEdit"
-                  :autosize="{ minRows: 3, maxRows: 10}"
+                  :autosize="{ minRows: 3, maxRows: 10 }"
                   type="textarea"
                   clearable
                 />
               </el-form-item>
               <el-form-item v-if="isEdit === false">
                 <el-button type="primary" @click="saveAndFlush">保存</el-button>
-                <el-button @click=" isEdit = !isEdit ">取消</el-button>
+                <el-button @click="isEdit = !isEdit">取消</el-button>
               </el-form-item>
             </el-form>
           </el-card>
@@ -268,10 +277,13 @@ export default {
   .el-alert__title {
     font-size: 1rem;
   }
-  .el-input-number {
+  .el-select {
     width: 100%;
   }
-  .el-select {
+  .el-cascader {
+    width: 100%;
+  }
+  .el-input-number {
     width: 100%;
   }
 }

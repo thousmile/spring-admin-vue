@@ -8,7 +8,7 @@ import store from '@/store'
  * 用法: <el-button v-has="'perm:new'" class="btns">添加</el-button>
  */
 Vue.directive('has', {
-  bind: function(el, binding) {
+  inserted: function(el, binding, vnode) {
     if (!Vue.prototype.$_has(binding.value)) {
       el.parentNode.removeChild(el)
     }

@@ -12,8 +12,7 @@ const service = axios.create({
    * baseURL:process.env.VUE_APP_BASE_API 线上环境，不存在跨域的问题，所以不需要代理
    *
   */
-  // baseURL: process.env.VUE_APP_BASE_API,
-  baseURL: '/api',
+  baseURL: process.env.NODE_ENV === 'development' ? '/api' : process.env.VUE_APP_BASE_API,
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 50000 // request timeout
 })
@@ -46,7 +45,6 @@ service.interceptors.response.use(
      * status 为非 200 是抛错 可结合自己业务进行修改
      */
     const result = response.data
-    console.log('response拦截器 :', result)
     if (result.status !== 200) {
       // 304 表示 参数检验失败
       if (result.status === 304) {

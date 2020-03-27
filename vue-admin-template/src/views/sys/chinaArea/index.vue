@@ -2,7 +2,7 @@
   <div
     id="chinaArea"
     v-loading="loading"
-    element-loading-text="拼命加载中..."
+    element-loading-text="第一次加载了全部数据...所以会慢...之后本地有缓存了就会很快了..."
     element-loading-spinner="el-icon-loading"
   >
     <el-row :gutter="20">
@@ -99,18 +99,23 @@ export default {
     getTableData() {
       const _this = this
       _this.loading = true
-      getChinaAreaTree()
-        .then(result => {
-          _this.loading = false
-          _this.treeData = result
-        })
+      let data = JSON.parse(localStorage.getItem('chinaArea'))
+      if (data === undefined || data === null || data.length < 1) {
+        getChinaAreaTree()
+          .then(result => {
+            _this.loading = false
+            _this.treeData = result
+            localStorage.setItem('chinaArea', JSON.stringify(result))
+          })
+      } else {
+        this.treeData = data
+        _this.loading = false
+      }
     },
     loadNode(node, resolve) {
       const _this = this
       _this.loading = true
-
       if (node.data.areaCode !== undefined && node.data.areaCode !== null) {
-        console.log('node.data :', node.data)
         _this.chinaArea = {
           areaCode: node.data.areaCode,
           level: node.data.level,
