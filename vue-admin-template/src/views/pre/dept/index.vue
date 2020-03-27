@@ -71,6 +71,8 @@
                   :disabled="isEdit"
                   :show-all-levels="false"
                   :options="treeData"
+                  clearable
+                  filterable
                   :props="cascaderProps"
                 />
               </el-form-item>

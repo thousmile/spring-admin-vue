@@ -1,20 +1,43 @@
 <template>
-  <el-container>
+  <el-container id="user">
     <el-header>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input v-model="page.keywords" clearable placeholder="请输入关键字" />
+          <el-input
+            v-model="page.keywords"
+            clearable
+            placeholder="请输入关键字"
+          />
         </el-col>
         <el-col :span="6">
-          <el-button type="primary" icon="el-icon-search" @click="getUserTableData">搜索</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="getUserTableData"
+          >搜索</el-button>
         </el-col>
         <el-col :span="4">
-          <el-button v-has="'pre_user:create'" type="info" @click="addUserEntity">添加用户</el-button>
+          <el-button
+            v-has="'pre_user:create'"
+            type="info"
+            @click="addUserEntity"
+          >添加用户</el-button>
         </el-col>
         <el-col :span="6">
           <!-- 修改用户信息 -->
-          <el-dialog :visible.sync="dialog.visible" :title="dialog.title" width="30%">
-            <el-form id="user" ref="entity" :model="entity" :rules="rules" label-width="80px">
+          <el-dialog
+            :visible.sync="dialog.visible"
+            :title="dialog.title"
+            width="30%"
+            :before-close="handleClose"
+          >
+            <el-form
+              id="user"
+              ref="entity"
+              :model="entity"
+              :rules="rules"
+              label-width="80px"
+            >
               <template v-if="entity.uid != ''">
                 <el-form-item label="用户ID">
                   <el-input v-model="entity.uid" disabled />
@@ -31,7 +54,11 @@
               </el-form-item>
               <template v-if="entity.uid == ''">
                 <el-form-item label="密码" prop="password">
-                  <el-input v-model="entity.password" type="password" clearable />
+                  <el-input
+                    v-model="entity.password"
+                    type="password"
+                    clearable
+                  />
                 </el-form-item>
               </template>
               <el-form-item label="邮箱" prop="email">
@@ -47,7 +74,12 @@
                 />
               </el-form-item>
               <el-form-item label="性别" prop="gender">
-                <el-select v-model="entity.gender" clearable filterable placeholder="请选择">
+                <el-select
+                  v-model="entity.gender"
+                  clearable
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
                     v-for="item in genderOptions"
                     :key="item.value"
@@ -57,17 +89,22 @@
                 </el-select>
               </el-form-item>
               <el-form-item label="部门" prop="deptId">
-                <el-select v-model="entity.deptId" clearable filterable placeholder="请选择">
-                  <el-option
-                    v-for="item in deptList"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  />
-                </el-select>
+                <el-cascader
+                  v-model="entity.deptId"
+                  :show-all-levels="false"
+                  :options="deptTree"
+                  clearable
+                  filterable
+                  :props="cascaderProps"
+                />
               </el-form-item>
               <el-form-item label="状态" prop="status">
-                <el-select v-model="entity.status" clearable filterable placeholder="请选择">
+                <el-select
+                  v-model="entity.status"
+                  clearable
+                  filterable
+                  placeholder="请选择"
+                >
                   <el-option
                     v-for="item in optionsStatus"
                     :key="item.value"
@@ -84,10 +121,15 @@
           </el-dialog>
 
           <!-- 修改用户角色 -->
-          <el-dialog :visible.sync="userRole.visible" :title="userRole.title" width="30%">
+          <el-dialog
+            :visible.sync="userRole.visible"
+            :title="userRole.title"
+            width="30%"
+            :before-close="handleClose"
+          >
             <el-checkbox-group v-model="entity.roles">
               <el-checkbox
-                v-for="(item,index) in roleList"
+                v-for="(item, index) in roleList"
                 :key="index"
                 :label="item.rid"
               >{{ item.description }}</el-checkbox>
@@ -113,23 +155,30 @@
         <el-table-column prop="uid" label="用户ID" width="80" />
         <el-table-column label="头像" width="100">
           <template slot-scope="scope">
-            <div class="avatar-wrapper" @click="viewBigAvatar(scope.row.avatar)">
+            <div
+              class="avatar-wrapper"
+              @click="viewBigAvatar(scope.row.avatar)"
+            >
               <img :src="scope.row.avatar" class="user-avatar">
             </div>
           </template>
         </el-table-column>
         <el-table-column prop="username" label="用户名" />
         <el-table-column label="性别" width="50">
-          <template slot-scope="scope">{{ scope.row.gender | showGender }}</template>
+          <template slot-scope="scope">{{
+            scope.row.gender | showGender
+          }}</template>
         </el-table-column>
         <el-table-column label="生日" width="100">
-          <template slot-scope="scope">{{ scope.row.birthday | formatDate }}</template>
+          <template slot-scope="scope">{{
+            scope.row.birthday | formatDate
+          }}</template>
         </el-table-column>
         <el-table-column prop="email" label="邮箱" />
         <el-table-column label="拥有角色">
           <template slot-scope="scope">
             <el-tooltip
-              v-for="(role , index) in scope.row.roles"
+              v-for="(role, index) in scope.row.roles"
               :key="index"
               :content="role.description"
               class="item"
@@ -146,19 +195,37 @@
           </template>
         </el-table-column>
         <el-table-column label="状态" width="70">
-          <template slot-scope="scope">{{ scope.row.status | showStatus }}</template>
+          <template slot-scope="scope">{{
+            scope.row.status | showStatus
+          }}</template>
         </el-table-column>
         <el-table-column label="添加时间">
-          <template slot-scope="scope">{{ scope.row.createTime | formatDateTime }}</template>
+          <template slot-scope="scope">{{
+            scope.row.createTime | formatDateTime
+          }}</template>
         </el-table-column>
         <el-table-column label="修改时间">
-          <template slot-scope="scope">{{ scope.row.lastUpdateTime | formatDateTime }}</template>
+          <template slot-scope="scope">{{
+            scope.row.lastUpdateTime | formatDateTime
+          }}</template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="250">
           <template slot-scope="scope">
-            <el-button v-has="'pre_user:update:roles'" type="info" @click="updateUserRole(scope.row)">修改角色</el-button>
-            <el-button v-has="'pre_user:update'" type="primary" @click="updateUserEntity(scope.row)">编辑</el-button>
-            <el-button v-has="'pre_user:delete'" type="danger" @click="deleteUserEntity(scope.row)">删除</el-button>
+            <el-button
+              v-has="'pre_user:update:roles'"
+              type="info"
+              @click="updateUserRole(scope.row)"
+            >修改角色</el-button>
+            <el-button
+              v-has="'pre_user:update'"
+              type="primary"
+              @click="updateUserEntity(scope.row)"
+            >编辑</el-button>
+            <el-button
+              v-has="'pre_user:delete'"
+              type="danger"
+              @click="deleteUserEntity(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -183,9 +250,14 @@ import {
   removeUserById,
   updateUserRoles
 } from '@/api/sysUser'
-import { getDeptAll } from '@/api/sysDept'
+import { getDeptTree } from '@/api/sysDept'
 import { getRoleAll } from '@/api/sysRole'
-import { validateEmail, validatePassword, validateUsername, validateNickname } from '@/utils/validate'
+import {
+  validateEmail,
+  validatePassword,
+  validateUsername,
+  validateNickname
+} from '@/utils/validate'
 
 import UserAvatar from '@/components/UserAvatar'
 
@@ -225,8 +297,15 @@ export default {
       },
       loading: false,
       tableData: [],
-      deptList: [],
+      deptTree: [],
       roleList: [],
+      cascaderProps: {
+        children: 'children',
+        label: 'title',
+        value: 'id',
+        emitPath: false,
+        checkStrictly: true
+      },
       optionsStatus: [
         { value: 0, label: '禁用' },
         { value: 1, label: '正常' },
@@ -244,9 +323,7 @@ export default {
       },
       // 校验规则
       rules: {
-        avatar: [
-          { required: true, message: '头像不能为空', trigger: 'blur' }
-        ],
+        avatar: [{ required: true, message: '头像不能为空', trigger: 'blur' }],
         username: [
           { required: true, message: '登录账号不能为空', trigger: 'blur' },
           { required: true, validator: validateUsername, trigger: 'blur' }
@@ -263,18 +340,12 @@ export default {
           { required: true, message: '邮箱不能为空', trigger: 'blur' },
           { required: true, validator: validateEmail, trigger: 'blur' }
         ],
-        gender: [
-          { required: true, message: '性别必须选择~', trigger: 'blur' }
-        ],
+        gender: [{ required: true, message: '性别必须选择~', trigger: 'blur' }],
         birthday: [
           { required: true, message: '生日必须选择~', trigger: 'blur' }
         ],
-        status: [
-          { required: true, message: '状态必须选择~', trigger: 'blur' }
-        ],
-        deptId: [
-          { required: true, message: '部门必须选择~', trigger: 'blur' }
-        ]
+        status: [{ required: true, message: '状态必须选择~', trigger: 'blur' }],
+        deptId: [{ required: true, message: '部门必须选择~', trigger: 'blur' }]
       }
     }
   },
@@ -296,8 +367,8 @@ export default {
       // 获取部门列表
       const _this = this
       _this.loading = true
-      getDeptAll().then(result => {
-        _this.deptList = result
+      getDeptTree().then(result => {
+        _this.deptTree = result
         _this.loading = false
       })
     },
@@ -395,6 +466,9 @@ export default {
         title: '新建用户'
       }
     },
+    handleNodeClick(data) {
+      console.log('data :', data)
+    },
     updateUserEntity(data) {
       // 修改用户信息
       this.emptyEntity()
@@ -443,6 +517,13 @@ export default {
         })
       }
     },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
+    },
     saveAndFlush() {
       const _this = this
       _this.$refs.entity.validate(valid => {
@@ -475,7 +556,7 @@ export default {
   }
 }
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .avatar-wrapper {
   cursor: pointer;
   position: relative;
@@ -486,8 +567,19 @@ export default {
   }
 }
 </style>
-<style>
-.el-tag:hover {
-  cursor: pointer;
+<style lang="scss">
+#user {
+  .el-tag:hover {
+    cursor: pointer;
+  }
+  .el-date-editor {
+    width: 100%;
+  }
+  .el-cascader {
+    width: 100%;
+  }
+  .el-select {
+    width: 100%;
+  }
 }
 </style>

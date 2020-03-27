@@ -66,6 +66,8 @@
                 :disabled="isEdit"
                 :show-all-levels="false"
                 :options="menuTreeData"
+                clearable
+                filterable
                 :props="cascaderProps"
                 @change="handleChange"
               >
@@ -210,6 +212,7 @@ export default {
     },
     handleNodeClick(node) {
       this.pmnForm = node.source
+      this.isEdit = true
     },
     addEntity() {
       this.pmnForm = {

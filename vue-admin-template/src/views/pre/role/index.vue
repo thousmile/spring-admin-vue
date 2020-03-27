@@ -10,7 +10,7 @@
         </el-col>
       </el-row>
 
-      <el-dialog :visible.sync="dialog.visible" :title="dialog.title" width="550px">
+      <el-dialog :visible.sync="dialog.visible" :before-close="handleClose" :title="dialog.title" width="550px">
         <el-form id="role" ref="entity" :model="entity" :rules="rules" label-width="80px">
           <template v-if="entity.rid > 0">
             <el-form-item label="角色ID">
@@ -32,7 +32,7 @@
       </el-dialog>
 
       <!-- 角色权限列表 -->
-      <el-dialog :visible.sync="authority.visible" :title="authority.title" width="400px">
+      <el-dialog :visible.sync="authority.visible" :title="authority.title" :before-close="handleClose" width="400px">
         <el-tree
           ref="treeList"
           :data="authority.list"
@@ -234,6 +234,13 @@ export default {
           message: '请先选中角色,才可以删除'
         })
       }
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done()
+        })
+        .catch(_ => {})
     },
     saveAndFlush() {
       const _this = this
