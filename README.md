@@ -6,8 +6,6 @@
 
 如果大家在搭建过程中遇到问题，欢迎找我
 
-QQ:    932560435
-
 GitHub   ：  https://github.com/thousmile
 
 码云：  https://gitee.com/thousmile
