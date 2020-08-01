@@ -19,7 +19,7 @@ import { elementSize } from './settings'
 import '@/directive'
 import * as filters from './filters' // global filters
 
-// register global utility filters
+// 全局拦截器 filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
