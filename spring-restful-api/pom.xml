@@ -28,8 +28,7 @@
         <mybatis-spring-boot.version>2.1.1</mybatis-spring-boot.version>
         <pagehelper-spring-boot.version>1.2.12</pagehelper-spring-boot.version>
         <mapper-spring-boot.version>2.1.5</mapper-spring-boot.version>
-        <swagger2.version>2.9.2</swagger2.version>
-        <swagger2.bootstrap.version>1.9.6</swagger2.bootstrap.version>
+        <knife4j.version>2.0.4</knife4j.version>
     </properties>
 
     <dependencies>
@@ -182,15 +181,9 @@
         <!-- ————————————— api文档 结束————————————————————— -->
         <!--  查看文档 ：  http://localhost:8090/doc.html      -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger2.version}</version>
-        </dependency>
-        <!-- 引入 swagger2 bootstrap ui包 -->
-        <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>swagger-bootstrap-ui</artifactId>
-            <version>${swagger2.bootstrap.version}</version>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
         </dependency>
 
     </dependencies>

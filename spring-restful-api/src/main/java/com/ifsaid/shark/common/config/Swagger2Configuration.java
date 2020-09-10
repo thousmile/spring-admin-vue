@@ -1,7 +1,10 @@
 package com.ifsaid.shark.common.config;
 
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -27,22 +30,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
+@EnableKnife4j
+@Import(BeanValidatorPluginsConfiguration.class)
 public class Swagger2Configuration {
 
     @Bean
     public Docket createRestfulApi() {
-        //api文档实例
-        //文档类型：DocumentationType.SWAGGER_2
         return new Docket(DocumentationType.SWAGGER_2)
-                //api信息
                 .apiInfo(apiInfo())
-                //构建api选择器
+                //分组名称
+                .groupName("2.X版本")
                 .select()
-                //api选择器选择api的包
+                //这里指定Controller扫描包路径
                 .apis(RequestHandlerSelectors.basePackage("com.ifsaid.shark.controller"))
-                //api选择器选择包路径下任何api显示在文档中
                 .paths(PathSelectors.any())
-                //创建文档
                 .build();
     }
 
