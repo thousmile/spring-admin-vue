@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.2.RELEASE</version>
+        <version>2.3.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -24,11 +24,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <docker.image.prefix>xaaef</docker.image.prefix>
-        <qiniu.version>7.2.27</qiniu.version>
-        <mybatis-spring-boot.version>2.1.1</mybatis-spring-boot.version>
-        <pagehelper-spring-boot.version>1.2.12</pagehelper-spring-boot.version>
+        <qiniu.version>7.5.0</qiniu.version>
+        <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
+        <pagehelper-spring-boot.version>1.3.0</pagehelper-spring-boot.version>
         <mapper-spring-boot.version>2.1.5</mapper-spring-boot.version>
-        <knife4j.version>2.0.4</knife4j.version>
+        <knife4j.version>3.0.2</knife4j.version>
+        <jjwt.version>0.11.2</jjwt.version>
     </properties>
 
     <dependencies>
@@ -61,19 +62,30 @@
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jackson-databind</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+            <version>${jjwt.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
         <dependency>
@@ -171,7 +183,7 @@
             <version>${qiniu.version}</version>
         </dependency>
 
-        <!-- 图片裁剪 -->
+        <!-- 图片裁剪,压缩 -->
         <dependency>
             <groupId>net.coobird</groupId>
             <artifactId>thumbnailator</artifactId>
@@ -217,9 +229,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
         </plugins>

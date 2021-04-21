@@ -1,18 +1,18 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/spring_admin_vue?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.9.100:3306/spring_admin_vue?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=GMT%2B8
     username: root
-    password: 123456
+    password: mht123456
     platform: mysql
     type: com.zaxxer.hikari.HikariDataSource
 
   redis:
-    database: 0
-    host: localhost
+    database: 11
+    host: 192.168.9.100
     port: 6379
     timeout: 2000
-    #password: 123456
+    password: mht123
     lettuce:
       pool:
         max-idle: 8

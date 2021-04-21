@@ -1,8 +1,7 @@
 package com.ifsaid.shark.common.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -10,9 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * All rights Reserved, Designed By www.ifsaid.com
@@ -33,19 +31,12 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "jwt")
 public class JwtTokenUtils implements Serializable {
 
-    private static final String CLAIM_KEY_USER_ACCOUNT = "sub";
-
-    private static final String CLAIM_KEY_CREATED = "created";
+    private static Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     /**
-     * @description: 秘钥
-     * @date: 2019/12/11 21:53
-     */
-    private String secret;
-
-    /**
-     * @description: 过期时间
-     * @date: 2019/12/11 21:53
+     * 过期时间
+     *
+     * @date 2019/12/11 21:53
      */
     private Long expiration;
 
@@ -56,12 +47,16 @@ public class JwtTokenUtils implements Serializable {
     /**
      * 从数据声明生成令牌
      *
-     * @param claims 数据声明
+     * @param String 数据声明
      * @return 令牌
      */
-    private String generateToken(Map<String, Object> claims) {
-        Date expirationDate = new Date(System.currentTimeMillis() + expiration);
-        return Jwts.builder().setClaims(claims).setExpiration(expirationDate).signWith(SignatureAlgorithm.HS512, secret).compact();
+    private String generateToken(String id) {
+        Date expirationDate = new Date(System.currentTimeMillis() + expiration * 60000);
+        return Jwts.builder()
+                .setSubject(id)
+                .setExpiration(expirationDate)
+                .signWith(key)
+                .compact();
     }
 
     /**
@@ -71,13 +66,7 @@ public class JwtTokenUtils implements Serializable {
      * @return 数据声明
      */
     private Claims getClaimsFromToken(String token) {
-        Claims claims;
-        try {
-            claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-        } catch (Exception e) {
-            claims = null;
-        }
-        return claims;
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
     /**
@@ -87,10 +76,7 @@ public class JwtTokenUtils implements Serializable {
      * @return 令牌
      */
     public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>(2);
-        claims.put("sub", userDetails.getUsername());
-        claims.put("created", new Date());
-        return generateToken(claims);
+        return generateToken(userDetails.getUsername());
     }
 
     /**
@@ -100,14 +86,16 @@ public class JwtTokenUtils implements Serializable {
      * @return 用户名
      */
     public String getUsernameFromToken(String token) {
-        String username;
         try {
             Claims claims = getClaimsFromToken(token);
-            username = claims.getSubject();
+            Date expiration = claims.getExpiration();
+            if (expiration.before(new Date())) {
+                return null;
+            }
+            return claims.getSubject();
         } catch (Exception e) {
-            username = null;
+            return null;
         }
-        return username;
     }
 
     /**
@@ -135,9 +123,8 @@ public class JwtTokenUtils implements Serializable {
     public String refreshToken(String token) {
         String refreshedToken;
         try {
-            Claims claims = getClaimsFromToken(token);
-            claims.put("created", new Date());
-            refreshedToken = generateToken(claims);
+            String username = getUsernameFromToken(token);
+            refreshedToken = generateToken(username);
         } catch (Exception e) {
             refreshedToken = null;
         }

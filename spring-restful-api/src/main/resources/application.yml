@@ -33,8 +33,7 @@ logging:
 # JWT 认证配置
 jwt:
   tokenHeader: Authorization   #请求头
-  secret: w-eyJleHAiOjE1NDMyMDUyODUsInN1YiI6ImFkbWluIiwiY3JlYXRlZCI6MTU0MDYxMzI4N  #加密的字符串
-  expiration: 7200000    #毫秒，这里默认2小时
+  expiration: 120    #单位(分钟),这里默认2小时
   tokenHead: "Bearer "
 
 
