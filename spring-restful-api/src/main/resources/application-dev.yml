@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.9.100:3306/spring_admin_vue?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://192.168.0.189:3306/spring_admin_vue?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: mht123456
     platform: mysql
@@ -9,7 +9,7 @@ spring:
 
   redis:
     database: 11
-    host: 192.168.9.100
+    host: 192.168.0.189
     port: 6379
     timeout: 2000
     password: mht123
