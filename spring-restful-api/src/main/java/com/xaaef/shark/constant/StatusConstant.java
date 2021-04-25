@@ -17,13 +17,15 @@ package com.xaaef.shark.constant;
 public class StatusConstant {
 
     /**
-     * @description: 正常
+     * 正常
+     *
      * @date: 2019/12/11 21:19
      */
     public final static int NORMAL = 1;
 
     /**
-     * @description: 禁用
+     * 禁用
+     *
      * @date: 2019/12/11 21:19
      */
     public final static int DISABLE = 0;

@@ -25,19 +25,22 @@ package com.xaaef.shark.constant;
 public class GenderConstant {
 
     /**
-     * @description: 女
+     * 女
+     *
      * @date: 2019/12/11 21:19
      */
     public final static int FEMALE = 0;
 
     /**
-     * @description: 男
+     * 男
+     *
      * @date: 2019/12/11 21:19
      */
     public final static int MALE = 1;
 
     /**
-     * @description: 未知
+     * 未知
+     *
      * @date: 2019/12/11 21:19
      */
     public final static int UNKNOWN = 2;

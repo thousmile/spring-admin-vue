@@ -47,7 +47,7 @@ public class JwtTokenUtils implements Serializable {
     /**
      * 从数据声明生成令牌
      *
-     * @param String 数据声明
+     * @param id 数据声明
      * @return 令牌
      */
     private String generateToken(String id) {

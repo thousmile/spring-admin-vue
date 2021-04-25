@@ -36,7 +36,6 @@ jwt:
   expiration: 120    #单位(分钟),这里默认2小时
   tokenHead: "Bearer "
 
-
 info:
   app:
     name: ${spring.application.name}
