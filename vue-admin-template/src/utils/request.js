@@ -46,33 +46,13 @@ service.interceptors.response.use(
      */
     const result = response.data
     if (result.status !== 200) {
-      // 304 表示 参数检验失败
-      if (result.status === 304) {
-        Message({
-          message: result.message,
-          type: 'warning',
-          duration: 5 * 1000
-        })
+      // 403 表示 被挤掉线
+      if (result.status === 403) {
+        logout(result.message)
       } else if (result.status === 401) {
-        // 401 表示未经过授权
-        MessageBox.confirm(
-          '你已被登出，可以取消继续留在该页面，或者重新登录',
-          '确定登出',
-          {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }
-        ).then(() => {
-          store.dispatch('FedLogOut').then(() => {
-            // 为了重新实例化 vue-router 对象，清空之前的路由列表
-            window.location.reload()
-          })
-          // 跳转到 首页
-          router.push({ name: 'Dashboard' })
-        })
+        logout( '你已被登出，可以取消继续留在该页面，或者重新登录')
       } else {
-        resultErrorMessage(result.message)
+        errorMessage(result.message)
       }
       return Promise.reject('error')
     } else {
@@ -80,13 +60,32 @@ service.interceptors.response.use(
     }
   },
   error => {
-    resultErrorMessage(error.message)
+    errorMessage(error.message)
     return Promise.reject(error)
   }
 )
 
-function resultErrorMessage(msg) {
+function errorMessage(msg) {
   Message({ message: msg, type: 'error', duration: 5000 })
+}
+
+function logout(msg) {
+  MessageBox.confirm(
+    msg,
+    '确定退出',
+    {
+      confirmButtonText: '重新登录',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  ).then(() => {
+    store.dispatch('FedLogOut').then(() => {
+      // 为了重新实例化 vue-router 对象，清空之前的路由列表
+      window.location.reload()
+    })
+    // 跳转到 首页
+    router.push({ name: 'Dashboard' })
+  })
 }
 
 export default service

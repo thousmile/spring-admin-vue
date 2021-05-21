@@ -54,6 +54,16 @@ public class LocalTimeUtils {
     }
 
     /**
+     * 时间戳 (秒) 格式化 yyyy-MM-dd HH:mm:ss
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/8/9 16:52
+     */
+    public static String currentSecondFormat() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    /**
      * 时间戳(毫秒) 格式化 yyyy-MM-dd HH:mm:ss.SSS
      *
      * @author Wang Chen Chen<932560435@qq.com>

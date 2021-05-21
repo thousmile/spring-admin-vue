@@ -66,3 +66,14 @@ export function removeUserById(params) {
 export function updateUserRoles(params) {
   return request({ url: '/sys/user/update/roles', method: 'post', data: params })
 }
+
+
+// 修改用户密码
+export function updatePassword(params) {
+  return request({ url: '/sys/user/update/password', method: 'post', data: params })
+}
+
+// 重置用户密码
+export function resetPassword(params) {
+  return request({ url: '/sys/user/reset/password', method: 'post', data: params })
+}

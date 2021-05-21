@@ -1,6 +1,6 @@
 package com.xaaef.shark.service.impl;
 
-import com.xaaef.shark.common.jwt.JwtUser;
+import com.xaaef.shark.common.jwt.JwtLoginUser;
 import com.xaaef.shark.entity.SysUser;
 import com.xaaef.shark.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +38,7 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         if (user == null || StringUtils.isEmpty(user.getUid())) {
             throw new UsernameNotFoundException(String.format("'%s'.这个用户不存在", username));
         } else {
-            return new JwtUser(user.getUid(), user.getUsername(), user.getPassword(), user.getStatus(), null);
+            return new JwtLoginUser(user.getUid(), null, user.getUsername(), user.getPassword(), user.getStatus(), null);
         }
     }
 

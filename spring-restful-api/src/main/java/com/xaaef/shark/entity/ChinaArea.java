@@ -19,7 +19,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "tb_cn_area")
+@Table(name = "cn_area")
 @Getter
 @Setter
 @ToString

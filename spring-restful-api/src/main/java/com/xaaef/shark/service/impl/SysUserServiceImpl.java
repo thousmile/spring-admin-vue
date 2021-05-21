@@ -2,8 +2,8 @@ package com.xaaef.shark.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xaaef.shark.common.jwt.JwtLoginUser;
 import com.xaaef.shark.common.jwt.JwtTokenUtils;
-import com.xaaef.shark.common.jwt.JwtUser;
 import com.xaaef.shark.common.service.impl.BaseServiceImpl;
 import com.xaaef.shark.constant.PermissionType;
 import com.xaaef.shark.constant.StatusConstant;
@@ -18,10 +18,8 @@ import com.xaaef.shark.service.SysPermissionService;
 import com.xaaef.shark.service.SysRoleService;
 import com.xaaef.shark.service.SysUserService;
 import com.xaaef.shark.util.QueryParameter;
-import com.xaaef.shark.vo.ButtonVo;
-import com.xaaef.shark.vo.MenuVo;
-import com.xaaef.shark.vo.SysUserVo;
-import com.xaaef.shark.vo.UserVo;
+import com.xaaef.shark.util.SecurityUtils;
+import com.xaaef.shark.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +31,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,18 +59,6 @@ import java.util.stream.Collectors;
 public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUserMapper> implements SysUserService {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenUtils jwtTokenUtils;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private SysPermissionService sysPermissionService;
-
-    @Autowired
     private SysRoleService sysRoleService;
 
     @Autowired
@@ -81,99 +66,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    @Lazy
-    private RedisTemplate<String, Object> redisTemplate;
-
-    private BoundHashOperations<String, String, Object> tokenStorage() {
-        return redisTemplate.boundHashOps(jwtTokenUtils.getTokenHeader());
-    }
-
-    /**
-     * @describe 登录表单获取 Token
-     * @date 2018/11/16
-     * @author Wang Chen Chen
-     */
-    @Override
-    public String login(String username, String password) throws AuthenticationException {
-        // 把表单提交的 username  password 封装到 UsernamePasswordAuthenticationToken中
-        UsernamePasswordAuthenticationToken upToken = new UsernamePasswordAuthenticationToken(username, password);
-        Authentication authentication = authenticationManager.authenticate(upToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        JwtUser userDetails = (JwtUser) userDetailsService.loadUserByUsername(username);
-        String token = jwtTokenUtils.generateToken(userDetails);
-        log.debug("userDetails: {}", userDetails);
-        tokenStorage().put(userDetails.getUsername(), userDetails);
-        return token;
-    }
-
-    @Override
-    public void logout(JwtUser loginUser) {
-        tokenStorage().delete(loginUser.getUsername());
-    }
-
-    @Override
-    public JwtUser validateUsername(String username) throws AuthenticationException {
-        JwtUser jwtUser = (JwtUser) tokenStorage().get(username);
-        if (jwtUser == null || StringUtils.isEmpty(jwtUser.getUsername())) {
-            throw new JwtAuthenticationException("当前登录用户不存在");
-        }
-        return jwtUser;
-    }
-
-    @Override
-    public UserVo findUserInfo() {
-        // 从SecurityContextHolder中获取到，当前登录的用户信息。
-        JwtUser userDetails = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        // 根据用户Id，获取用户详细信息。
-        SysUser sysUser = findById(userDetails.getUid());
-        UserVo result = new UserVo();
-        BeanUtils.copyProperties(sysUser, result);
-        // 根据用户Id，获取到拥有的 权限列表
-        Set<SysPermission> permissions = sysPermissionService.findAllByUserId(sysUser.getUid());
-        List<ButtonVo> buttonVos = new ArrayList<>();
-        List<MenuVo> menuVos = new ArrayList<>();
-        if (permissions != null && permissions.size() > 1) {
-            permissions.forEach(permission -> {
-                if (permission.getType().toLowerCase().equals(PermissionType.BUTTON)) {
-                    /*
-                     * 如果权限是按钮，就添加到按钮里面
-                     * */
-                    buttonVos.add(
-                            new ButtonVo(
-                                    permission.getPid(),
-                                    permission.getResources(),
-                                    permission.getTitle())
-                    );
-                }
-                if (permission.getType().toLowerCase().equals(PermissionType.MENU)) {
-                    /*
-                     * 如果权限是菜单，就添加到菜单里面
-                     * */
-                    menuVos.add(
-                            new MenuVo(
-                                    permission.getPid(),
-                                    permission.getParentId(),
-                                    permission.getIcon(),
-                                    permission.getResources(),
-                                    permission.getTitle(),
-                                    null
-                            )
-                    );
-                }
-            });
-        }
-        result.setButtons(buttonVos);
-        result.setMenus(findRoots(menuVos));
-        Set<SysRole> roles = sysRoleService.findAllByUserId(result.getUid());
-        Set<String> rolesName = roles
-                .stream()
-                .map(r -> r.getDescription())
-                .collect(Collectors.toSet());
-        result.setRoles(rolesName);
-        return result;
-    }
 
     @Override
     public PageInfo<SysUserVo> findAllPageInfo(QueryParameter parameter) {
@@ -211,6 +103,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int deleteById(Integer uid) {
+        if (SecurityUtils.isAdmin(uid)) {
+            throw new RuntimeException("此用户是管理员，无法删除！");
+        }
         // 删除用户拥有的角色
         baseMapper.deleteHaveRoles(uid);
         return baseMapper.deleteByPrimaryKey(uid);
@@ -235,46 +130,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
     }
 
     /**
-     * 递归查找根节点
-     *
-     * @param allNodes
-     * @return Set<MenuVo>
-     */
-    private List<MenuVo> findRoots(List<MenuVo> allNodes) {
-        // 根节点
-        List<MenuVo> root = new ArrayList<>();
-        allNodes.forEach(node -> {
-            if (node.getParentId() == 0) {
-                root.add(node);
-            }
-        });
-        root.forEach(node -> {
-            findChildren(node, allNodes);
-        });
-        return root;
-    }
-
-    /**
-     * 递归查找子节点
-     *
-     * @param treeNode
-     * @param treeNodes
-     * @return MenuVo
-     */
-    private MenuVo findChildren(MenuVo treeNode, List<MenuVo> treeNodes) {
-        for (MenuVo it : treeNodes) {
-            if (treeNode.getPid().equals(it.getParentId())) {
-                if (treeNode.getChildren() == null) {
-                    treeNode.setChildren(new ArrayList<>());
-                }
-                treeNode.getChildren().add(findChildren(it, treeNodes));
-            }
-        }
-        return treeNode;
-    }
-
-
-    /**
      * 修改用户权限
      *
      * @param uid
@@ -295,4 +150,46 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser, Integer, SysUse
         return baseMapper.insertByRoles(collect);
     }
 
+    @Override
+    public int updatePassword(UpdatePassword pwd) {
+        SysUser sysUser = baseMapper.selectByPrimaryKey(pwd.getUid());
+        if (!pwd.getNewPwd().equals(pwd.getConfirmPwd())) {
+            throw new RuntimeException("新密码与确认密码不一致，请重新输入！");
+        }
+        if (passwordEncoder.matches(pwd.getOldPwd(), sysUser.getPassword())) {
+            if (passwordEncoder.matches(pwd.getNewPwd(), sysUser.getPassword())) {
+                throw new RuntimeException("新密码与旧密码相同，请重新输入！");
+            } else {
+                String newPassword = passwordEncoder.encode(pwd.getNewPwd());
+                return update(SysUser.builder().uid(sysUser.getUid()).password(newPassword).build());
+            }
+        }
+        throw new RuntimeException("旧密码错误，请重新输入！");
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int resetPassword(ResetPassword pwd) {
+        SysUser sysUser = baseMapper.selectByPrimaryKey(pwd.getUid());
+        if (sysUser != null) {
+            String newPassword = passwordEncoder.encode(pwd.getNewPwd());
+            return baseMapper.updateByPrimaryKeySelective(
+                    SysUser.builder().uid(pwd.getUid()).password(newPassword).build()
+            );
+        }
+        throw new RuntimeException("用户不存在，无法重置密码！");
+    }
+
+    @Override
+    public int update(SysUser entity) {
+        // 不允许使用 update 修改密码！
+        entity.setPassword(null);
+        if (StringUtils.hasText(entity.getUsername())) {
+            int count = baseMapper.selectCount(SysUser.builder().username(entity.getUsername()).build());
+            if (count > 0) {
+                throw new RuntimeException(String.format("用户名“ %s ”已存在，请重新输入！", entity.getUsername()));
+            }
+        }
+        return super.update(entity);
+    }
 }

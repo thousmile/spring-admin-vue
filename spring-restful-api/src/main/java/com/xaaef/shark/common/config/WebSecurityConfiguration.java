@@ -1,5 +1,6 @@
 package com.xaaef.shark.common.config;
 
+import com.xaaef.shark.common.entrypoint.JwtAccessDeniedHandler;
 import com.xaaef.shark.common.entrypoint.JwtAuthenticationEntryPoint;
 import com.xaaef.shark.common.jwt.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
 
     @Autowired
+    private JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
+
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
     @Override
@@ -66,7 +71,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors().and().csrf().disable()
                 //未授权处理
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .exceptionHandling()
+                .authenticationEntryPoint(unauthorizedHandler)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
@@ -87,7 +95,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * @describe spring密码加密器
+     * spring密码加密器
+     *
      * @date 2018/11/7
      * @author Wang Chen Chen
      */

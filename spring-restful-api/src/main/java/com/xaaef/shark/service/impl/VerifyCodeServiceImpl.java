@@ -1,8 +1,8 @@
 package com.xaaef.shark.service.impl;
 
+import com.xaaef.shark.constant.LoginConstant;
 import com.xaaef.shark.service.VerifyCodeService;
 import com.xaaef.shark.util.VerifyCodeUtils;
-import com.xaaef.shark.vo.ImageVerifyCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -33,26 +33,26 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
     @Override
     public BufferedImage randomImageVerifyCode(String codeKey) {
-        ImageVerifyCode image = VerifyCodeUtils.getImage();
+        VerifyCodeUtils.ImageVerifyCode image = VerifyCodeUtils.getImage();
         // 将验证码的 codeKey 和 codeText , 保存在 redis 中，有效时间为 10 分钟
-        redisTemplate.opsForValue().set(codeKey, image.getCodeText().toUpperCase(), 10, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(LoginConstant.CAPTCHA_CODE_KEY + codeKey, image.getCodeText().toUpperCase(), 10, TimeUnit.MINUTES);
         return image.getImage();
     }
 
     @Override
     public void deleteImageVerifyCode(String codeKey) {
-        redisTemplate.delete(codeKey);
+        redisTemplate.delete(LoginConstant.CAPTCHA_CODE_KEY + codeKey);
     }
 
     @Override
     public boolean checkVerifyCode(String codeKey, String userCodeText) {
         // 获取服务器的 CodeText
-        String serverCodeText = redisTemplate.opsForValue().get(codeKey);
+        String serverCodeText = redisTemplate.opsForValue().get(LoginConstant.CAPTCHA_CODE_KEY + codeKey);
         // 将 serverCodeText 和 user.codeText 都转换成小写，然后比较
-        if (StringUtils.isEmpty(userCodeText) || !serverCodeText.equals(userCodeText.toUpperCase())) {
-            return false;
-        } else {
+        if (serverCodeText.equals(userCodeText.toUpperCase())) {
             return true;
+        } else {
+            return false;
         }
     }
 

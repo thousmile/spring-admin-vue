@@ -20,7 +20,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "tb_sys_department")
+@Table(name = "sys_department")
 @Getter
 @Setter
 @ToString

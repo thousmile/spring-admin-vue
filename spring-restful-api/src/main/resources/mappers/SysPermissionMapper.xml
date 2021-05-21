@@ -13,12 +13,12 @@
             p.icon,
             p.type
         FROM
-            tb_sys_permission AS p
-        LEFT JOIN tb_sys_role_permission AS rp ON rp.permission_id = p.pid
-        LEFT JOIN tb_sys_role AS r ON rp.role_id = r.rid
-        LEFT JOIN tb_sys_user_role AS ur ON r.rid = ur.role_id
+            sys_permission AS p
+        LEFT JOIN sys_role_permission AS rp ON rp.permission_id = p.pid
+        LEFT JOIN sys_role AS r ON rp.role_id = r.rid
+        LEFT JOIN sys_user_role AS ur ON r.rid = ur.role_id
         WHERE
-            ur.user_id = #{uid}
+            ur.user_id = #{uid}  
     </select>
 
 
@@ -32,8 +32,8 @@
             p.icon,
             p.type
         FROM
-            tb_sys_permission AS p
-        LEFT JOIN tb_sys_role_permission AS rp ON rp.permission_id = p.pid
+            sys_permission AS p
+        LEFT JOIN sys_role_permission AS rp ON rp.permission_id = p.pid
         WHERE
             rp.role_id = #{rid}
     </select>
@@ -41,13 +41,13 @@
 
     <!--    判断是否某个权限下，是否还有拥有子权限 Integer haveChildren(Integer pid);-->
     <select id="haveChildren" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM tb_sys_permission WHERE parent_id = #{pid}
+        SELECT COUNT(*) FROM sys_permission WHERE parent_id = #{pid}
     </select>
 
 
     <!--    判断是否某个权限，是否还被其他角色引用 Integer roleReference(Integer pid);-->
     <select id="roleReference" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-        SELECT COUNT(*) FROM tb_sys_role_permission WHERE permission_id = #{pid}
+        SELECT COUNT(*) FROM sys_role_permission WHERE permission_id = #{pid}
     </select>
 
 </mapper>

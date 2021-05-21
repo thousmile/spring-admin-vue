@@ -29,12 +29,12 @@ logging:
   level:
     com.xaaef.shark.mapper: debug
 
-
 # JWT 认证配置
 jwt:
   tokenHeader: Authorization   #请求头
-  expiration: 120    #单位(分钟),这里默认2小时
+  expiration: 120                #单位(分钟),这里默认2小时
   tokenHead: "Bearer "
+  sso: false                    #单点登录，是否开启
 
 info:
   app:

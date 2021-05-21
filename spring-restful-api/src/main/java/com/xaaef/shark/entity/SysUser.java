@@ -21,7 +21,7 @@ import java.time.LocalDate;
 
 
 @Entity
-@Table(name = "tb_sys_user")
+@Table(name = "sys_user")
 @Getter
 @Setter
 @ToString

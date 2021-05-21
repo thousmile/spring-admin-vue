@@ -1,13 +1,12 @@
 package com.xaaef.shark.service;
 
 import com.github.pagehelper.PageInfo;
-import com.xaaef.shark.common.jwt.JwtUser;
 import com.xaaef.shark.common.service.BaseService;
 import com.xaaef.shark.entity.SysUser;
 import com.xaaef.shark.util.QueryParameter;
+import com.xaaef.shark.vo.ResetPassword;
 import com.xaaef.shark.vo.SysUserVo;
-import com.xaaef.shark.vo.UserVo;
-import org.springframework.security.core.AuthenticationException;
+import com.xaaef.shark.vo.UpdatePassword;
 
 import java.util.Set;
 
@@ -37,38 +36,24 @@ public interface SysUserService extends BaseService<SysUser, Integer> {
     int updateUserRoles(Integer uid, Set<Integer> roleIds);
 
     /**
-     * 用户登录
+     * 修改密码
      *
-     * @param username
-     * @param password
-     * @return String token 值
-     * @throws AuthenticationException
+     * @param pwd
+     * @return int
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/12/12 21:20
      */
-    String login(String username, String password) throws AuthenticationException;
+    int updatePassword(UpdatePassword pwd);
 
     /**
-     * 用户退出登录
-     * @param loginUser
-     */
-    void logout(JwtUser loginUser);
-
-    /**
-     * 校验登录的用户中，用户名，是否正确
+     * 重置密码
      *
-     * @param username 用户名
-     * @return 操作结果
-     * @throws AuthenticationException
+     * @param pwd
+     * @return int
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/12/12 21:20
      */
-    JwtUser validateUsername(String username) throws AuthenticationException;
-
-
-    /**
-     * 获取用户详细信息
-     *
-     * @return UserVo
-     */
-    UserVo findUserInfo();
-
+    int resetPassword(ResetPassword pwd);
 
     /**
      * 分页擦好像 获取用户详细信息

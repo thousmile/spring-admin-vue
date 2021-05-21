@@ -27,7 +27,7 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class JwtUser implements UserDetails {
+public class JwtLoginUser implements UserDetails {
 
     /**
      * 用户唯一ID
@@ -36,6 +36,14 @@ public class JwtUser implements UserDetails {
      * @date 2019/12/12 20:48
      */
     private Integer uid;
+
+    /**
+     * 根据 redis 中，关联的id
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/12/12 20:48
+     */
+    private String loginId;
 
     /**
      * 用户登录时，使用的用户名
@@ -131,4 +139,11 @@ public class JwtUser implements UserDetails {
         return true;
     }
 
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
+    }
 }

@@ -14,14 +14,16 @@
             type="primary"
             icon="el-icon-search"
             @click="getUserTableData"
-          >搜索</el-button>
+            >搜索</el-button
+          >
         </el-col>
         <el-col :span="4">
           <el-button
             v-has="'pre_user:create'"
             type="info"
             @click="addUserEntity"
-          >添加用户</el-button>
+            >添加用户</el-button
+          >
         </el-col>
         <el-col :span="6">
           <!-- 修改用户信息 -->
@@ -132,7 +134,8 @@
                 v-for="(item, index) in roleList"
                 :key="index"
                 :label="item.rid"
-              >{{ item.description }}</el-checkbox>
+                >{{ item.description }}</el-checkbox
+              >
             </el-checkbox-group>
             <span slot="footer" class="dialog-footer">
               <el-button @click="userRole.visible = false">取 消</el-button>
@@ -159,7 +162,7 @@
               class="avatar-wrapper"
               @click="viewBigAvatar(scope.row.avatar)"
             >
-              <img :src="scope.row.avatar" class="user-avatar">
+              <img :src="scope.row.avatar" class="user-avatar" />
             </div>
           </template>
         </el-table-column>
@@ -185,7 +188,7 @@
               effect="dark"
               placement="top-start"
             >
-              <el-tag>{{ role.roleName }}</el-tag>
+              <el-tag type="success">{{ role.roleName }}</el-tag>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -209,23 +212,32 @@
             scope.row.lastUpdateTime | formatDateTime
           }}</template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="250">
+        <el-table-column fixed="right" label="操作" width="335">
           <template slot-scope="scope">
             <el-button
               v-has="'pre_user:update:roles'"
               type="info"
               @click="updateUserRole(scope.row)"
-            >修改角色</el-button>
+              >修改角色</el-button
+            >
             <el-button
               v-has="'pre_user:update'"
               type="primary"
               @click="updateUserEntity(scope.row)"
-            >编辑</el-button>
+              >编辑</el-button
+            >
             <el-button
               v-has="'pre_user:delete'"
               type="danger"
               @click="deleteUserEntity(scope.row)"
-            >删除</el-button>
+              >删除</el-button
+            >
+            <el-button
+              v-has="'pre_user:reset:password'"
+              type="danger"
+              @click="resetUserPassword(scope.row)"
+              >重置密码</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -248,7 +260,8 @@ import {
   saveUser,
   updateUser,
   removeUserById,
-  updateUserRoles
+  updateUserRoles,
+  resetPassword
 } from '@/api/sysUser'
 import { getDeptTree } from '@/api/sysDept'
 import { getRoleAll } from '@/api/sysRole'
@@ -357,7 +370,7 @@ export default {
     getUserTableData() {
       const _this = this
       _this.loading = true
-      getUserPage(_this.page).then(result => {
+      getUserPage(_this.page).then((result) => {
         _this.tableData = result.list
         _this.page.total = result.total
         _this.loading = false
@@ -367,7 +380,7 @@ export default {
       // 获取部门列表
       const _this = this
       _this.loading = true
-      getDeptTree().then(result => {
+      getDeptTree().then((result) => {
         _this.deptTree = result
         _this.loading = false
       })
@@ -376,7 +389,7 @@ export default {
       // 获取角色列表
       const _this = this
       _this.loading = true
-      getRoleAll().then(result => {
+      getRoleAll().then((result) => {
         _this.roleList = result
         _this.loading = false
       })
@@ -399,7 +412,7 @@ export default {
         title: '修改用户角色'
       }
       const roles = []
-      data.roles.forEach(role => {
+      data.roles.forEach((role) => {
         roles.push(role.rid)
       })
       this.entity.uid = data.uid
@@ -423,7 +436,7 @@ export default {
           )
           .then(() => {
             updateUserRoles({ uid: _this.entity.uid, roles: roles }).then(
-              result => {
+              (result) => {
                 _this.$message({ type: 'success', message: '修改角色成功!' })
                 _this.userRole.visible = false
                 _this.getUserTableData()
@@ -505,8 +518,36 @@ export default {
             }
           )
           .then(() => {
-            removeUserById(data.uid).then(result => {
+            removeUserById(data.uid).then((result) => {
               _this.$message({ type: 'success', message: '删除成功!' })
+              _this.getUserTableData()
+            })
+          })
+      } else {
+        _this.$notify.error({
+          title: '错误',
+          message: '请先选中用户,才可以删除'
+        })
+      }
+    },
+    resetUserPassword(data) {
+      // 重置此用户密码
+      let newPwd = '123456'
+      const _this = this
+      if (data.uid !== null && data.uid !== '') {
+        _this
+          .$confirm(
+            '确定要重置【' + data.nickname + '】的密码吗? 是否继续?',
+            '警告',
+            {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }
+          )
+          .then(() => {
+            resetPassword({ uid: data.uid, newPwd: newPwd }).then((result) => {
+              _this.$message({ type: 'success', message: `重置密码成功! 密码是 ${newPwd}` })
               _this.getUserTableData()
             })
           })
@@ -519,18 +560,18 @@ export default {
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
-        .then(_ => {
+        .then((_) => {
           done()
         })
-        .catch(_ => {})
+        .catch((_) => {})
     },
     saveAndFlush() {
       const _this = this
-      _this.$refs.entity.validate(valid => {
+      _this.$refs.entity.validate((valid) => {
         if (valid) {
           delete _this.entity.roles
           if (_this.entity.uid !== '') {
-            updateUser(_this.entity).then(result => {
+            updateUser(_this.entity).then((result) => {
               _this.$notify({
                 title: '成功',
                 message: '修改用户成功!',
@@ -540,7 +581,7 @@ export default {
               _this.dialog.visible = false
             })
           } else {
-            saveUser(_this.entity).then(result => {
+            saveUser(_this.entity).then((result) => {
               _this.$notify({
                 title: '成功',
                 message: '添加用户成功!',

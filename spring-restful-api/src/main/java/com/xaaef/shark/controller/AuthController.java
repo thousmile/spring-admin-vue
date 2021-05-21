@@ -1,16 +1,18 @@
 package com.xaaef.shark.controller;
 
+import com.xaaef.shark.common.jwt.JwtLoginUser;
 import com.xaaef.shark.common.jwt.JwtTokenUtils;
-import com.xaaef.shark.common.jwt.JwtUser;
-import com.xaaef.shark.service.SysUserService;
+import com.xaaef.shark.service.UserLoginService;
 import com.xaaef.shark.service.VerifyCodeService;
 import com.xaaef.shark.util.JsonResult;
+import com.xaaef.shark.util.SecurityUtils;
 import com.xaaef.shark.vo.LoginUser;
 import com.xaaef.shark.vo.TokenValue;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -43,10 +45,7 @@ import java.io.IOException;
 public class AuthController {
 
     @Autowired
-    private SysUserService sysUserService;
-
-    @Autowired
-    private JwtTokenUtils jwtTokenUtils;
+    private UserLoginService userLoginService;
 
     @Autowired
     private VerifyCodeService verifyCodeService;
@@ -59,16 +58,13 @@ public class AuthController {
             return JsonResult.fail("验证码错误！");
         }
         try {
-            String jwtToken = sysUserService.login(user.getUsername(), user.getPassword());
-            TokenValue tokenValue = TokenValue.builder()
-                    .header(jwtTokenUtils.getTokenHeader())
-                    .value(jwtToken)
-                    .prefix(jwtTokenUtils.getTokenHead())
-                    .expiration(jwtTokenUtils.getExpiration())
-                    .build();
+            TokenValue tokenValue = userLoginService.login(user.getUsername(), user.getPassword());
             // 登录成功后，就从 redis 中删除验证码
             verifyCodeService.deleteImageVerifyCode(user.getCodeKey());
             return JsonResult.success("登录成功", tokenValue);
+        } catch (LockedException ex) {
+            log.error(ex.getMessage());
+            return JsonResult.fail("此用户被锁定！暂时无法登录，请联系管理员！");
         } catch (AuthenticationException ex) {
             log.error(ex.getMessage());
             return JsonResult.fail("用户名或密码错误");
@@ -79,39 +75,16 @@ public class AuthController {
     @ApiOperation(value = "用户退出登录", notes = "用户退出登录")
     @GetMapping("/logout")
     public JsonResult<TokenValue> logout() {
-        JwtUser loginUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (loginUser != null && !StringUtils.isEmpty(loginUser.getUsername())) {
-            sysUserService.logout(loginUser);
-            return JsonResult.success();
-        }
+        userLoginService.logout();
         return JsonResult.success();
     }
 
 
     @ApiOperation(value = "刷新Token值", notes = "只需要在请求头中附带token即可")
     @GetMapping("/refresh")
-    public JsonResult<TokenValue> refresh(@RequestHeader(value = "${jwt.tokenHeader}") String completeToken) {
-        // 从完整的token中截取出token值
-        String oldToken = jwtTokenUtils.interceptCompleteToken(completeToken);
-        // 根据token值，获取登录的用户名
-        String username = jwtTokenUtils.getUsernameFromToken(oldToken);
-        if (!StringUtils.isEmpty(username)) {
-            // 校验数据中的，用户是否存在
-            JwtUser details = sysUserService.validateUsername(username);
-            if (details != null && !StringUtils.isEmpty(details.getUsername())) {
-                // 刷新 token 的值
-                String jwtToken = jwtTokenUtils.refreshToken(oldToken);
-                // 封装新的 token 值
-                TokenValue tokenValue = TokenValue.builder()
-                        .header(jwtTokenUtils.getTokenHeader())
-                        .value(jwtToken)
-                        .prefix(jwtTokenUtils.getTokenHead())
-                        .expiration(jwtTokenUtils.getExpiration())
-                        .build();
-                return JsonResult.success("刷新token成功！", tokenValue);
-            }
-        }
-        return JsonResult.fail("token格式错误!");
+    public JsonResult<TokenValue> refresh() {
+        TokenValue refresh = userLoginService.refresh();
+        return JsonResult.success("刷新token成功", refresh);
     }
 
 

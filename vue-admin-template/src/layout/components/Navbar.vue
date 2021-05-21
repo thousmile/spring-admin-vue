@@ -31,6 +31,9 @@
           <router-link to="/">
             <el-dropdown-item>首&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;页</el-dropdown-item>
           </router-link>
+          <router-link to="/userInfo">
+            <el-dropdown-item>个人信息</el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided @click.native="logout">
             <span style="display:block;">退出登录</span>
           </el-dropdown-item>

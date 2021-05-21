@@ -1,14 +1,20 @@
 package com.xaaef.shark.common.jwt;
 
-import com.xaaef.shark.service.SysUserService;
+import com.xaaef.shark.exception.JwtAuthenticationException;
+import com.xaaef.shark.service.UserLoginService;
+import com.xaaef.shark.util.JsonResult;
+import com.xaaef.shark.util.JsonUtils;
+import com.xaaef.shark.util.ServletUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -36,7 +42,7 @@ import java.io.IOException;
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private SysUserService sysUserService;
+    private UserLoginService userLoginService;
 
     @Autowired
     private JwtTokenUtils jwtTokenUtils;
@@ -56,24 +62,26 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         // 获取 Request 中的请求头为 “ Authorization ” 的 token 值
-        String completeToken = request.getHeader(this.jwtTokenUtils.getTokenHeader());
-        // 验证 值是否以"Bearer "开头
-        if (completeToken != null && completeToken.startsWith(this.jwtTokenUtils.getTokenHead())) {
-            // 截取token中"Bearer "后面的值，
-            final String tokenValue = jwtTokenUtils.interceptCompleteToken(completeToken);
-            // 根据 token值，获取 用户的 username
-            String username = jwtTokenUtils.getUsernameFromToken(tokenValue);
-            log.debug("当前登录的用户是 : {} ", username);
-            // 验证用户账号是否合法
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        String bearerToken = request.getHeader(jwtTokenUtils.getTokenHeader());
+        if (StringUtils.hasText(bearerToken)) {
+            String tokenValue = jwtTokenUtils.getTokenValue(bearerToken);
+            if (StringUtils.hasText(tokenValue)) {
                 // 根据 username 去 redis 中查询 user 数据，足够信任token的情况下，可以省略这一步
-                JwtUser userDetails = null;
+                JwtLoginUser userDetails = null;
                 try {
-                    userDetails = sysUserService.validateUsername(username);
+                    String loginId = jwtTokenUtils.getIdFromToken(tokenValue);
+                    userDetails = userLoginService.validateUser(loginId);
                 } catch (AuthenticationException ex) {
-                    log.debug(ex.getMessage());
                     SecurityContextHolder.clearContext();
-                    this.authenticationEntryPoint.commence(request, response, ex);
+                    ServletUtils.renderString(response, JsonUtils.objectToJson(
+                            JsonResult.result(HttpStatus.FORBIDDEN.value(), ex.getMessage())
+                    ));
+                    return;
+                } catch (Exception ex) {
+                    SecurityContextHolder.clearContext();
+                    ServletUtils.renderString(response, JsonUtils.objectToJson(
+                            JsonResult.result(HttpStatus.UNAUTHORIZED.value(), ex.getMessage())
+                    ));
                     return;
                 }
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

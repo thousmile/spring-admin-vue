@@ -1,16 +1,18 @@
 package com.xaaef.shark.common.jwt;
 
+import com.xaaef.shark.constant.LoginConstant;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * All rights Reserved, Designed By www.xaaef.com
@@ -45,12 +47,19 @@ public class JwtTokenUtils implements Serializable {
     private String tokenHead;
 
     /**
+     * 单点登录，是否启用
+     *
+     * @date 2019/12/11 21:53
+     */
+    private Boolean sso = false;
+
+    /**
      * 从数据声明生成令牌
      *
      * @param id 数据声明
      * @return 令牌
      */
-    private String generateToken(String id) {
+    public String createToken(String id) {
         Date expirationDate = new Date(System.currentTimeMillis() + expiration * 60000);
         return Jwts.builder()
                 .setSubject(id)
@@ -58,6 +67,17 @@ public class JwtTokenUtils implements Serializable {
                 .signWith(key)
                 .compact();
     }
+
+    /**
+     * 从数据声明生成令牌
+     *
+     * @param id 数据声明
+     * @return 令牌
+     */
+    public String createLoginId() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
 
     /**
      * 从令牌中获取数据声明
@@ -70,90 +90,34 @@ public class JwtTokenUtils implements Serializable {
     }
 
     /**
-     * 生成令牌
-     *
-     * @param userDetails 用户
-     * @return 令牌
-     */
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(userDetails.getUsername());
-    }
-
-    /**
      * 从令牌中获取用户名
      *
      * @param token 令牌
      * @return 用户名
      */
-    public String getUsernameFromToken(String token) {
+    public String getIdFromToken(String token) throws JwtException {
         try {
             Claims claims = getClaimsFromToken(token);
             Date expiration = claims.getExpiration();
             if (expiration.before(new Date())) {
-                return null;
+                throw new JwtException("身份认证已经过期，请重新登录！");
             }
             return claims.getSubject();
         } catch (Exception e) {
-            return null;
+            throw new JwtException(e.getMessage());
         }
     }
 
     /**
-     * 判断令牌是否过期
+     * 截取完整的token，根据前缀 "Bearer "开头
      *
-     * @param token 令牌
-     * @return 是否过期
-     */
-    public Boolean isTokenExpired(String token) {
-        try {
-            Claims claims = getClaimsFromToken(token);
-            Date expiration = claims.getExpiration();
-            return expiration.before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    /**
-     * 刷新令牌
-     *
-     * @param token 原令牌
      * @return 新令牌
      */
-    public String refreshToken(String token) {
-        String refreshedToken;
-        try {
-            String username = getUsernameFromToken(token);
-            refreshedToken = generateToken(username);
-        } catch (Exception e) {
-            refreshedToken = null;
+    public String getTokenValue(String bearerToken) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(tokenHead)) {
+            return bearerToken.substring(tokenHead.length());
         }
-        return refreshedToken;
-    }
-
-    /**
-     * 刷新令牌
-     *
-     * @param 截取完整的token，根据前缀 "Bearer "开头
-     * @return 新令牌
-     */
-    public String interceptCompleteToken(String completeToken) {
-        String authToken = completeToken.substring(this.getTokenHead().length());
-        return authToken;
-    }
-
-
-    /**
-     * 验证令牌
-     *
-     * @param token       令牌
-     * @param userDetails 用户
-     * @return 是否有效
-     */
-    public boolean validateToken(String token, UserDetails userDetails) {
-        JwtUser user = (JwtUser) userDetails;
-        String username = getUsernameFromToken(token);
-        return (username.equals(user.getUsername()) && !isTokenExpired(token));
+        return null;
     }
 
 }

@@ -19,7 +19,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "tb_sys_permission")
+@Table(name = "sys_permission")
 @Getter
 @Setter
 @ToString
