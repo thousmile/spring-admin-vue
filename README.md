@@ -16,11 +16,11 @@ GitHub   ：  https://github.com/thousmile
 
 ### 某些傻逼，删演示环境的数据
 ### 所以演示环境，没有修改和删除等操作的权限
-[演示地址](https://xaaef.com/)
+[演示地址](https://admin.xaaef.com)
 
 数据库里的用户，password 和 username 都是相同的
 ```
-root_admin  :  root_admin
+admin  :  admin
 xiaoxiannv  :  xiaoxiannv
 xiannva     :  xiannva
 ```
