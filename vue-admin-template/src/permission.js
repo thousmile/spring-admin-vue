@@ -28,25 +28,28 @@ router.beforeEach(async(to, from, next) => {
     } else {
       const relativePath = getRelativePath()
       if (store.getters.menus.length === 0) {
-        // 拉取用户信息(请确保在 GetInfo 方法中 已经获取到菜单列表)
-        store.dispatch('GetInfo').then(res => {
-          // 动态设置路由（把上一步获取到的用户传递给 GenerateRoutes方法 解析）
-          store.dispatch('GenerateRoutes', store.getters.menus).then(r => {
-            // 获取已经解析好的路由列表，动态添加到router中
-            router.addRoutes(store.getters.dynamicRouters)
-            // hack方法 确保addRoutes已完成
-            if (relativePath.indexOf('login') !== -1) {
-              next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
-            } else {
-              next({ path: relativePath, replace: true })
-            }
-          })
-        }).catch((err) => {
-          store.dispatch('LogOut').then(() => {
-            Message.error(err || '您的登录已经过期，请重新登录!')
-            next({ path: '/' })
-          })
-        })
+        try {
+          // 拉取用户信息。和 菜单
+          const { menus } = await store.dispatch('GetInfo')
+          // 获取简单用户
+          await store.dispatch('ListSimpleUsers')
+          // 根据 后端API接口，的菜单信息。构建 vue-router 的路由信息
+          const dr = await store.dispatch('toVueRoutes', menus)
+          // dr 就是动态路由 获取已经解析好的路由列表，动态添加到router中
+          dr.forEach(item => router.addRoute(item))
+          // hack方法 确保addRoutes已完成
+          if (relativePath.indexOf('login') !== -1) {
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+          } else {
+            next({ path: relativePath, replace: true })
+          }
+        } catch (error) {
+          // remove token and go to login page to re-login
+          await store.dispatch('FedLogOut')
+          Message.error(error || 'Has Error')
+          next(`/login?redirect=${to.path}`)
+          NProgress.done()
+        }
       } else {
         next()
       }

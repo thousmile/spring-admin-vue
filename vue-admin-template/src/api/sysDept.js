@@ -4,35 +4,35 @@ import request from '@/utils/request'
 
 // 获取列表信息
 export function getDeptTree() {
-  return request({ url: '/sys/department/tree', method: 'get' })
+  return request({ url: '/dept/tree', method: 'get' })
 }
 
 // 获取列表信息
 export function getDeptPage(params) {
-  return request({ url: '/sys/department/page', method: 'get', data: params })
+  return request({ url: '/dept/query', method: 'get', params: params })
 }
 
 // 获取列表信息
 export function getDeptAll() {
-  return request({ url: '/sys/department/all', method: 'get' })
+  return request({ url: '/dept/all', method: 'get' })
 }
 
 // 根据ID 查询单个部门信息
 export function getDeptById(params) {
-  return request({ url: '/sys/department/' + params, method: 'get' })
+  return request({ url: '/dept/' + params, method: 'get' })
 }
 
 // 新增部门
 export function saveDept(params) {
-  return request({ url: '/sys/department', method: 'post', data: params })
+  return request({ url: '/dept', method: 'post', data: params })
 }
 
 // 修改部门
 export function updateDept(params) {
-  return request({ url: '/sys/department', method: 'put', data: params })
+  return request({ url: '/dept', method: 'put', data: params })
 }
 
 // 删除部门
 export function removeDeptById(params) {
-  return request({ url: '/sys/department/' + params, method: 'delete' })
+  return request({ url: '/dept/' + params, method: 'delete' })
 }

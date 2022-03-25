@@ -25,7 +25,7 @@ Vue.prototype.$_has = function(value) {
     return isExist
   }
   dynamicButtons.forEach(button => {
-    if (button.resources === value) {
+    if (button.perms === value) {
       isExist = true
       return isExist
     }

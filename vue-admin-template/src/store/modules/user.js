@@ -1,23 +1,19 @@
-import { login, logout, getUserInfo } from '@/api/sysUser'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { login, logout, getUserInfo, getAllSimpleUsers } from '@/api/sysUser'
+import { setToken, removeToken } from '@/utils/auth'
 
 const user = {
   state: {
-    token: getToken(),
-    header: 'Authorization',
     nickname: '',
     username: '',
     avatar: '',
     userinfo: {},
     roles: [],
     menus: [], // 菜单权限
-    buttons: [] // 安装权限
+    buttons: [], // 安装权限
+    simpleUsers: [] // 全部用的用户信息，但是只有 头像和用户ID 以及用户名
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token
-    },
     SET_USER_INFO: (state, user) => {
       if (user === null) {
         state.avatar = ''
@@ -39,6 +35,9 @@ const user = {
     },
     SET_BUTTONS: (state, buttons) => {
       state.buttons = buttons
+    },
+    SET_SIMPLE_USERS: (state, users) => {
+      state.simpleUsers = users
     }
   },
 
@@ -47,10 +46,9 @@ const user = {
     Login({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo)
-          .then(response => {
-            const tokenValue = response.prefix + response.value
-            setToken(tokenValue)
-            commit('SET_TOKEN', tokenValue)
+          .then(resp => {
+            const accessToken = resp.token_type + resp.access_token
+            setToken(accessToken)
             resolve()
           })
           .catch(error => {
@@ -68,12 +66,31 @@ const user = {
               // 验证返回的roles是否是一个非空数组
               commit('SET_ROLES', response.roles)
             } else {
-              reject('getInfo: 当前用户没有角色 !')
+              reject('当前用户没有角色,请联系管理员！')
+              logout().then(r => {
+                console.log(r)
+                commit('SET_TOKEN', '')
+                removeToken()
+              })
             }
             commit('SET_USER_INFO', response)
             commit('SET_MENUS', response.menus)
             commit('SET_BUTTONS', response.buttons)
             resolve(response)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
+
+    // 获取简单用户信息
+    ListSimpleUsers({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        getAllSimpleUsers()
+          .then(response => {
+            commit('SET_SIMPLE_USERS', response)
+            resolve()
           })
           .catch(error => {
             reject(error)
@@ -112,7 +129,6 @@ const user = {
         resolve()
       })
     }
-
   }
 }
 

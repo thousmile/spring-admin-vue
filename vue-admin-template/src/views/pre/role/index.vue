@@ -1,20 +1,23 @@
 <template>
-  <el-container>
+  <el-container v-has="'pre_role:view'" class="wrapper">
     <el-header>
       <el-row :gutter="20">
         <el-col :span="4">
-          <el-button v-has="'pre_role:create'" type="primary" @click="addRoleEntity">新增角色</el-button>
+          <el-button v-has="'pre_role:create'" type="success" @click="addRoleEntity">新增角色</el-button>
         </el-col>
         <el-col :span="20">
-          <el-alert title="请勿乱删除角色, 确实需要删除角色的时候, (1).请确定这个角色下面没有用户, (2).请确定这个角色没有分配权限. 只有满足以上两种情况才可以删除角色成功!" type="info" />
+          <el-alert
+            title="请勿乱删除角色, 确实需要删除角色的时候, (1).请确定这个角色下面没有用户, (2).请确定这个角色没有分配权限. 只有满足以上两种情况才可以删除角色成功!"
+            type="warning"
+          />
         </el-col>
       </el-row>
 
-      <el-dialog :visible.sync="dialog.visible" :before-close="handleClose" :title="dialog.title" width="550px">
+      <el-dialog :visible.sync="dialog.visible" :title="dialog.title">
         <el-form id="role" ref="entity" :model="entity" :rules="rules" label-width="80px">
-          <template v-if="entity.rid > 0">
+          <template v-if="entity.roleId">
             <el-form-item label="角色ID">
-              <el-input v-model="entity.rid" disabled />
+              <el-input v-model="entity.roleId" disabled />
             </el-form-item>
           </template>
           <el-form-item label="角色名称" prop="roleName">
@@ -32,7 +35,7 @@
       </el-dialog>
 
       <!-- 角色权限列表 -->
-      <el-dialog :visible.sync="authority.visible" :title="authority.title" :before-close="handleClose" width="400px">
+      <el-dialog :visible.sync="authority.visible" :title="authority.title">
         <el-tree
           ref="treeList"
           :data="authority.list"
@@ -59,20 +62,33 @@
         border
         style="width: 100%"
       >
-        <el-table-column fixed prop="rid" label="角色ID" width="100" />
+        <el-table-column fixed prop="roleId" label="角色ID" width="100" />
         <el-table-column prop="roleName" label="角色名称" />
         <el-table-column prop="description" label="角色描述" />
+        <el-table-column label="创建者">
+          <template slot-scope="scope">
+            <show-user-avatar :user-id="scope.row.createUser" />
+          </template>
+        </el-table-column>
         <el-table-column label="添加时间">
-          <template slot-scope="scope">{{ scope.row.createTime | formatDateTime }}</template>
+          <template slot-scope="scope">{{ scope.row.createTime | timeAgo }}</template>
+        </el-table-column>
+        <el-table-column label="修改者">
+          <template slot-scope="scope">
+            <show-user-avatar :user-id="scope.row.lastUpdateUser" />
+          </template>
         </el-table-column>
         <el-table-column label="修改时间">
-          <template slot-scope="scope">{{ scope.row.lastUpdateTime | formatDateTime }}</template>
+          <template slot-scope="scope">{{ scope.row.lastUpdateTime | timeAgo }}</template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="250">
+        <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button v-has="'pre_role:update:permissions'" type="info" @click="getRolePermissions(scope.row)">修改权限</el-button>
-            <el-button v-has="'pre_role:update'" type="primary" @click="updateRoleEntity(scope.row)">编辑</el-button>
-            <el-button v-has="'pre_role:delete'" type="danger" @click="deleteRoleEntity(scope.row)">删除</el-button>
+            <el-button-group>
+              <el-button v-has="'pre_role:update:permissions'" type="info" @click="getRolePermissions(scope.row)">修改权限
+              </el-button>
+              <el-button v-has="'pre_role:update'" type="primary" @click="updateRoleEntity(scope.row)">编辑</el-button>
+              <el-button v-has="'pre_role:delete'" type="danger" @click="deleteRoleEntity(scope.row)">删除</el-button>
+            </el-button-group>
           </template>
         </el-table-column>
       </el-table>
@@ -92,11 +108,11 @@
 <script>
 import {
   getRolePage,
-  getRoleById,
   saveRole,
   updateRole,
   removeRoleById,
-  updateRolePermission
+  updateRolePerms,
+  getRolePerms
 } from '@/api/sysRole'
 
 export default {
@@ -111,9 +127,9 @@ export default {
         total: 0
       },
       entity: {
-        rid: 0,
-        description: '',
-        roleName: ''
+        roleId: '',
+        roleName: '',
+        description: ''
       },
       dialog: {
         visible: false,
@@ -128,7 +144,7 @@ export default {
           children: 'children'
         },
         checkedKeys: [],
-        rid: 0,
+        roleId: 0,
         visible: false,
         title: ''
       },
@@ -143,11 +159,9 @@ export default {
           { required: true, message: '角色名称不能为空', trigger: 'blur' },
           {
             validator: function(rule, value, callback) {
-              const regex = /[R][O][L][E][_][A-Z]{4,}/
+              const regex = /^[a-zA-Z0-9_-]{4,18}$/
               if (!regex.test(value)) {
-                callback(
-                  new Error('角色名称必须是全大写英文,并且要以“ROLE_”开头')
-                )
+                callback(new Error('角色名称只能是 英文大小写和数字 组成'))
               } else {
                 callback()
               }
@@ -182,9 +196,9 @@ export default {
     },
     emptyEntity() {
       this.entity = {
-        rid: 0,
-        description: '',
-        roleName: ''
+        roleId: '',
+        roleName: '',
+        description: ''
       }
     },
     addRoleEntity() {
@@ -194,23 +208,17 @@ export default {
     },
     updateRoleEntity(data) {
       this.emptyEntity()
-      this.entity = {
-        rid: data.rid,
-        roleName: data.roleName,
-        description: data.description
-      }
+      this.entity = data
       this.dialog.title = '修改角色'
       this.dialog.visible = true
     },
     deleteRoleEntity(data) {
       // 删除角色，如果当前角色有跟其他用户或者权限关联，无法删除
       const _this = this
-      if (data.rid > 0) {
+      if (data.roleId) {
         _this
           .$confirm(
-            '确定要删除【' +
-              data.description +
-              '】吗? 请确认这个角色下面没有用户了.否则无法删除 是否继续?',
+            `确定要删除【 ${data.description} 】吗? 请确认这个角色下面没有用户了.否则无法删除 是否继续?`,
             '警告',
             {
               confirmButtonText: '确定',
@@ -219,7 +227,7 @@ export default {
             }
           )
           .then(() => {
-            removeRoleById(data.rid).then(result => {
+            removeRoleById(data.roleId).then(result => {
               _this.$notify({
                 title: '成功',
                 message: '删除成功!',
@@ -235,18 +243,11 @@ export default {
         })
       }
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done()
-        })
-        .catch(_ => {})
-    },
     saveAndFlush() {
       const _this = this
       _this.$refs.entity.validate(valid => {
         if (valid) {
-          if (_this.entity.rid > 0) {
+          if (_this.entity.roleId) {
             // 修改角色信息
             updateRole(_this.entity).then(result => {
               _this.$notify({
@@ -275,11 +276,11 @@ export default {
     getRolePermissions(data) {
       // 查看当前角色拥有的权限
       const _this = this
-      if (data.rid > 0) {
-        getRoleById(data.rid).then(result => {
+      if (data.roleId) {
+        getRolePerms(data.roleId).then(result => {
           _this.authority.list = result.all
           _this.authority.checkedKeys = result.have
-          _this.authority.rid = data.rid
+          _this.authority.roleId = data.roleId
           _this.authority.title = data.description
           _this.authority.visible = true
         })
@@ -293,10 +294,8 @@ export default {
       if (father !== undefined && father !== null && father.length > 0) {
         father.forEach(f => list.push(f.id))
       }
-      updateRolePermission({
-        rid: _this.authority.rid,
-        permissions: list
-      }).then(result => {
+      console.log('list', list)
+      updateRolePerms({ id: _this.authority.roleId, items: list }).then(result => {
         _this.$notify({
           title: '成功',
           message: '修改角色权限成功!',

@@ -1,0 +1,53 @@
+## 安全认证
+
+## 验证码一定要在浏览器获取 codeKey 要是随机数。在登录的时候会用到 codeKey
+GET {{baseUrl}}/auth/captcha/codes/5jXzuwcoUzbtnHNh
+
+### 密码模式登录
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0
+
+{
+  "username": "admin",
+  "password": "admin",
+  "codeKey": "5jXzuwcoUzbtnHNh",
+  "codeText": "9jps"
+}
+
+> {%
+client.global.set("tokenValue", response.body.data.access_token);
+client.global.set("refreshToken", response.body.data.refresh_token);
+%}
+
+### 退出登录
+POST {{baseUrl}}/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{tokenValue}}
+
+### 刷新token
+GET {{baseUrl}}/auth/refresh
+Content-Type: application/json
+Authorization: Bearer {{tokenValue}}
+
+### 获取登录的用户信息
+GET {{baseUrl}}/user/info
+Content-Type: application/json
+Authorization: Bearer {{tokenValue}}
+
+
+
+### 首页  测试  @PreAuthorize("hasAuthority('home:get')")
+GET {{baseUrl}}/home
+Content-Type: application/json
+Authorization: Bearer {{tokenValue}}
+
+
+### 首页  测试  @PreAuthorize("hasAuthority('index:get')")
+GET {{baseUrl}}/index
+Content-Type: application/json
+Authorization: Bearer {{tokenValue}}
+
+
+
+

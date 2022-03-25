@@ -1,5 +1,5 @@
 <template>
-  <el-container id="user">
+  <el-container v-has="'pre_user:view'" class="wrapper">
     <el-header>
       <el-row :gutter="20">
         <el-col :span="8">
@@ -14,35 +14,24 @@
             type="primary"
             icon="el-icon-search"
             @click="getUserTableData"
-            >搜索</el-button
-          >
+          >搜索
+          </el-button>
         </el-col>
         <el-col :span="4">
           <el-button
             v-has="'pre_user:create'"
-            type="info"
+            type="success"
             @click="addUserEntity"
-            >添加用户</el-button
-          >
+          >添加用户
+          </el-button>
         </el-col>
         <el-col :span="6">
           <!-- 修改用户信息 -->
-          <el-dialog
-            :visible.sync="dialog.visible"
-            :title="dialog.title"
-            width="30%"
-            :before-close="handleClose"
-          >
-            <el-form
-              id="user"
-              ref="entity"
-              :model="entity"
-              :rules="rules"
-              label-width="80px"
-            >
-              <template v-if="entity.uid != ''">
+          <el-dialog :visible.sync="dialog.visible" :title="dialog.title" :before-close="handleClose">
+            <el-form id="user" ref="entity" :model="entity" :rules="rules" label-width="80px">
+              <template v-if="entity.userId">
                 <el-form-item label="用户ID">
-                  <el-input v-model="entity.uid" disabled />
+                  <el-input v-model="entity.userId" disabled />
                 </el-form-item>
               </template>
               <el-form-item label="头像" prop="avatar">
@@ -54,37 +43,22 @@
               <el-form-item label="账号" prop="username">
                 <el-input v-model="entity.username" clearable />
               </el-form-item>
-              <template v-if="entity.uid == ''">
+              <el-form-item label="手机号" prop="mobile">
+                <el-input v-model="entity.mobile" clearable />
+              </el-form-item>
+              <template v-if="entity.userId === ''">
                 <el-form-item label="密码" prop="password">
-                  <el-input
-                    v-model="entity.password"
-                    type="password"
-                    clearable
-                  />
+                  <el-input v-model="entity.password" type="password" clearable />
                 </el-form-item>
               </template>
               <el-form-item label="邮箱" prop="email">
                 <el-input v-model="entity.email" clearable />
               </el-form-item>
-              <el-form-item label="生日" prop="birthday">
-                <el-date-picker
-                  v-model="entity.birthday"
-                  value-format="yyyy-MM-dd"
-                  type="date"
-                  :picker-options="pickerOptions"
-                  placeholder="选择日期"
-                />
-              </el-form-item>
               <el-form-item label="性别" prop="gender">
-                <el-select
-                  v-model="entity.gender"
-                  clearable
-                  filterable
-                  placeholder="请选择"
-                >
+                <el-select v-model="entity.gender" clearable filterable placeholder="请选择">
                   <el-option
-                    v-for="item in genderOptions"
-                    :key="item.value"
+                    v-for="(item,index) in genderOptions"
+                    :key="index"
                     :label="item.label"
                     :value="item.value"
                   />
@@ -108,8 +82,8 @@
                   placeholder="请选择"
                 >
                   <el-option
-                    v-for="item in optionsStatus"
-                    :key="item.value"
+                    v-for="(item,index) in optionsStatus"
+                    :key="index"
                     :label="item.label"
                     :value="item.value"
                   />
@@ -126,16 +100,14 @@
           <el-dialog
             :visible.sync="userRole.visible"
             :title="userRole.title"
-            width="30%"
-            :before-close="handleClose"
           >
             <el-checkbox-group v-model="entity.roles">
               <el-checkbox
                 v-for="(item, index) in roleList"
                 :key="index"
-                :label="item.rid"
-                >{{ item.description }}</el-checkbox
-              >
+                :label="item.roleId"
+              >{{ item.description }}
+              </el-checkbox>
             </el-checkbox-group>
             <span slot="footer" class="dialog-footer">
               <el-button @click="userRole.visible = false">取 消</el-button>
@@ -155,14 +127,14 @@
         style="width: 100%"
       >
         <el-table-column prop="nickname" label="用户昵称" fixed />
-        <el-table-column prop="uid" label="用户ID" width="80" />
-        <el-table-column label="头像" width="100">
+        <el-table-column prop="userId" label="用户ID" width="110" />
+        <el-table-column label="头像" width="80">
           <template slot-scope="scope">
             <div
               class="avatar-wrapper"
               @click="viewBigAvatar(scope.row.avatar)"
             >
-              <img :src="scope.row.avatar" class="user-avatar" />
+              <img :src="scope.row.avatar" class="user-avatar">
             </div>
           </template>
         </el-table-column>
@@ -170,12 +142,8 @@
         <el-table-column label="性别" width="50">
           <template slot-scope="scope">{{
             scope.row.gender | showGender
-          }}</template>
-        </el-table-column>
-        <el-table-column label="生日" width="100">
-          <template slot-scope="scope">{{
-            scope.row.birthday | formatDate
-          }}</template>
+          }}
+          </template>
         </el-table-column>
         <el-table-column prop="email" label="邮箱" />
         <el-table-column label="拥有角色">
@@ -192,59 +160,68 @@
             </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column label="所在部门" width="100">
+        <el-table-column label="所在部门">
           <template slot-scope="scope">
-            <el-tag>{{ scope.row.departmentName }}</el-tag>
+            <el-tag>{{ scope.row.dept.deptName }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="状态" width="70">
           <template slot-scope="scope">{{
             scope.row.status | showStatus
-          }}</template>
+          }}
+          </template>
+        </el-table-column>
+        <el-table-column label="创建者">
+          <template slot-scope="scope">
+            <show-user-avatar :user-id="scope.row.createUser" />
+          </template>
         </el-table-column>
         <el-table-column label="添加时间">
-          <template slot-scope="scope">{{
-            scope.row.createTime | formatDateTime
-          }}</template>
+          <template slot-scope="scope">{{ scope.row.createTime | timeAgo }}</template>
+        </el-table-column>
+        <el-table-column label="修改者">
+          <template slot-scope="scope">
+            <show-user-avatar :user-id="scope.row.lastUpdateUser" />
+          </template>
         </el-table-column>
         <el-table-column label="修改时间">
-          <template slot-scope="scope">{{
-            scope.row.lastUpdateTime | formatDateTime
-          }}</template>
+          <template slot-scope="scope">{{ scope.row.lastUpdateTime | timeAgo }}</template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="335">
+        <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
-            <el-button
-              v-has="'pre_user:update:roles'"
-              type="info"
-              @click="updateUserRole(scope.row)"
-              >修改角色</el-button
-            >
-            <el-button
-              v-has="'pre_user:update'"
-              type="primary"
-              @click="updateUserEntity(scope.row)"
-              >编辑</el-button
-            >
-            <el-button
-              v-has="'pre_user:delete'"
-              type="danger"
-              @click="deleteUserEntity(scope.row)"
-              >删除</el-button
-            >
-            <el-button
-              v-has="'pre_user:reset:password'"
-              type="danger"
-              @click="resetUserPassword(scope.row)"
-              >重置密码</el-button
-            >
+            <el-button-group>
+              <el-button
+                v-has="'pre_user:update:roles'"
+                type="info"
+                @click="updateUserRole(scope.row)"
+              >修改角色
+              </el-button>
+              <el-button
+                v-has="'pre_user:update'"
+                type="primary"
+                @click="updateUserEntity(scope.row)"
+              >编辑
+              </el-button>
+              <el-button
+                v-has="'pre_user:delete'"
+                type="danger"
+                @click="deleteUserEntity(scope.row)"
+              >删除
+              </el-button>
+              <el-button
+                v-has="'pre_user:reset:password'"
+                type="warning"
+                @click="resetUserPassword(scope.row)"
+              >重置密码
+              </el-button>
+            </el-button-group>
           </template>
         </el-table-column>
       </el-table>
     </el-main>
     <el-footer>
       <el-pagination
-        :page-size="page.pageNum"
+        :page-size="page.pageSize"
         :total="page.total"
         layout="total,prev, pager, next, jumper"
         background
@@ -255,6 +232,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import {
   getUserPage,
   saveUser,
@@ -267,6 +245,7 @@ import { getDeptTree } from '@/api/sysDept'
 import { getRoleAll } from '@/api/sysRole'
 import {
   validateEmail,
+  validatePhone,
   validatePassword,
   validateUsername,
   validateNickname
@@ -288,16 +267,16 @@ export default {
         total: 0
       },
       entity: {
-        uid: '',
+        userId: '', // 用户ID
         avatar: '', // 头像
         username: '', // 登录账户
+        mobile: '', // 手机号
         email: '', // 邮箱
         nickname: '', // 昵称
         password: '', // 密码
         gender: '', // 性别
-        birthday: '', // 生日
-        status: 0, // 状态
-        deptId: 0, // 部门ID
+        deptId: '', // 部门ID
+        status: '', // 状态
         roles: [] // 角色列表
       },
       dialog: {
@@ -314,8 +293,8 @@ export default {
       roleList: [],
       cascaderProps: {
         children: 'children',
-        label: 'title',
-        value: 'id',
+        label: 'deptName',
+        value: 'deptId',
         emitPath: false,
         checkStrictly: true
       },
@@ -349,14 +328,15 @@ export default {
           { required: true, message: '密码不能为空', trigger: 'blur' },
           { required: true, validator: validatePassword, trigger: 'blur' }
         ],
+        mobile: [
+          { required: true, message: '手机号不能为空', trigger: 'blur' },
+          { required: true, validator: validatePhone, trigger: 'blur' }
+        ],
         email: [
           { required: true, message: '邮箱不能为空', trigger: 'blur' },
           { required: true, validator: validateEmail, trigger: 'blur' }
         ],
         gender: [{ required: true, message: '性别必须选择~', trigger: 'blur' }],
-        birthday: [
-          { required: true, message: '生日必须选择~', trigger: 'blur' }
-        ],
         status: [{ required: true, message: '状态必须选择~', trigger: 'blur' }],
         deptId: [{ required: true, message: '部门必须选择~', trigger: 'blur' }]
       }
@@ -365,6 +345,7 @@ export default {
   created() {
     this.getUserTableData()
     this.getDeptListData()
+    this.getRoleListData()
   },
   methods: {
     getUserTableData() {
@@ -405,28 +386,29 @@ export default {
     },
     updateUserRole(data) {
       // 重新给用户赋值权限
-      this.getRoleListData()
       this.emptyEntity()
       this.userRole = {
         visible: true,
         title: '修改用户角色'
       }
-      const roles = []
-      data.roles.forEach((role) => {
-        roles.push(role.rid)
-      })
-      this.entity.uid = data.uid
+      let roles = []
+      if (data.roles){
+        data.roles.forEach((role) => {
+          roles.push(role.roleId)
+        })
+      }
+      this.entity.userId = data.userId
       this.entity.nickname = data.nickname
       this.entity.roles = roles
     },
     saveUserRoles() {
       // 保存用户的角色信息
       const _this = this
-      const roles = this.entity.roles
+      const roles = _this.entity.roles
       if (roles !== null && roles.length > 0) {
         _this
           .$confirm(
-            '确定要修改【' + _this.entity.nickname + '】的角色吗? 是否继续?',
+            `确定要修改【 ${_this.entity.nickname} 】的角色吗? 是否继续?`,
             '警告',
             {
               confirmButtonText: '确定',
@@ -435,7 +417,8 @@ export default {
             }
           )
           .then(() => {
-            updateUserRoles({ uid: _this.entity.uid, roles: roles }).then(
+            const params = { userId: _this.entity.userId, roles: roles }
+            updateUserRoles(params).then(
               (result) => {
                 _this.$message({ type: 'success', message: '修改角色成功!' })
                 _this.userRole.visible = false
@@ -457,15 +440,14 @@ export default {
     emptyEntity() {
       // 清空用户信息
       this.entity = {
-        uid: '',
+        userId: '',
         avatar: '', // 头像
         username: '', // 登录账户
         email: '', // 邮箱
         nickname: '', // 昵称
         password: '', // 密码
-        gender: '', // 性别
-        birthday: '', // 生日
-        status: '', // 状态
+        gender: 1, // 性别
+        status: 1, // 状态
         deptId: '', // 部门ID
         roles: [] // 角色列表
       }
@@ -485,19 +467,7 @@ export default {
     updateUserEntity(data) {
       // 修改用户信息
       this.emptyEntity()
-      this.entity = {
-        uid: data.uid,
-        avatar: data.avatar, // 头像
-        username: data.username, // 登录账户
-        email: data.email, // 邮箱
-        nickname: data.nickname, // 昵称
-        password: data.password, // 密码
-        gender: data.gender, // 性别
-        birthday: data.birthday, // 生日
-        status: data.status, // 状态
-        deptId: data.deptId, // 部门ID
-        roles: data.roles // 角色列表
-      }
+      this.entity = data
       this.dialog = {
         visible: true,
         title: '修改用户信息'
@@ -506,10 +476,10 @@ export default {
     deleteUserEntity(data) {
       // 删除这个用户
       const _this = this
-      if (data.uid !== null && data.uid !== '') {
+      if (data.userId) {
         _this
           .$confirm(
-            '确定要删除【' + data.nickname + '】吗? 是否继续?',
+            `确定要删除【 ${data.nickname} 】吗? 是否继续?`,
             '警告',
             {
               confirmButtonText: '确定',
@@ -518,7 +488,7 @@ export default {
             }
           )
           .then(() => {
-            removeUserById(data.uid).then((result) => {
+            removeUserById(data.userId).then((result) => {
               _this.$message({ type: 'success', message: '删除成功!' })
               _this.getUserTableData()
             })
@@ -532,12 +502,12 @@ export default {
     },
     resetUserPassword(data) {
       // 重置此用户密码
-      let newPwd = '123456'
+      const newPwd = '123456'
       const _this = this
-      if (data.uid !== null && data.uid !== '') {
+      if (data.userId) {
         _this
           .$confirm(
-            '确定要重置【' + data.nickname + '】的密码吗? 是否继续?',
+            `确定要重置【 ${data.nickname} 】的密码吗? 是否继续?`,
             '警告',
             {
               confirmButtonText: '确定',
@@ -546,7 +516,7 @@ export default {
             }
           )
           .then(() => {
-            resetPassword({ uid: data.uid, newPwd: newPwd }).then((result) => {
+            resetPassword({ userId: data.userId, newPwd: newPwd }).then((result) => {
               _this.$message({ type: 'success', message: `重置密码成功! 密码是 ${newPwd}` })
               _this.getUserTableData()
             })
@@ -563,14 +533,15 @@ export default {
         .then((_) => {
           done()
         })
-        .catch((_) => {})
+        .catch((_) => {
+        })
     },
     saveAndFlush() {
       const _this = this
       _this.$refs.entity.validate((valid) => {
         if (valid) {
           delete _this.entity.roles
-          if (_this.entity.uid !== '') {
+          if (_this.entity.userId) {
             updateUser(_this.entity).then((result) => {
               _this.$notify({
                 title: '成功',
@@ -596,29 +567,25 @@ export default {
     }
   }
 }
+
 </script>
 <style lang="scss" scoped>
-.avatar-wrapper {
-  cursor: pointer;
-  position: relative;
-  .user-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 10px;
-  }
-}
+
 </style>
 <style lang="scss">
 #user {
   .el-tag:hover {
     cursor: pointer;
   }
+
   .el-date-editor {
     width: 100%;
   }
+
   .el-cascader {
     width: 100%;
   }
+
   .el-select {
     width: 100%;
   }

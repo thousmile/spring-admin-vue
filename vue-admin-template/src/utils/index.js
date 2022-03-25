@@ -37,7 +37,9 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -114,8 +116,9 @@ export function byteLength(str) {
   let s = str.length
   for (var i = str.length - 1; i >= 0; i--) {
     const code = str.charCodeAt(i)
-    if (code > 0x7f && code <= 0x7ff) s++
-    else if (code > 0x7ff && code <= 0xffff) s += 2
+    if (code > 0x7f && code <= 0x7ff) {
+      s++
+    } else if (code > 0x7ff && code <= 0xffff) s += 2
     if (code >= 0xDC00 && code <= 0xDFFF) i--
   }
   return s
@@ -160,12 +163,12 @@ export function param2Obj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"')
-        .replace(/\+/g, ' ') +
-      '"}'
+    decodeURIComponent(search)
+      .replace(/"/g, '\\"')
+      .replace(/&/g, '","')
+      .replace(/=/g, '":"')
+      .replace(/\+/g, ' ') +
+    '"}'
   )
 }
 
@@ -350,11 +353,9 @@ export function removeClass(ele, cls) {
  * 截取当前 url 端口号之后的 部分
  */
 export function getRelativePath() {
-  let host = `${location.protocol}//${location.host}/`
-  let href = location.href.replace(host, '')
-  let result = href
-  if (href.charAt(0) === '#') {
-    result = href.substring(1, href.length)
+  const result = location.hash
+  if (result.charAt(0) === '#') {
+    return result.substring(1, result.length)
   }
   return result
 }
@@ -374,4 +375,11 @@ export function getQueryString(params) {
     }
   }
   return result
+}
+
+/**
+ * 获取 url 前缀
+ */
+export function getUrlPrefix() {
+  return process.env.NODE_ENV === 'development' ? '/api' : process.env.VUE_APP_BASE_API
 }

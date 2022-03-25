@@ -1,23 +1,26 @@
 <!-- 部门管理 -->
 <template>
-  <el-container id="dept">
+  <el-container id="dept" v-has="'pre_dept:view'" class="wrapper">
     <el-header>
       <el-alert
         title="请勿乱删除部门, 确实需要删除部门的时候, (1).请确定这个部门下面没有子部门, (2).请确定这个部门下面没有用户. 只有满足以上两种情况才可以删除部门成功!"
-        type="info"
+        type="warning"
       />
     </el-header>
-    <el-main
-      v-loading="loading"
-      element-loading-text="拼命加载中..."
-      element-loading-spinner="el-icon-loading"
-    >
+    <el-main v-loading="loading" element-loading-text="拼命加载中..." element-loading-spinner="el-icon-loading">
       <el-row :gutter="20">
         <el-col :span="10">
+          <el-input v-model="filterText" clearable placeholder="输入关键字进行过滤">
+            <i slot="prefix" class="el-input__icon el-icon-search" />
+          </el-input>
+          <br>
+          <br>
           <div class="grid-content bg-purple">
             <el-tree
+              ref="tree"
               :data="treeData"
               :props="defaultProps"
+              :filter-node-method="filterNode"
               :default-expand-all="true"
               @node-click="handleNodeClick"
             />
@@ -28,42 +31,27 @@
             <div slot="header" class="clearfix">
               <span class="card-header">部门详细信息</span>
               <el-button-group style="float: right;">
-                <el-button
-                  v-has="'pre_dept:create'"
-                  type="primary"
-                  icon="el-icon-share"
-                  @click="addEntity"
-                >添加部门</el-button>
-                <el-button
-                  v-has="'pre_dept:update'"
-                  type="warning"
-                  icon="el-icon-edit"
-                  @click="isEdit = !isEdit"
-                >修改部门</el-button>
-                <el-button
-                  v-has="'pre_dept:delete'"
-                  type="danger"
-                  icon="el-icon-delete"
-                  @click="deleteEntity"
-                >删除部门</el-button>
+                <el-button v-has="'pre_dept:update:permissions'" type="primary" icon="el-icon-share" @click="addEntity">修改权限
+                </el-button>
+
+                <el-button v-has="'pre_dept:create'" type="success" icon="el-icon-share" @click="addEntity">新增
+                </el-button>
+
+                <el-button v-has="'pre_dept:update'" type="warning" icon="el-icon-edit" @click="isEdit = !isEdit">修改
+                </el-button>
+
+                <el-button v-has="'pre_dept:delete'" type="danger" icon="el-icon-delete" @click="deleteEntity">删除
+                </el-button>
+
               </el-button-group>
             </div>
 
-            <el-form
-              ref="deptForm"
-              :rules="rules"
-              :model="deptForm"
-              label-width="100px"
-            >
-              <el-form-item label="部门ID">
-                <el-input v-model="deptForm.id" :disabled="true" />
+            <el-form ref="deptForm" :rules="rules" :model="deptForm" label-width="100px">
+              <el-form-item v-if="deptForm.deptId" label="部门ID">
+                <el-input v-model="deptForm.deptId" :disabled="true" />
               </el-form-item>
-              <el-form-item label="部门名称" prop="name">
-                <el-input
-                  v-model="deptForm.name"
-                  :disabled="isEdit"
-                  clearable
-                />
+              <el-form-item label="部门名称" prop="deptName">
+                <el-input v-model="deptForm.deptName" :disabled="isEdit" clearable />
               </el-form-item>
               <el-form-item label="上级部门" prop="parentId">
                 <el-cascader
@@ -76,14 +64,14 @@
                   :props="cascaderProps"
                 />
               </el-form-item>
-              <el-form-item label="部门排序" prop="level">
-                <el-input-number
-                  v-model="deptForm.level"
-                  :disabled="isEdit"
-                  :min="1"
-                  :max="10000"
-                  label="部门排序"
-                />
+              <el-form-item label="部门排序" prop="sort">
+                <el-input-number v-model="deptForm.sort" :disabled="isEdit" :min="1" :max="10000" label="部门排序" />
+              </el-form-item>
+              <el-form-item label="部门领导" prop="leader">
+                <el-input v-model="deptForm.leader" :disabled="isEdit" clearable />
+              </el-form-item>
+              <el-form-item label="领导电话" prop="leaderMobile">
+                <el-input v-model="deptForm.leaderMobile" :disabled="isEdit" clearable />
               </el-form-item>
               <el-form-item label="部门描述" prop="description">
                 <el-input
@@ -107,58 +95,56 @@
 </template>
 
 <script>
-import {
-  getDeptTree,
-  saveDept,
-  updateDept,
-  removeDeptById
-} from '@/api/sysDept'
+
+import { getDeptTree, saveDept, updateDept, removeDeptById } from '@/api/sysDept'
+import { validatePhone } from '@/utils/validate'
 
 export default {
-  components: {},
+  name: 'Dept',
   data() {
     return {
       deptForm: {
-        id: 0,
-        name: '',
+        deptId: '',
         parentId: '',
-        level: '',
+        deptName: '',
+        leader: '',
+        leaderMobile: '',
+        sort: '',
         description: ''
       },
+      filterText: '',
       loading: false,
       isEdit: true, // 是否可以编辑
       treeData: [],
       defaultLevel: 1,
       defaultProps: {
         children: 'children',
-        label: 'title'
+        label: 'deptName'
       },
       cascaderProps: {
         children: 'children',
-        label: 'title',
-        value: 'id',
+        label: 'deptName',
+        value: 'deptId',
         emitPath: false,
         checkStrictly: true
       },
       // 校验规则
       rules: {
-        name: [
-          { required: true, message: '部门名称不能为空', trigger: 'blur' }
+        parentId: [{ required: true, message: '上级部门必须填写', trigger: 'blur' }],
+        deptName: [{ required: true, message: '部门名称必须填写', trigger: 'blur' }],
+        leader: [{ required: true, message: '部门领导必须填写', trigger: 'blur' }],
+        leaderMobile: [
+          { required: true, message: '领导联系方式必须填写', trigger: 'blur' },
+          { required: true, validator: validatePhone, trigger: 'blur' }
         ],
-        parentId: [
-          { required: true, message: '上级部门不能为空', trigger: 'blur' }
-        ],
-        level: [
-          {
-            required: true,
-            message: '部门排序不能为空,且必须是数字',
-            trigger: 'blur'
-          }
-        ],
-        description: [
-          { required: true, message: '部门描述不能为空', trigger: 'blur' }
-        ]
+        sort: [{ required: true, message: '部门排序必须填写,且必须是数字', trigger: 'blur' }],
+        description: [{ required: true, message: '部门描述必须填写', trigger: 'blur' }]
       }
+    }
+  },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val)
     }
   },
   created() {
@@ -175,39 +161,32 @@ export default {
     },
     handleNodeClick(data) {
       this.isEdit = true
-      this.deptForm = data.source
+      this.deptForm = data
       if (data.children !== undefined) {
         this.defaultLevel = data.children.length + 1
       } else {
         this.defaultLevel = 1
       }
     },
-    handleChange(data) {
-      console.log('data :', data)
+    filterNode(value, data) {
+      if (!value) return true
+      return data.deptName.indexOf(value) !== -1
     },
     saveAndFlush() {
       const _this = this
       _this.$refs.deptForm.validate(valid => {
         if (valid) {
           // 修改部门信息
-          if (_this.deptForm.id > 0) {
+          if (_this.deptForm.deptId) {
             updateDept(_this.deptForm).then(result => {
-              _this.$notify({
-                title: '成功',
-                message: '修改部门成功!',
-                type: 'success'
-              })
+              _this.$notify({ title: '成功', message: '修改部门成功!', type: 'success' })
               _this.getDeptTreeData()
               _this.isEdit = true
             })
           } else {
             // 新增部门
             saveDept(_this.deptForm).then(result => {
-              _this.$notify({
-                title: '成功',
-                message: '新增部门成功!',
-                type: 'success'
-              })
+              _this.$notify({ title: '成功', message: '新增部门成功!', type: 'success' })
               _this.getDeptTreeData()
               _this.isEdit = true
             })
@@ -217,12 +196,14 @@ export default {
     },
     addEntity() {
       this.isEdit = false
-      const parentId = this.deptForm.id
+      const parentId = this.deptForm.deptId
       this.deptForm = {
-        id: 0,
-        name: '',
+        deptId: '',
         parentId: parentId,
-        level: this.defaultLevel,
+        deptName: '',
+        leader: '',
+        leaderMobile: '',
+        sort: this.defaultLevel,
         description: ''
       }
     },
@@ -230,28 +211,24 @@ export default {
       this.isEdit = true
       const _this = this
       if (_this.deptForm.id > 0) {
-        _this
-          .$confirm(
-            '确定要删除【' +
-              _this.deptForm.name +
-              '】吗? 请确认这个部门下面没用户.否则无法删除 是否继续?',
-            '警告',
-            {
-              confirmButtonText: '确定',
-              cancelButtonText: '取消',
-              type: 'warning'
-            }
-          )
-          .then(() => {
-            removeDeptById(_this.deptForm.id).then(result => {
-              _this.$notify({
-                type: 'success',
-                title: '成功',
-                message: '删除部门成功!'
-              })
-              _this.getDeptTreeData()
+        _this.$confirm(
+          `确定要删除【 ${_this.deptForm.deptName} 】吗? 请确认这个部门下面没用户.否则无法删除 是否继续?`,
+          '警告',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }
+        ).then(() => {
+          removeDeptById(_this.deptForm.deptId).then(result => {
+            _this.$notify({
+              type: 'success',
+              title: '成功',
+              message: '删除部门成功!'
             })
+            _this.getDeptTreeData()
           })
+        })
       } else {
         _this.$notify.error({
           title: '错误',
@@ -269,22 +246,28 @@ export default {
     font-size: 1rem;
     font-weight: 600;
   }
+
   .el-tree-node__label {
     font-size: 1rem;
     font-weight: 600;
   }
+
   .el-tree-node__content {
     height: 2.5rem;
   }
+
   .el-alert__title {
     font-size: 1rem;
   }
+
   .el-select {
     width: 100%;
   }
+
   .el-cascader {
     width: 100%;
   }
+
   .el-input-number {
     width: 100%;
   }

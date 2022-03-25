@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xaaef.robin.mapper.LoginLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.xaaef.robin.entity.LoginLog">
+            <id property="messageId" column="message_id" jdbcType="VARCHAR"/>
+            <result property="grantType" column="grant_type" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="requestIp" column="request_ip" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="osName" column="os_name" jdbcType="VARCHAR"/>
+            <result property="browser" column="browser" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        message_id,grant_type,user_id,
+        nickname,username,avatar,
+        request_ip,address,os_name,
+        browser,create_time
+    </sql>
+</mapper>

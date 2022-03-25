@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xaaef.robin.mapper.ChinaAreaMapper">
+
+    <resultMap id="BaseResultMap" type="com.xaaef.robin.entity.ChinaArea">
+        <id property="areaCode" column="area_code" jdbcType="BIGINT"/>
+        <result property="level" column="level" jdbcType="TINYINT"/>
+        <result property="parentCode" column="parent_code" jdbcType="BIGINT"/>
+        <result property="zipCode" column="zip_code" jdbcType="OTHER"/>
+        <result property="cityCode" column="city_code" jdbcType="CHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="shortName" column="short_name" jdbcType="VARCHAR"/>
+        <result property="mergerName" column="merger_name" jdbcType="VARCHAR"/>
+        <result property="pinyin" column="pinyin" jdbcType="VARCHAR"/>
+        <result property="lng" column="lng" jdbcType="DECIMAL"/>
+        <result property="lat" column="lat" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        area_code,`level`,parent_code,
+        zip_code,city_code,`name`,
+        short_name,merger_name,pinyin,
+        lng,lat
+    </sql>
+
+</mapper>

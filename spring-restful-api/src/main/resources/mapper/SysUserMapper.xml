@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xaaef.robin.mapper.SysUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.xaaef.robin.entity.SysUser">
+        <id property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="gender" column="gender" jdbcType="TINYINT"/>
+        <result property="deptId" column="dept_id" jdbcType="BIGINT"/>
+        <result property="status" column="status" jdbcType="TINYINT"/>
+        <result property="adminFlag" column="admin_flag" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateUser" column="last_update_user" jdbcType="BIGINT"/>
+        <association property="dept" javaType="SysDept">
+            <id property="deptId" column="dept_id"/>
+            <result property="deptName" column="dept_name"/>
+        </association>
+        <collection property="roles" ofType="SysRole">
+            <id property="roleId" column="role_id"/>
+            <result property="roleName" column="role_name"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id,avatar,username,
+        mobile,email,nickname,
+        `password`,gender,dept_id,
+        `status`,admin_flag,create_time,
+        create_user,last_update_time,last_update_user
+    </sql>
+
+
+    <insert id="insertByRoles">
+        insert into sys_user_role (user_id, role_id) values
+        <foreach collection='roles' item='item' index='index' separator=','>
+            (#{userId},#{item})
+        </foreach>
+    </insert>
+
+
+    <select id="selectKeywordsList" resultMap="BaseResultMap">
+        SELECT
+        DISTINCT u.user_id,
+        u.avatar,
+        u.username,
+        u.mobile,
+        u.email,
+        u.nickname,
+        u.gender,
+        u.`status`,
+        u.admin_flag,
+        u.create_time,
+        u.create_user,
+        u.last_update_time,
+        u.last_update_user,
+        d.dept_id,
+        d.dept_name
+        FROM
+        sys_user AS u
+        LEFT JOIN sys_dept AS d ON u.dept_id = d.dept_id
+        LEFT JOIN sys_user_role AS ur ON ur.user_id = u.user_id
+        LEFT JOIN sys_role AS r ON ur.role_id = r.role_id
+        <where>
+            <if test="params.roleId != null and params.roleId > 0">
+                AND r.role_id=#{params.roleId}
+            </if>
+            <if test="params.deptId != null and params.deptId > 0">
+                AND d.dept_id=#{params.deptId}
+            </if>
+            <if test="params.keywords != null and params.keywords !=''">
+                AND CONCAT(u.user_id,u.`username`,u.nickname,u.email) LIKE CONCAT('%',#{params.keywords},'%')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

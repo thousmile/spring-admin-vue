@@ -1,4 +1,5 @@
-// import parseTime, formatTime and set to filter
+import store from '@/store'
+
 export { parseTime, formatTime } from '@/utils'
 
 /**
@@ -49,14 +50,22 @@ function pluralize(time, label) {
  * @param {number} time
  */
 export function timeAgo(time) {
-  const between = Date.now() / 1000 - Number(time)
-  if (between < 3600) {
-    return pluralize(~~(between / 60), ' minute')
-  } else if (between < 86400) {
-    return pluralize(~~(between / 3600), ' hour')
+  const limit = (Date.now() / 1000) - (new Date(time) / 1000)
+  let content = ''
+  if (limit < 60) {
+    content = '刚刚'
+  } else if (limit >= 60 && limit < 3600) {
+    content = Math.floor(limit / 60) + ' 分钟前'
+  } else if (limit >= 3600 && limit < 86400) {
+    content = Math.floor(limit / 3600) + ' 小时前'
+  } else if (limit >= 86400 && limit < 2592000) {
+    content = Math.floor(limit / 86400) + ' 天前'
+  } else if (limit >= 2592000 && limit < 31104000) {
+    content = Math.floor(limit / 2592000) + ' 个月前'
   } else {
-    return pluralize(~~(between / 86400), ' day')
+    content = dateTimeFormat(time, 'yyyy-MM-dd')
   }
+  return content
 }
 
 /**
@@ -128,13 +137,31 @@ export function showStatus(state) {
 
 // 状态 显示过滤器
 export function formatDateTime(time) {
-  var date = new Date(time)
+  const date = new Date(time)
   return dateTimeFormat(date, 'yyyy-MM-dd hh:mm:ss')
 }
 
 // 时间搓处理的过滤器
 export function formatDate(time) {
   // 返回处理后的值
-  var date = new Date(time)
+  const date = new Date(time)
   return dateTimeFormat(date, 'yyyy-MM-dd')
+}
+
+export function showSimpleUserAvatar(userId) {
+  for (const index in store.getters.simpleUsers) {
+    let value = store.getters.simpleUsers[index]
+    if (value && value.userId === userId) {
+      return value.avatar
+    }
+  }
+}
+
+export function showSimpleNickname(userId) {
+  for (const index in store.getters.simpleUsers) {
+    let value = store.getters.simpleUsers[index]
+    if (value && value.userId === userId) {
+      return value.username
+    }
+  }
 }

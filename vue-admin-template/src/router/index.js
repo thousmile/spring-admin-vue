@@ -1,10 +1,10 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from 'vue'
+import Router from 'vue-router'
 
-Vue.use (Router);
+Vue.use(Router)
 
 /* Layout */
-import Layout from '@/layout';
+import Layout from '@/layout'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -38,29 +38,16 @@ export const constantRoutes = [
     children: [
       {
         path: '/redirect/:path(.*)',
-        component: () => import ('@/views/redirect/index'),
-      },
-    ],
-  },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/thousmile',
-        meta: {
-          title: 'Github',
-          icon: 'link',
-        },
-      },
-    ],
+        component: () => import ('@/views/redirect/index')
+      }
+    ]
   },
 
   {
     path: '/login',
+    name: 'Login',
     component: () => import ('@/views/login/index'),
-    hidden: true,
+    hidden: true
   },
 
   {
@@ -73,15 +60,15 @@ export const constantRoutes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import ('@/views/dashboard/index'),
-        meta: {title: '首页', icon: 'dashboard', noCache: true, affix: true},
+        meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true }
       },
       {
-        path: 'userInfo',
+        path: 'userinfo',
         name: 'UserInfo',
-        component: () => import ('@/views/dashboard/userInfo/index'),
-        meta: {title: '个人信息', noCache: true, affix: true},
-      },
-    ],
+        component: () => import ('@/views/userinfo/index'),
+        meta: { title: '个人信息', noCache: true }
+      }
+    ]
   },
 
   {
@@ -93,22 +80,22 @@ export const constantRoutes = [
     children: [
       {
         path: '404',
-        component: () => import ('@/views/error/404/index'),
+        component: () => import ('@/views/error/404/index')
       },
       {
         path: '401',
-        component: () => import ('@/views/error/401/index'),
-      },
-    ],
+        component: () => import ('@/views/error/401/index')
+      }
+    ]
   },
 
   // 404 page must be placed at the end !!!
   {
     path: '*',
     redirect: '/error/404',
-    hidden: true,
-  },
-];
+    hidden: true
+  }
+]
 
 // 异步挂载的路由
 // 动态需要根据权限加载的路由表
@@ -119,47 +106,47 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/pre/index',
     meta: {
-      resources: 'pre',
-      title: '权限管理',
+      perms: 'pre',
+      title: '权限管理'
     },
     children: [
-      {
-        path: 'index',
-        name: 'PrePerm',
-        component: () => import ('@/views/pre/perm/index'),
-        meta: {
-          resources: 'pre_perm',
-          title: '权限管理',
-        },
-      },
       {
         path: 'user',
         name: 'PreUser',
         component: () => import ('@/views/pre/user/index'),
         meta: {
-          resources: 'pre_user',
-          title: '用户管理',
-        },
+          perms: 'pre_user',
+          title: '用户管理'
+        }
       },
       {
         path: 'role',
         name: 'PreRole',
         component: () => import ('@/views/pre/role/index'),
         meta: {
-          resources: 'pre_role',
-          title: '角色管理',
-        },
+          perms: 'pre_role',
+          title: '角色管理'
+        }
+      },
+      {
+        path: 'index',
+        name: 'PrePerm',
+        component: () => import ('@/views/pre/perm/index'),
+        meta: {
+          perms: 'pre_perm',
+          title: '权限管理'
+        }
       },
       {
         path: 'dept',
         component: () => import ('@/views/pre/dept/index'),
         name: 'PreDept',
         meta: {
-          resources: 'pre_dept',
-          title: '部门管理',
-        },
-      },
-    ],
+          perms: 'pre_dept',
+          title: '部门管理'
+        }
+      }
+    ]
   },
 
   {
@@ -168,8 +155,8 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/sys/index',
     meta: {
-      resources: 'sys',
-      title: '系统设置',
+      perms: 'sys',
+      title: '系统设置'
     },
     children: [
       {
@@ -177,63 +164,87 @@ export const asyncRouterMap = [
         component: () => import ('@/views/sys/chinaArea/index'),
         name: 'SysChinaArea',
         meta: {
-          resources: 'sys_china_area',
-          title: '行政地区',
-        },
+          perms: 'sys_china_area',
+          title: '行政地区'
+        }
       },
       {
         path: 'dictionary',
         component: () => import ('@/views/sys/dictionary/index'),
         name: 'SysDictionary',
         meta: {
-          resources: 'sys_dictionary',
-          title: '字典集合',
-        },
+          perms: 'sys_dictionary',
+          title: '字典集合'
+        }
       },
       {
         path: 'wechat',
         name: 'SysWechat',
         component: () => import ('@/views/sys/wechat/index'),
         meta: {
-          resources: 'sys_wechat',
-          title: '微信设置',
-        },
+          perms: 'sys_wechat',
+          title: '微信设置'
+        }
       },
       {
         path: 'logs',
         name: 'SysLogs',
-        component: () => import ('@/views/sys/logs/index'),
+        component: () => import ('@/views/sys/loginLog/index'),
         meta: {
-          resources: 'sys_logs',
-          title: '日志数据',
-        },
+          perms: 'sys_logs',
+          title: '日志数据'
+        }
       },
       {
         path: 'swagger',
         name: 'SysSwagger',
         component: () => import ('@/views/sys/swagger/index'),
         meta: {
-          resources: 'sys_swagger2',
-          title: 'API文档',
-        },
+          perms: 'sys_swagger2',
+          title: 'API文档'
+        }
       },
-    ],
-  },
-];
+      {
+        path: 'operLog',
+        name: 'OperLog',
+        component: () => import ('@/views/sys/operLog/index'),
+        meta: {
+          perms: 'sys_oper_log',
+          title: '操作日志'
+        }
+      },
+      {
+        path: 'loginLog',
+        name: 'loginLog',
+        component: () => import ('@/views/sys/loginLog/index'),
+        meta: {
+          perms: 'sys_login_log',
+          title: '登录日志'
+        }
+      }
+    ]
+  }
+]
 
-const createRouter = () =>
-  new Router ({
-    // mode: 'history', // require service support
-    scrollBehavior: () => ({y: 0}),
-    routes: constantRoutes,
-  });
-
-const router = createRouter ();
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter () {
-  const newRouter = createRouter ();
-  router.matcher = newRouter.matcher; // reset router
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location, onResolve, onReject) {
+  if (onResolve || onReject) return originalPush.call(this, location, onResolve, onReject)
+  return originalPush.call(this, location).catch(err => err)
 }
 
-export default router;
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
+
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xaaef.robin.mapper.OperLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.xaaef.robin.entity.OperLog">
+            <id property="messageId" column="message_id" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="operType" column="oper_type" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="method" column="method" jdbcType="VARCHAR"/>
+            <result property="methodArgs" column="method_args" jdbcType="VARCHAR"/>
+            <result property="requestMethod" column="request_method" jdbcType="VARCHAR"/>
+            <result property="requestUrl" column="request_url" jdbcType="VARCHAR"/>
+            <result property="requestIp" column="request_ip" jdbcType="VARCHAR"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="responseResult" column="response_result" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="errorLog" column="error_log" jdbcType="VARCHAR"/>
+            <result property="timeCost" column="time_cost" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        message_id,title,oper_type,
+        user_id,method,method_args,
+        request_method,request_url,request_ip,
+        address,response_result,status,
+        error_log,time_cost,create_time
+    </sql>
+</mapper>

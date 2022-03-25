@@ -10,7 +10,7 @@
     >
       <el-form-item prop="username">
         <span class="svg-container">
-          <svg-icon icon-class="user" />
+          <svg-icon icon-class="user"/>
         </span>
         <el-input
           v-model="loginForm.username"
@@ -24,7 +24,7 @@
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <svg-icon icon-class="password"/>
         </span>
         <el-input
           v-model="loginForm.password"
@@ -36,7 +36,7 @@
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'" />
+          <svg-icon :icon-class="pwdType === 'password' ? 'eye' : 'eye-open'"/>
         </span>
       </el-form-item>
 
@@ -44,7 +44,7 @@
         <el-col :span="16">
           <el-form-item prop="codeText">
             <span class="svg-container">
-              <svg-icon icon-class="user" />
+              <svg-icon icon-class="user"/>
             </span>
             <el-input
               v-model="loginForm.codeText"
@@ -58,10 +58,19 @@
           </el-form-item>
         </el-col>
         <el-col :span="8">
-          <el-tooltip content="[ 点击 ] 刷新验证码" placement="right" effect="light">
-            <el-image :src="codeUrl" style="cursor:pointer;border-radius: 5px;" fit="fit" @click="changeImageCode">
+          <el-tooltip
+            content="[ 点击 ] 刷新验证码"
+            placement="right"
+            effect="light"
+          >
+            <el-image
+              :src="codeUrl"
+              style="cursor: pointer; border-radius: 5px"
+              fit="fit"
+              @click="changeImageCode"
+            >
               <div slot="error" class="image-slot">
-                <i class="el-icon-picture-outline" />
+                <i class="el-icon-picture-outline"/>
               </div>
             </el-image>
           </el-tooltip>
@@ -72,22 +81,32 @@
         <el-button
           :loading="loading"
           type="primary"
-          style="width:100%;"
+          style="width: 100%"
           @click.native.prevent="handleLogin"
-        >登录</el-button>
+        >登录
+        </el-button>
       </el-form-item>
 
       <div class="tips">
-        <span style="margin-right:20px;">用户名:&nbsp;&nbsp;&nbsp; {{ loginForm.username }}</span><br><br>
+        <span
+          style="margin-right: 20px"
+        >用户名:&nbsp;&nbsp;&nbsp; {{ loginForm.username }}</span><br><br>
         <span>密码: &nbsp;&nbsp;&nbsp; {{ loginForm.password }}</span>
       </div>
     </el-form>
+
+    <copyright/>
   </div>
 </template>
 
 <script>
+import Copyright from '@/components/Copyright'
+import { getUrlPrefix } from '@/utils'
 export default {
   name: 'Login',
+  components: {
+    Copyright
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (value.length < 5) {
@@ -112,8 +131,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'root_admin',
-        password: 'root_admin',
+        username: 'admin',
+        password: 'admin',
         codeKey: '',
         codeText: ''
       },
@@ -131,13 +150,18 @@ export default {
       },
       loading: false,
       pwdType: 'password',
-      redirect: undefined
+      redirect: undefined,
+      otherQuery: {}
     }
   },
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        const query = route.query
+        if (query) {
+          this.redirect = query.redirect
+          this.otherQuery = this.getOtherQuery(query)
+        }
       },
       immediate: true
     }
@@ -146,7 +170,30 @@ export default {
     this.randomCodeKey()
     this.changeImageCode()
   },
+  mounted() {
+    // this.open()
+  },
   methods: {
+    open() {
+      this.$confirm('请不要随意删除数据，否则就扑街！！！', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '请继续....!'
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'error',
+            message: '扑街，我顶你个肺！！！'
+          })
+          window.location.href = 'https://www.baidu.com/'
+        })
+    },
     // 显示密码
     showPwd() {
       if (this.pwdType === 'password') {
@@ -158,14 +205,13 @@ export default {
     // 登录
     handleLogin() {
       const _this = this
-      _this.$refs.loginForm.validate(valid => {
+      _this.$refs.loginForm.validate((valid) => {
         if (valid) {
           _this.loading = true
-          _this.$store
-            .dispatch('Login', this.loginForm)
+          _this.$store.dispatch('Login', this.loginForm)
             .then(() => {
               _this.loading = false
-              _this.$router.push({ path: this.redirect || '/dashboard' })
+              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
             })
             .catch((msg) => {
               _this.loading = false
@@ -176,28 +222,28 @@ export default {
         }
       })
     },
+    getOtherQuery(query) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== 'redirect') {
+          acc[cur] = query[cur]
+        }
+        return acc
+      }, {})
+    },
     changeImageCode() {
-      var arr = [
-        process.env.VUE_APP_BASE_API,
-        '/auth/verify/code',
-        '/',
-        this.loginForm.codeKey,
-        '?r=',
-        Math.ceil(Math.random() * 100)
-      ]
-      var str = arr.join('')
-      this.codeUrl = str
+      const random = Math.ceil(Math.random() * 100)
+      this.codeUrl = `${getUrlPrefix()}/auth/captcha/codes/${this.loginForm.codeKey}?r=${random}`
     },
     // 随机 生成 18位 字符串
     randomCodeKey() {
-      var s = []
-      var hexDigits = '0123456789abcdefghijklmnopqrstuvwxyz'
-      for (var i = 0; i < 24; i++) {
+      let s = []
+      const hexDigits = '0123456789abcdefghijklmnopqrstuvwxyz'
+      for (let i = 0; i < 24; i++) {
         s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
       }
       s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
       s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
-      var uuid = s.join('')
+      const uuid = s.join('')
       this.loginForm.codeKey = uuid
     }
   }
@@ -214,6 +260,7 @@ $light_gray: #eee;
     display: inline-block;
     height: 47px;
     width: 85%;
+
     input {
       background: transparent;
       border: 0px;
@@ -222,11 +269,13 @@ $light_gray: #eee;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
       height: 47px;
+
       &:-webkit-autofill {
         -webkit-text-fill-color: #fff !important;
       }
     }
   }
+
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
@@ -245,6 +294,7 @@ $light_gray: #eee;
   height: 100%;
   width: 100%;
   background-color: $bg;
+
   .login-form {
     position: absolute;
     left: 0;
@@ -254,16 +304,19 @@ $light_gray: #eee;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
   }
+
   .tips {
     font-size: 18px;
     color: #fff;
     margin-bottom: 10px;
+
     span {
       &:first-of-type {
         margin-right: 16px;
       }
     }
   }
+
   .svg-container {
     padding: 6px 5px 6px 15px;
     color: $dark_gray;
@@ -271,6 +324,7 @@ $light_gray: #eee;
     width: 30px;
     display: inline-block;
   }
+
   .title {
     font-size: 26px;
     font-weight: 400;
@@ -279,6 +333,7 @@ $light_gray: #eee;
     text-align: center;
     font-weight: bold;
   }
+
   .show-pwd {
     position: absolute;
     right: 10px;

@@ -54,6 +54,9 @@ npm run dev
 ## 发布
 
 ```bash
+# 构建测试环境
+npm run build:stage
+
 # 构建生产环境
 npm run build:prod
 ```
@@ -75,6 +78,10 @@ npm run lint -- --fix
 ```
 
 更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
+
+## 购买贴纸
+
+你也可以通过 购买[官方授权的贴纸](https://smallsticker.com/product/vue-element-admin) 的方式来支持 vue-element-admin - 每售出一张贴纸，我们将获得 2 元的捐赠。
 
 ## Demo
 

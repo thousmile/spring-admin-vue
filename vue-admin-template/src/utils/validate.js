@@ -66,7 +66,7 @@ export function validatePhone(rule, value, callback) {
     callback()
   } else {
     if (!testPhone(value)) {
-      callback(new Error('请输入正确的电话号码~'))
+      callback(new Error('请输入正确的手机号码~'))
     } else {
       callback()
     }

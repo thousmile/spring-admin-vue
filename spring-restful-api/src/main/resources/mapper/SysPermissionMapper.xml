@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xaaef.robin.mapper.SysPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.xaaef.robin.entity.SysPermission">
+            <id property="permissionId" column="permission_id" jdbcType="BIGINT"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <result property="perms" column="perms" jdbcType="VARCHAR"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
+            <result property="sort" column="sort" jdbcType="TINYINT"/>
+            <result property="permType" column="perm_type" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+            <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+            <result property="lastUpdateUser" column="last_update_user" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        permission_id,title,parent_id,
+        perms,icon,sort,
+        perm_type,create_time,create_user,
+        last_update_time,last_update_user
+    </sql>
+
+
+    <select id="listByUserId" resultType="SysPermission">
+        SELECT
+            p.permission_id,
+            p.parent_id,
+            p.perms,
+            p.title,
+            p.icon,
+            p.sort,
+            p.perm_type
+        FROM
+            sys_permission AS p
+                LEFT JOIN sys_role_permission AS rp ON rp.permission_id = p.permission_id
+                LEFT JOIN sys_role AS r ON rp.role_id = r.role_id
+                LEFT JOIN sys_user_role AS ur ON r.role_id = ur.role_id
+        WHERE
+            ur.user_id = #{userId}
+    </select>
+
+
+    <select id="listSimpleByUserId" resultType="java.lang.String">
+        SELECT
+            p.perms
+        FROM
+            sys_permission AS p
+                LEFT JOIN sys_role_permission AS rp ON rp.permission_id = p.permission_id
+                LEFT JOIN sys_role AS r ON rp.role_id = r.role_id
+                LEFT JOIN sys_user_role AS ur ON r.role_id = ur.role_id
+        WHERE
+            ur.user_id = #{userId}
+    </select>
+
+</mapper>

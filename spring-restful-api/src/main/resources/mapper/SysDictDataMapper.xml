@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xaaef.robin.mapper.SysDictDataMapper">
+
+    <resultMap id="BaseResultMap" type="com.xaaef.robin.entity.SysDictData">
+        <id property="dictCode" column="dict_code" jdbcType="BIGINT"/>
+        <result property="dictSort" column="dict_sort" jdbcType="TINYINT"/>
+        <result property="dictLabel" column="dict_label" jdbcType="VARCHAR"/>
+        <result property="dictValue" column="dict_value" jdbcType="VARCHAR"/>
+        <result property="typeKey" column="type_key" jdbcType="VARCHAR"/>
+        <result property="cssClass" column="css_class" jdbcType="VARCHAR"/>
+        <result property="listClass" column="list_class" jdbcType="VARCHAR"/>
+        <result property="isDefault" column="is_default" jdbcType="TINYINT"/>
+        <result property="createUser" column="create_user" jdbcType="BIGINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateUser" column="last_update_user" jdbcType="BIGINT"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        dict_code,dict_sort,dict_label,
+        dict_value,type_key,css_class,
+        list_class,is_default,create_user,
+        create_time,last_update_user,last_update_time
+    </sql>
+
+</mapper>

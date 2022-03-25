@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 18888
 
 spring:
   profiles:
@@ -10,37 +10,51 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
     default-property-inclusion: non_null
+  main:
+    allow-bean-definition-overriding: true
 
-# spring boot mybatis 自动配置
-mybatis:
-  mapper-locations: classpath*:mappers/*.xml
-  type-aliases-package: com.xaaef.shark.entity
-mapper:
-  identity: MYSQL
-  mappers: com.xaaef.shark.common.mapper.BaseMapper
-  not-empty: false
-pagehelper:
-  helperDialect: mysql
-  reasonable: true
-  supportMethodsArguments: true
-  params: count=countSql
 
-logging:
-  level:
-    com.xaaef.shark.mapper: debug
+# mybatis-plus 自动配置
+mybatis-plus:
+  type-enums-package: com.xaaef.robin.enums
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.xaaef.robin.entity
+  configuration:
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
 
-# JWT 认证配置
+
+# OAuth2.0 Server 配置
 jwt:
-  tokenHeader: Authorization   #请求头
-  expiration: 120                #单位(分钟),这里默认2小时
-  tokenHead: "Bearer "
-  sso: false                    #单点登录，是否开启
+  token:
+    token-expired: 7200                 # 2小时
+    exclude-path:
+      - "/auth/sms/send"                     # 手机短信验证码 发送验证码
+      - "/auth/sms"                          # 手机短信验证码 模式接口
+      - "/auth/login"                        # 密码登录
+      - "/auth/captcha/codes/**"             # 验证码接口
+
+
+# knife4j 配置
+knife4j:
+  enable: true
+  production: false
+customize:
+  swagger:
+    title: 认证服务
+    description: 认证服务 HTPP API 接口文档
+    version: 3.0
+    name: 王逗逗
+    email: 932560435@qq.com
+    url: https://xaaef.com
+    service-url: http://localhost:18888/doc.html
+
 
 info:
   app:
-    name: ${spring.application.name}
-    description: spring-restful-api
-    version: 1.0
+    name: ${customize.swagger.title}
+    description: ${customize.swagger.description}
+    version: ${customize.swagger.version}
+
 
 management:
   endpoints:

@@ -24,7 +24,10 @@ const getters = {
   // 菜单路由，显示在页面上的
   menuRouters: state => state.permission.routers,
   // 当前用户的 动态菜单路由
-  dynamicRouters: state => state.permission.dynamicRouters
+  dynamicRouters: state => state.permission.dynamicRouters,
+
+  // 全部用的用户信息，但是只有 头像和用户ID 以及用户名
+  simpleUsers: state => state.user.simpleUsers
 
 }
 export default getters

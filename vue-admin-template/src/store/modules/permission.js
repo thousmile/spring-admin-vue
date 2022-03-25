@@ -1,5 +1,6 @@
 // store/permission.js
 import { asyncRouterMap, constantRoutes } from '@/router'
+
 /**
  *
  * @param  {Array} userRouter 后台返回的用户权限json
@@ -11,7 +12,7 @@ export function recursionRouter(userRouter = [], allRouter = []) {
   var realRoutes = []
   allRouter.forEach((v, i) => {
     userRouter.forEach((item, index) => {
-      if (item.resources === v.meta.resources) {
+      if (item.perms === v.meta.perms) {
         if (item.children && item.children.length > 0) {
           v.children = recursionRouter(item.children, v.children)
         }
@@ -25,11 +26,11 @@ export function recursionRouter(userRouter = [], allRouter = []) {
 }
 
 /**
-*
-* @param {Array} routes 用户过滤后的路由
-*
-* 递归为所有有子路由的路由设置第一个children.path为默认路由
-*/
+ *
+ * @param {Array} routes 用户过滤后的路由
+ *
+ * 递归为所有有子路由的路由设置第一个children.path为默认路由
+ */
 export function setDefaultRoute(routes) {
   routes.forEach((v, i) => {
     if (v.children && v.children.length > 0) {
@@ -51,10 +52,11 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({ commit }, data) {
+    toVueRoutes({ commit }, data) {
       return new Promise(resolve => {
-        commit('SET_ROUTERS', recursionRouter(data, asyncRouterMap))
-        resolve()
+        const allRouter = recursionRouter(data, asyncRouterMap)
+        commit('SET_ROUTERS', allRouter)
+        resolve(allRouter)
       })
     }
   }

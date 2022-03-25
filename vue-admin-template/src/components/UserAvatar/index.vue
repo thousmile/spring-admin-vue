@@ -1,7 +1,15 @@
 <template>
   <div>
-    <el-upload :show-file-list="false" :headers="myHeaders" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload" :action="getAvatarAction" class="avatar-uploader" accept=".jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP">
-      <img v-if="imageUrl != ''" :src="imageUrl" class="avatar">
+    <el-upload
+      :show-file-list="false"
+      :headers="myHeaders"
+      :on-success="handleAvatarSuccess"
+      :before-upload="beforeAvatarUpload"
+      :action="getAvatarAction"
+      class="avatar-uploader"
+      accept=".jpg,.jpeg,.png,.gif,.bmp,.JPG,.JPEG,.PBG,.GIF,.BMP"
+    >
+      <img v-if="imageUrl !== ''" :src="imageUrl" class="avatar" alt="头像">
       <i v-else class="el-icon-plus avatar-uploader-icon" />
     </el-upload>
   </div>
@@ -10,6 +18,7 @@
 <script>
 
 import { getToken } from '@/utils/auth'
+import { getUrlPrefix } from '@/utils'
 import { deleteImage } from '@/api/fileUpload'
 
 export default {
@@ -29,7 +38,7 @@ export default {
   computed: {
     getAvatarAction() {
       // 设置文件上传URL
-      return process.env.VUE_APP_BASE_API + '/upload/avatar'
+      return getUrlPrefix() + '/upload/avatar'
     }
   },
   watch: {
@@ -44,7 +53,9 @@ export default {
     handleAvatarSuccess(res, file) {
       if (res.status === 200) {
         // 删除老的头像
-        this.deleteOldImage(this.imageUrl)
+        if (this.imageUrl) {
+          this.deleteOldImage(this.imageUrl)
+        }
         // 将新的头像赋值
         this.imageUrl = res.data.url
         this.$emit('getAvatar', this.imageUrl)
@@ -86,9 +97,11 @@ $size: 100px;
   position: relative;
   overflow: hidden;
 }
+
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -97,9 +110,11 @@ $size: 100px;
   line-height: $size;
   text-align: center;
 }
+
 .avatar {
   width: $size;
   height: $size;
   display: block;
+  border-radius: 5px;
 }
 </style>

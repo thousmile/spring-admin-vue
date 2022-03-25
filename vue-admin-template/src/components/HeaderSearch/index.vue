@@ -8,7 +8,7 @@
       filterable
       default-first-option
       remote
-      placeholder="Search"
+      placeholder="菜单搜索..."
       class="header-search-select"
       @change="change"
     >
@@ -36,7 +36,6 @@ export default {
   },
   computed: {
     routes() {
-      // 获取 当前用户的动态路由
       return this.$store.getters.dynamicRouters
     }
   },
@@ -71,6 +70,10 @@ export default {
       this.show = false
     },
     change(val) {
+      // 如果路由相同，就不切换
+      if (this.$route.path === val.path) {
+        return
+      }
       this.$router.push(val.path)
       this.search = ''
       this.options = []
@@ -102,7 +105,9 @@ export default {
 
       for (const router of routes) {
         // skip hidden router
-        if (router.hidden) { continue }
+        if (router.hidden) {
+          continue
+        }
 
         const data = {
           path: path.resolve(basePath, router.path),
@@ -160,7 +165,7 @@ export default {
     display: inline-block;
     vertical-align: middle;
 
-    /deep/ .el-input__inner {
+    ::v-deep .el-input__inner {
       border-radius: 0;
       border: 0;
       padding-left: 0;

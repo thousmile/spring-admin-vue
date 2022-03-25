@@ -77,11 +77,10 @@ export default {
       })
         .then(() => {
           _this.$store.dispatch('LogOut').then(() => {
+            _this.$router.push(`/login?redirect=${this.$route.fullPath}`)
             // 为了重新实例化 vue-router 对象，清空之前的路由列表
             window.location.reload()
           })
-          // 跳转到 首页
-          _this.$router.push({ name: 'Dashboard' })
         })
         .catch(action => {
           console.log('退出登录....')

@@ -1,0 +1,33 @@
+### 图片上传
+POST {{baseUrl}}/upload/image
+Authorization: Bearer {{tokenValue}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="tR9669GlNMU-343X.bin"
+Content-Type: multipart/form-data
+
+< C:\\Users\\demo\\Desktop\\地图和头像\\tR9669GlNMU-343X.bin
+--WebAppBoundary--
+
+
+
+
+### 头像上传
+POST {{baseUrl}}/upload/avatar
+Authorization: Bearer {{tokenValue}}
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="avatar-4.jpg"
+Content-Type: multipart/form-data
+
+< C:\\Users\\demo\\Desktop\\地图和头像\\avatar-4.jpg
+--WebAppBoundary--
+
+
+
+
+### 删除图片
+DELETE {{baseUrl}}/upload/delete?url=https://images.xaaef.com/20210728105923.png
+Authorization: Bearer {{tokenValue}}

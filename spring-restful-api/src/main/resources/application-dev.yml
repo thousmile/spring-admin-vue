@@ -1,18 +1,16 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.0.189:3306/spring_admin_vue?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/spring_admin_vue?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: mht123456
-    platform: mysql
+    password: 123456
     type: com.zaxxer.hikari.HikariDataSource
 
   redis:
-    database: 11
-    host: 192.168.0.189
+    database: 1
+    host: localhost
     port: 6379
     timeout: 2000
-    password: mht123
     lettuce:
       pool:
         max-idle: 8
@@ -20,14 +18,21 @@ spring:
         max-active: 8
         max-wait: -1ms
   cache:
+    type: redis
     redis:
       use-key-prefix: true
-      time-to-live: 60s
+      time-to-live: 180s
+
+
+# mybatis-plus 打印 sql 配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
 
 # 七牛云文件上传配置
 qiniu:
-  accessKey:
-  secretKey:
-  bucketName:
-  fileDomain:
-
+  accessKey: cyMiqN7
+  secretKey: TePPDwQ
+  bucketName: 3b52kpcycc
+  fileDomain: https://images.baidu.com

@@ -1,5 +1,6 @@
 <template>
   <div
+    class="wrapper"
     id="chinaArea"
     v-loading="loading"
     element-loading-text="第一次加载了全部数据...所以会慢...之后本地有缓存了就会很快了..."
@@ -86,7 +87,7 @@ export default {
       },
       defaultProps: {
         children: 'children',
-        label: 'title'
+        label: 'name'
       },
       treeData: [],
       loading: false
@@ -99,7 +100,7 @@ export default {
     getTableData() {
       const _this = this
       _this.loading = true
-      let data = JSON.parse(localStorage.getItem('chinaArea'))
+      const data = JSON.parse(localStorage.getItem('chinaArea'))
       if (data === undefined || data === null || data.length < 1) {
         getChinaAreaTree()
           .then(result => {
@@ -145,7 +146,7 @@ export default {
       }
     },
     handleNodeClick(data) {
-      this.chinaArea = data.source
+      this.chinaArea = data
     }
   }
 }

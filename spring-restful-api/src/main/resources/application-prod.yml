@@ -1,39 +1,44 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/spring_admin_vue?useUnicode=true&characterEncoding=UTF8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/spring_admin_vue?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
     username: root
-    password: root
-    platform: mysql
+    password: 123456
     type: com.zaxxer.hikari.HikariDataSource
 
+
   redis:
-    database: 0
-    host: localhost
-    port: 6379
-    timeout: 2000
-    #password: 123456
+    database: 1
+    timeout: 5000
+    sentinel:
+      master: mymaster
+      nodes:
+        - 192.168.1.121:26379
+        - 192.168.1.122:26379
+        - 192.168.1.123:26379
     lettuce:
       pool:
-        max-idle: 8
-        min-idle: 0
-        max-active: 8
-        max-wait: -1ms
+        max-idle: 8         # 连接池中的最大空闲连接
+        min-idle: 3         # 连接池中的最小空闲连接
+        max-active: 8       # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: 500       # 连接池最大阻塞等待时间（使用负值表示没有限制）
   cache:
+    type: redis
     redis:
       use-key-prefix: true
       time-to-live: 60s
 
+
+# knife4j 配置
+knife4j:
+  enable: true        ## 开启增强配置
+  production: false    ## 开启生产环境屏蔽
+
+
 # 七牛云文件上传配置
 qiniu:
-  accessKey:
-  secretKey:
-  bucketName:
-  fileDomain:
+  accessKey: cyMiqN7
+  secretKey: TePPDwQ
+  bucketName: 3b52kpcycc
+  fileDomain: https://images.baidu.com
 
-
-knife4j:
-  # 开启增强配置
-  enable: true
-  # 开启生产环境屏蔽
-  production: true

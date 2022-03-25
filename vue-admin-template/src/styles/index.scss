@@ -61,6 +61,22 @@ div:focus {
 
 // main-container global css
 .app-container {
-  padding: 20px;
-  margin-top: 30px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+// main-container global css
+.wrapper {
+  margin-top: 20px;
+}
+
+.avatar-wrapper {
+  cursor: pointer;
+  position: relative;
+
+  .user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+  }
 }

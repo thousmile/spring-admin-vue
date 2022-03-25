@@ -11,6 +11,11 @@ export function getChinaAreaAll(params) {
 }
 
 // 根据ID 查询单个区域信息
-export function getChinaAreaById(params) {
-  return request({ url: '/china/area/' + params, method: 'get' })
+export function getChinaAreaById(id) {
+  return request({ url: '/china/area/' + id, method: 'get' })
+}
+
+// 分页查询
+export function getChinaAreaPage(params) {
+  return request({ url: '/china/area/query', method: 'get', params: params })
 }
