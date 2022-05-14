@@ -20,12 +20,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
-        <hutool.version>5.7.22</hutool.version>
+        <fst.version>2.56</fst.version>
+        <msgpack.version>0.9.1</msgpack.version>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
         <knife4j.version>3.0.3</knife4j.version>
-        <jjwt.version>0.11.2</jjwt.version>
+        <jjwt.version>0.11.5</jjwt.version>
         <thumbnailator.version>0.4.17</thumbnailator.version>
-        <qiniu.version>7.8.0</qiniu.version>
+        <qiniu.version>7.10.2</qiniu.version>
 
         <dockerfile-maven.version>1.4.13</dockerfile-maven.version>
         <docker-image.prefix>xaaef</docker-image.prefix>
@@ -92,6 +93,24 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.msgpack</groupId>
+            <artifactId>msgpack-core</artifactId>
+            <version>${msgpack.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.msgpack</groupId>
+            <artifactId>jackson-dataformat-msgpack</artifactId>
+            <version>${msgpack.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.ruedigermoeller</groupId>
+            <artifactId>fst</artifactId>
+            <version>${fst.version}</version>
         </dependency>
 
         <!-- 七牛云 文件上传sdk -->
