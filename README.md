@@ -14,6 +14,15 @@ GitHub   ：  https://github.com/thousmile
 
 码云：  https://gitee.com/thousmile
 
+[安利一个 Redis Desktop Manager For Windows 客户端 ](https://github.com/lework/RedisDesktopManager-Windows/releases)
+
+添加 RedisCacheUtils [MsgpackUtils](https://msgpack.org/) 让redis存储支持Msgpack格式，比Json占用内存减少20%左右
+
+![JSON](./images/20220514212233.png)
+
+![Msgpack](./images/20220514212052.png)
+
+
 ### 某些傻逼，删演示环境的数据
 ### 所以演示环境，没有修改和删除等操作的权限
 [演示地址](https://admin.xaaef.com)

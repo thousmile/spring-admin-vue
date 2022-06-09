@@ -2,7 +2,6 @@ package com.xaaef.robin.jwt;
 
 import com.xaaef.robin.enums.OAuth2Error;
 import com.xaaef.robin.exception.JwtAuthException;
-import com.xaaef.robin.util.UUIDUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

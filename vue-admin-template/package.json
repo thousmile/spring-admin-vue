@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "0.26.1",
     "core-js": "3.21.1",
+    "dayjs": "^1.11.2",
     "echarts": "4.2.1",
     "element-ui": "2.15.6",
     "fuse.js": "3.4.4",

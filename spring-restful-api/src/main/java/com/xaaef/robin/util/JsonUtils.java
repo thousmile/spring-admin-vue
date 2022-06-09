@@ -85,6 +85,25 @@ public class JsonUtils {
         return null;
     }
 
+
+    /**
+     * 将对象转换成 json 字节数组。
+     *
+     * @param data
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
+     */
+    public static byte[] toBytes(Object data) {
+        try {
+            return MAPPER.writeValueAsBytes(data);
+        } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+
     /**
      * 将json结果集转化为对象
      *
@@ -134,6 +153,25 @@ public class JsonUtils {
     public static <T> List<T> toListPojo(String jsonData, Class<T> beanType) {
         try {
             return MAPPER.readValue(jsonData, MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, beanType));
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+
+    /**
+     * 将json数据转换成pojo对象list
+     *
+     * @param jsonData
+     * @param beanType
+     * @return java.util.List<T>
+     * @author Wang Chen Chen <932560435@qq.com>
+     * @date 2019/4/18 15:26
+     */
+    public static <T> List<T> toListPojo(byte[] src, Class<T> beanType) {
+        try {
+            return MAPPER.readValue(src, MAPPER.getTypeFactory().constructCollectionType(ArrayList.class, beanType));
         } catch (Exception e) {
             log.error(e.getMessage());
         }

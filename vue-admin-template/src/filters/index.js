@@ -1,4 +1,8 @@
 import store from '@/store'
+import dayjs from 'dayjs'
+import 'dayjs/locale/zh-cn'
+
+dayjs.locale('zh-cn')
 
 export { parseTime, formatTime } from '@/utils'
 
@@ -8,42 +12,7 @@ export { parseTime, formatTime } from '@/utils'
  * @param {*} fmt
  */
 function dateTimeFormat(date, fmt) {
-  if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(
-      RegExp.$1,
-      (date.getFullYear() + '').substr(4 - RegExp.$1.length)
-    )
-  }
-  const o = {
-    'M+': date.getMonth() + 1,
-    'd+': date.getDate(),
-    'h+': date.getHours(),
-    'm+': date.getMinutes(),
-    's+': date.getSeconds()
-  }
-  for (const k in o) {
-    if (new RegExp(`(${k})`).test(fmt)) {
-      const str = o[k] + ''
-      fmt = fmt.replace(
-        RegExp.$1,
-        RegExp.$1.length === 1 ? str : ('00' + str).substr(str.length)
-      )
-    }
-  }
-  return fmt
-}
-
-/**
- * Show plural label if time is plural number
- * @param {number} time
- * @param {string} label
- * @return {string}
- */
-function pluralize(time, label) {
-  if (time === 1) {
-    return time + label
-  }
-  return time + label + 's'
+  return dayjs(date).format(fmt)
 }
 
 /**
@@ -63,7 +32,7 @@ export function timeAgo(time) {
   } else if (limit >= 2592000 && limit < 31104000) {
     content = Math.floor(limit / 2592000) + ' 个月前'
   } else {
-    content = dateTimeFormat(time, 'yyyy-MM-dd')
+    content = dateTimeFormat(time, 'YYYY-MM-DD')
   }
   return content
 }

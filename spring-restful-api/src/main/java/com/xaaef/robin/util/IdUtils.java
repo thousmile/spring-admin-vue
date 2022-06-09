@@ -1,5 +1,7 @@
 package com.xaaef.robin.util;
 
+import java.util.UUID;
+
 /**
  * <p>
  * Twitter 雪花ID 算法
@@ -12,7 +14,27 @@ package com.xaaef.robin.util;
 
 public class IdUtils {
 
+    /**
+     * 单次获取 uuid id
+     *
+     * @return String
+     */
+    public static String getStrId() {
+        return UUID.randomUUID().toString();
+    }
+
+    /**
+     * 单次获取 uuid id
+     *
+     * @return String
+     */
+    public static String getSimpleStrId() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+
     private static final Cluster CLUSTER = new Cluster(1, 1);
+
 
     /**
      * [集群版] 雪花ID
