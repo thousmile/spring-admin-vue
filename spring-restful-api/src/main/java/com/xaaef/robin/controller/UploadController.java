@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  */
 
 @Slf4j
-@Api(tags = "[ 七牛云 ]文件上传")
+@Api(tags = "[ 七牛云 ] 文件上传")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/upload")
