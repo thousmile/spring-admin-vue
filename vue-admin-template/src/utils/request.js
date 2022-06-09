@@ -3,6 +3,7 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import router from '@/router'
 import { getToken } from '@/utils/auth'
+import { getUrlPrefix } from '@/utils'
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 
@@ -12,7 +13,7 @@ const service = axios.create({
    * baseURL: '/api' 只适合开发的时候，解决前后端跨域的问题，
    * baseURL:process.env.VUE_APP_BASE_API 线上环境，不存在跨域的问题，所以不需要代理
    */
-  baseURL: process.env.NODE_ENV === 'development' ? '/api' : process.env.VUE_APP_BASE_API,
+  baseURL: getUrlPrefix(),
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 50000 // request timeout
 })
@@ -44,7 +45,6 @@ service.interceptors.response.use(
       logout(result.message)
       return Promise.reject('error')
     } else {
-      console.log('result', result)
       errorMessage(result.message)
       return Promise.reject(result.message || 'Error')
     }

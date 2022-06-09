@@ -2,13 +2,14 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring_boot_admin?useSSL=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+    username: ypj94klys0ge
+    password: U4ux7kaXgS7jto1e
     type: com.zaxxer.hikari.HikariDataSource
 
   redis:
-    database: 0
-    host: localhost
+    database: 13
+    host: 192.168.0.189
+    password: mht123
     port: 6379
     timeout: 2000
     lettuce:
@@ -22,18 +23,12 @@ spring:
       use-key-prefix: true
       time-to-live: 60s
 
-knife4j:
-  # 开启增强配置
-  enable: true
-  # 开启生产环境屏蔽
-  production: true
-
 # 七牛云文件上传配置
 qiniu:
-  accessKey: 123
-  secretKey: 456
-  bucketName: hello
-  fileDomain: https://image.baidu.com
+  accessKey: d0JQ8Oyoz9wvRvbWzHTt
+  secretKey: d0JQ8Oyoz9wvRvbWzHTt
+  bucketName: 3b52
+  fileDomain: https://images.baidu.com
 
 # mybatis-plus 打印 sql 配置
 mybatis-plus:

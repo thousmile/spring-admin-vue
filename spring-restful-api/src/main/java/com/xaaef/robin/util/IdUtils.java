@@ -302,4 +302,12 @@ public class IdUtils {
 
     }
 
+
+    /**
+     * uuid
+     */
+    public static String getSimpleUUID() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
 }

@@ -128,6 +128,7 @@ public class QiniuUtils {
         try {
             res = getUploadManager().put(filePath, fileKey, getUpToken(fileKey));
             DefaultPutRet putRet = JsonUtils.toPojo(res.body(), DefaultPutRet.class);
+            assert putRet != null;
             return fileDomain + "/" + putRet.key;
         } catch (QiniuException e) {
             res = e.response;
@@ -149,6 +150,7 @@ public class QiniuUtils {
         try {
             res = getUploadManager().put(data, fileKey, getUpToken(fileKey));
             DefaultPutRet putRet = JsonUtils.toPojo(res.body(), DefaultPutRet.class);
+            assert putRet != null;
             return fileDomain + "/" + putRet.key;
         } catch (QiniuException e) {
             res = e.response;
@@ -170,6 +172,7 @@ public class QiniuUtils {
         try {
             res = getUploadManager().put(inputStream, fileKey, getUpToken(fileKey), null, null);
             DefaultPutRet putRet = JsonUtils.toPojo(res.body(), DefaultPutRet.class);
+            assert putRet != null;
             return fileDomain + "/" + putRet.key;
         } catch (QiniuException e) {
             res = e.response;
@@ -251,7 +254,7 @@ public class QiniuUtils {
      */
     public String createFileName(String originalFileName) {
         String suffix = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
-        return UUIDUtils.getSimpleStrId() + "." + suffix;
+        return IdUtils.getSimpleStrId() + "." + suffix;
     }
 
 }

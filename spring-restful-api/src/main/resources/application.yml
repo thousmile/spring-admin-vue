@@ -16,7 +16,6 @@ spring:
 
 # mybatis-plus 自动配置
 mybatis-plus:
-  type-enums-package: com.xaaef.robin.enums
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.xaaef.robin.entity
   configuration:

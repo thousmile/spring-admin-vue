@@ -2,6 +2,7 @@ package com.xaaef.robin.jwt;
 
 import com.xaaef.robin.enums.OAuth2Error;
 import com.xaaef.robin.exception.JwtAuthException;
+import com.xaaef.robin.util.IdUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -81,7 +82,7 @@ public class JwtTokenUtils {
      * @return 令牌
      */
     public String createTokenId() {
-        return UUIDUtils.getSimpleStrId();
+        return IdUtils.getSimpleUUID();
     }
 
 

@@ -20,6 +20,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <fst.version>2.56</fst.version>
+        <msgpack.version>0.9.1</msgpack.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <hutool.version>5.8.2</hutool.version>
         <knife4j.version>3.0.3</knife4j.version>
@@ -92,6 +94,24 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.msgpack</groupId>
+            <artifactId>msgpack-core</artifactId>
+            <version>${msgpack.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.msgpack</groupId>
+            <artifactId>jackson-dataformat-msgpack</artifactId>
+            <version>${msgpack.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.ruedigermoeller</groupId>
+            <artifactId>fst</artifactId>
+            <version>${fst.version}</version>
         </dependency>
 
         <!-- 七牛云 文件上传sdk -->

@@ -87,12 +87,6 @@
         </el-button>
       </el-form-item>
 
-      <div class="tips">
-        <span
-          style="margin-right: 20px"
-        >用户名:&nbsp;&nbsp;&nbsp; {{ loginForm.username }}</span><br><br>
-        <span>密码: &nbsp;&nbsp;&nbsp; {{ loginForm.password }}</span>
-      </div>
     </el-form>
 
     <copyright/>
@@ -100,8 +94,11 @@
 </template>
 
 <script>
+
 import Copyright from '@/components/Copyright'
+
 import { getUrlPrefix } from '@/utils'
+
 export default {
   name: 'Login',
   components: {
@@ -109,15 +106,15 @@ export default {
   },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('用户名不能小于5位'))
+      if (value.length < 4) {
+        callback(new Error('用户名不能小于4位'))
       } else {
         callback()
       }
     }
     const validatePass = (rule, value, callback) => {
-      if (value.length < 5) {
-        callback(new Error('密码不能小于5位'))
+      if (value.length < 4) {
+        callback(new Error('密码不能小于4位'))
       } else {
         callback()
       }
@@ -171,7 +168,7 @@ export default {
     this.changeImageCode()
   },
   mounted() {
-    // this.open()
+    this.open()
   },
   methods: {
     open() {
@@ -244,6 +241,7 @@ export default {
       s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
       s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
       const uuid = s.join('')
+      console.log('uuid: ', uuid)
       this.loginForm.codeKey = uuid
     }
   }
