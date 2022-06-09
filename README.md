@@ -101,7 +101,7 @@ sudo chmod 754 spring-boot.sh
 ![](images/20200116220840.jpg)
 ```
 # docker 启动 激活 prod 环境 并且将 容器的logs目录 挂载到 当前宿主机的logs目录
-sudo docker run -d -p 8090:8090 --name spring-restful-api \
+sudo docker run -d -p 18888:18888 --name spring-restful-api \
 -v $PWD/logs:/logs \
 -e "SPRING_PROFILES_ACTIVE=prod" \
 xaaef/spring-restful-api
@@ -109,7 +109,7 @@ xaaef/spring-restful-api
 # docker 启动 激活 prod 环境 并且将 容器的 logs , config 目录 挂载到 当前宿主机的 logs , config 目录
 # 如果只是修改了 application-prod.yml 文件，无需重新打包镜像，将修改完成后的 application-prod.yml文件
 # 放在 config 目录下，spring boot 会覆盖 jar 包内的 application-prod.yml 属性
-sudo docker run -d -p 8090:8090 --name spring-restful-api \
+sudo docker run -d -p 18888:18888 --name spring-restful-api \
 -v $PWD/logs:/logs \
 -v $PWD/config:/config \
 -e "SPRING_PROFILES_ACTIVE=prod" \
@@ -119,7 +119,7 @@ xaaef/spring-restful-api
 
 
 
-### 查看 swagger2 API 文档 ：  http://localhost:8090/doc.html 
+### 查看 swagger2 API 文档 ：  http://localhost:18888/doc.html 
 
 
 
