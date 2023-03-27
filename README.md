@@ -1,6 +1,6 @@
 # spring boot security jwt 整合 vue-admin-template 2.0 项目模板，权限控制到按钮！
 
-[molly-multi-tenant](https://github.com/thousmile/molly-multi-tenant)基于多数据库的SaaS版本
+# [molly-multi-tenant](https://github.com/thousmile/molly-multi-tenant)基于多数据库的SaaS版本
 
 首先感谢[PanJiaChen](https://github.com/PanJiaChen) 的 vue-admin-template 模板，
 
