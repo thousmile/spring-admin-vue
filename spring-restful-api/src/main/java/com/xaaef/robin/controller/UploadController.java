@@ -57,16 +57,16 @@ public class UploadController {
      */
     @ApiOperation(value = "图片上传", notes = "普通的图片上传：500px * 500px")
     @PostMapping("/image")
-    public JsonResult uploadImages(MultipartFile file) throws IOException {
+    public JsonResult<Map<String, String>> uploadImages(MultipartFile file) throws IOException {
         if (file.isEmpty() || StringUtils.isEmpty(file.getOriginalFilename())) {
-            return JsonResult.fail("图片不能为空");
+            return JsonResult.fail("图片不能为空", Map.of());
         }
         // 校验 图片的后缀名 是否符合要求
         if (RegexUtils.isImage(file.getOriginalFilename())) {
             Map<String, String> map = uploadFile(file, 500, 500);
             return JsonResult.success(map);
         }
-        return JsonResult.fail("图片格式不正确,只可以上传[ JPG , JPEG , PNG , BMP ]中的一种");
+        return JsonResult.fail("图片格式不正确,只可以上传[ JPG , JPEG , PNG , BMP ]中的一种", Map.of());
     }
 
 
@@ -81,16 +81,16 @@ public class UploadController {
      */
     @ApiOperation(value = "头像上传", notes = "普通的图片上传：200px * 200px")
     @PostMapping("/avatar")
-    public JsonResult uploadAvatar(MultipartFile file) throws IOException {
+    public JsonResult<Map<String, String>> uploadAvatar(MultipartFile file) throws IOException {
         if (file.isEmpty() || StringUtils.isEmpty(file.getOriginalFilename())) {
-            return JsonResult.fail("头像不能为空");
+            return JsonResult.fail("头像不能为空", Map.of());
         }
         // 校验 图片的后缀名 是否符合要求
         if (RegexUtils.isImage(file.getOriginalFilename())) {
             Map<String, String> map = uploadFile(file, 200, 200);
             return JsonResult.success(map);
         }
-        return JsonResult.fail("头像格式不正确,只可以上传[ JPG , JPEG , PNG , BMP ]中的一种");
+        return JsonResult.fail("头像格式不正确,只可以上传[ JPG , JPEG , PNG , BMP ]中的一种", Map.of());
     }
 
 
@@ -105,7 +105,7 @@ public class UploadController {
      */
     @ApiOperation(value = "图片删除", notes = "根据url 删除图片")
     @DeleteMapping("/delete")
-    public JsonResult deleteImages(String url) throws IOException {
+    public JsonResult<String> deleteImages(String url) throws IOException {
         if (StringUtils.isNotEmpty(url)) {
             String fileKey = url.substring((url.lastIndexOf("/") + 1), url.length());
             log.warn("deleteImages url: {}  fileKey: {}", url, fileKey);

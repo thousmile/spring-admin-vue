@@ -49,10 +49,10 @@ public class AuthController {
 
     @ApiOperation(value = "用户登录认证", notes = "用户名，密码登录格式 {\"username\":\"admin\",\"password\":\"admin\"}")
     @PostMapping("/login")
-    public JsonResult login(@RequestBody @Validated LoginUserVO user, HttpServletRequest request, BindingResult br) {
+    public JsonResult<JwtTokenValue> login(@RequestBody @Validated LoginUserVO user, HttpServletRequest request, BindingResult br) {
         // 根据 CodeKey 从 redis 中获取到 ServerCodeText
         if (!verifyCodeService.checkVerifyCode(user.getCodeKey(), user.getCodeText())) {
-            return JsonResult.fail("验证码错误！");
+            return JsonResult.fail("验证码错误！", JwtTokenValue.class);
         }
         try {
             var tokenValue = userLoginService.login(user, request);
@@ -60,13 +60,19 @@ public class AuthController {
             verifyCodeService.deleteImageVerifyCode(user.getCodeKey());
             return JsonResult.success("登录成功", tokenValue);
         } catch (BadCredentialsException ex) {
-            return JsonResult.error(OAuth2Error.USER_INVALID.getStatus(), OAuth2Error.USER_INVALID.getError());
+            return JsonResult.error(OAuth2Error.USER_INVALID.getStatus(),
+                    OAuth2Error.USER_INVALID.getError(),
+                    JwtTokenValue.class);
         } catch (LockedException ex) {
-            return JsonResult.error(OAuth2Error.USER_LOCKING.getStatus(), OAuth2Error.USER_LOCKING.getError());
+            return JsonResult.error(OAuth2Error.USER_LOCKING.getStatus(),
+                    OAuth2Error.USER_LOCKING.getError(),
+                    JwtTokenValue.class);
         } catch (JwtAuthException ex) {
-            return JsonResult.error(ex.getStatus(), ex.getMessage());
+            return JsonResult.error(ex.getStatus(),
+                    ex.getMessage(),
+                    JwtTokenValue.class);
         } catch (Exception ex) {
-            return JsonResult.fail(ex.getMessage());
+            return JsonResult.fail(ex.getMessage(), JwtTokenValue.class);
         }
     }
 

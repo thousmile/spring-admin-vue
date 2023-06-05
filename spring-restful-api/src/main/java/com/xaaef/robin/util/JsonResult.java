@@ -209,6 +209,15 @@ public class JsonResult<T> implements Serializable {
         return result(error.getStatus(), error.getError(), null);
     }
 
+    /**
+     * 异常错误
+     *
+     * @author Wang Chen Chen<932560435@qq.com>
+     * @date 2019/12/12 21:08
+     */
+    public static <T> JsonResult<T> error(int status, String message, Class<T> data) {
+        return result(status, message, null);
+    }
 
     /**
      * 获取 成功的常量
